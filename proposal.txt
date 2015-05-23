@@ -1,1 +1,3 @@
-hello hello
+Our project is going to be a 3-dimensional brickbreaker game.
+
+
