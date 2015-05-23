@@ -1,3 +1,37 @@
-Our project is going to be a 3-dimensional brickbreaker game.
+ __      __                        __   .__                 __________        .__  .__   
+/  \    /  \_______   ____   ____ |  | _|__| ____    ____   \______   \_____  |  | |  |  
+\   \/\/   /\_  __ \_/ __ \_/ ___\|  |/ /  |/    \  / ___\   |    |  _/\__  \ |  | |  |  
+ \        /  |  | \/\  ___/\  \___|    <|  |   |  \/ /_/  >  |    |   \ / __ \|  |_|  |__
+  \__/\  /   |__|    \___  >\___  >__|_ \__|___|  /\___  /   |______  /(____  /____/____/
+       \/                \/     \/     \/       \//_____/           \/      \/           
 
+YOU HIT ME LIKE A WRECKING BALL! - Miley Cyrus
+Did you think classic Brick Breaker was cool?  Well, yeah, it was…  But you know what’s cooler?  3D Brick Breaker!  That’s right, we’re taking the legendary game where you destroy things by hitting them with a ball, and making it 3D!
 
+In order to emphasize the fact that our game is in 3D, we have renamed it to “Wrecking Ball,” which we feel better conveys a sense of three dimensions than “Brick Breaker.”
+
+Features:
+Bird’s-eye view (click and drag to change view, or something like that)
+A ball
+A paddle
+Bricks (not necessarily rectangular prisms; anything that can be damaged by the ball can be referred to as a brick)
+Bosses (technically these are bricks, but they require a bajillion hits to be destroyed)
+Powerups
+Sandbox (the player can design his own levels and play in them)
+
+Roadmap:
+Check out Dennis’s beautiful brick breaker game that he made in Netlogo last year and steal all his ideas
+Check out Smash Frenzy 4 and Blasterball 3 and steal some of their ideas
+Create a generic level that can be filled up with any pattern of bricks, balls, paddles, etc.
+Display the level in a visually appealing way
+Write functions for paddle/ball, brick/ball, wall/ball, and wall/paddle interactions
+Add some basic powerups (grow/shrink ball/paddle, duplicate ball, extra lives)
+Experience a growth in confidence
+Create more advanced bricks (moving bricks, teleporting bricks, extreme-gravity bricks, anti-gravity bricks, regenerating bricks, replicating bricks, bosses)
+Add more advanced powerups (extra paddle, machine guns, missile launcher, flamethrower, air strike, god mode)
+Experience further growth in confidence
+Add sandbox mode
+Attempt to extend ball’s movement to third dimension
+Make little progress
+Give up
+Submit everything we had time to program
