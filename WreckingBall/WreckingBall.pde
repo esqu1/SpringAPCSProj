@@ -3,8 +3,7 @@ void setup(){
 }
 
 void draw(){
-  translate(500,500);
-  rotateX(120);
-  rotateY(120);
-  box(500,500,500);
+  background(0);
+  Paddle p = new Paddle(100,mouseX,900);
+  p.draw();
 }

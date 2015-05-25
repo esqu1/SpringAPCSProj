@@ -1,5 +1,5 @@
 public class Paddle{
-  private float length; // default width is 0.5
+  private float length; // default width is 5
   private float px, py;
   public Paddle(float w, float px, float py){ //w represents the length
     length = w;
@@ -8,7 +8,9 @@ public class Paddle{
   }
   
   public void draw(){
-    beginShape(QUADS);
-    //vertex(
+    pushMatrix();
+    translate(px,py);
+    box(length,5,5);
+    popMatrix();
   }
 }
