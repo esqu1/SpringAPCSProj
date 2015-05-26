@@ -11,6 +11,8 @@ void draw() {
   rotateX(PI/6);
   Paddle p = new Paddle(100, mouseX, 500);
   p.draw();
+  RectPrism r = new RectPrism(400,400,50,50,50);
+  r.draw();
   mode = PLAYING;
   switch(mode) {
   case PLAYING:
@@ -35,5 +37,6 @@ void driver() {
   //plays the game and stuff y'know 
   fill(#63F702);
   rect(100, 100, 700, 500);
+  
 }
 

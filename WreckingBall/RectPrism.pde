@@ -10,8 +10,17 @@ public class RectPrism extends Brick{
     this.w = w;
     this.h = h;
   }  
+  
   public boolean ballInside(Ball b){
-    
+    return true;
+  }
+  
+  public void draw(){
+   pushMatrix();
+   translate(px - (l / 2.0), py - (w / 2.0), h / 2.0);
+   box(l,w,h);
+   popMatrix();
+   
   }
   
   
