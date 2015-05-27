@@ -44,3 +44,6 @@ Brandon started writing an abstract Brick class and wrote the constructor for a 
 Dennis started writing the Board class, which will contain all objects involved in the game.<br />
 Dennis then modified the WreckerBall class to allow users to resize the board (rather, resize everything in
 the game window), rotate the board, zoom toward and away from the board, and reset to default settings.
+
+5/27/15<br />
+Brandon figured out how to draw brick prisms with irregular polygons as faces.
