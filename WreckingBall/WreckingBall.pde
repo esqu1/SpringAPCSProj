@@ -61,9 +61,9 @@ void playing() {
   //Paddle p = new Paddle(100,mouseX,500);
   //p.draw();
   b.draw();
-  RectPrism r = new RectPrism(100,100,100,100,100);
-  r.draw();
-  println(r.ballInside(b));
+  //RectPrism r = new RectPrism(100,100,100,100,100);
+  //r.draw();
+  //println(r.ballInside(b));
 }
 
 void dead() {
