@@ -20,27 +20,27 @@ YYY:::::Y   Y:::::YYYaaaaaaaaaaaaa  ttttttt:::::ttttttt    uuuuuu    uuuuuu   l:
 Research suggests that there is a strong correlation between size of a team name and amazingness of said team's
 final submission.
 
-Project Name: Wrecking Ball\n
-(This is to distinguish it from Dennis's project from term one of Intro – Wreckerball.)\n
-(Coincidentally, this team name also has its roots in term one of Intro...)\n
-\n
-\n
-DEVELOPMENT LOG:\n
+Project Name: Wrecking Ball<br />
+(This is to distinguish it from Dennis's project from term one of Intro – Wreckerball.)<br />
+(Coincidentally, this team name also has its roots in term one of Intro...)<br />
 
-5/20/15\n
+
+DEVELOPMENT LOG:<br />
+
+5/20/15<br />
 Brandon created this directory.
 
-5/22/15\n
+5/22/15<br />
 Brandon made a couple of skeleton files for classes that might come in handy.
 
-5/23/15\n
+5/23/15<br />
 Dennis discovered that he could write code on his phone, which greatly amused him.
 
-5/25/15\n
+5/25/15<br />
 Brandon made a simple paddle that could follow the player's mouse.
 
-5/26/15\n
-Brandon started writing an abstract Brick class and wrote the constructor for a rectangular prism subclass.\n
-Dennis started writing the Board class, which will contain all objects involved in the game.\n
+5/26/15<br />
+Brandon started writing an abstract Brick class and wrote the constructor for a rectangular prism subclass.<br />
+Dennis started writing the Board class, which will contain all objects involved in the game.<br />
 Dennis then modified the WreckerBall class to allow users to resize the board (rather, resize everything in
 the game window), rotate the board, zoom toward and away from the board, and reset to default settings.
