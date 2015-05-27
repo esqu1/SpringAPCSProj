@@ -1,21 +1,22 @@
+```
+YYYYYYY       YYYYYYY                        tttt                            lllllll   iiii                   
+Y:::::Y       Y:::::Y                     ttt:::t                            l:::::l  i::::i                  
+Y:::::Y       Y:::::Y                     t:::::t                            l:::::l   iiii                   
+Y::::::Y     Y::::::Y                     t:::::t                            l:::::l                          
+YYY:::::Y   Y:::::YYYaaaaaaaaaaaaa  ttttttt:::::ttttttt    uuuuuu    uuuuuu   l::::l iiiiiiinnnn  nnnnnnnn    
+   Y:::::Y Y:::::Y   a::::::::::::a t:::::::::::::::::t    u::::u    u::::u   l::::l i:::::in:::nn::::::::nn  
+    Y:::::Y:::::Y    aaaaaaaaa:::::at:::::::::::::::::t    u::::u    u::::u   l::::l  i::::in::::::::::::::nn 
+     Y:::::::::Y              a::::atttttt:::::::tttttt    u::::u    u::::u   l::::l  i::::inn:::::::::::::::n
+      Y:::::::Y        aaaaaaa:::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n:::::nnnn:::::n
+       Y:::::Y       aa::::::::::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n::::n    n::::n
+       Y:::::Y      a::::aaaa::::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n::::n    n::::n
+       Y:::::Y     a::::a    a:::::a      t:::::t    ttttttu:::::uuuu:::::u   l::::l  i::::i  n::::n    n::::n
+       Y:::::Y     a::::a    a:::::a      t::::::tttt:::::tu:::::::::::::::uul::::::li::::::i n::::n    n::::n
+    YYYY:::::YYYY  a:::::aaaa::::::a      tt::::::::::::::t u:::::::::::::::ul::::::li::::::i n::::n    n::::n
+    Y:::::::::::Y   a::::::::::aa:::a       tt:::::::::::tt  uu::::::::uu:::ul::::::li::::::i n::::n    n::::n
+    YYYYYYYYYYYYY    aaaaaaaaaa  aaaa         ttttttttttt      uuuuuuuu  uuuulllllllliiiiiiii nnnnnn    nnnnnn
+```
 
-YYYYYYY.......YYYYYYY........................tttt............................lllllll...iiii...................
-Y:::::Y.......Y:::::Y.....................ttt:::t............................l:::::l..i::::i..................
-Y:::::Y.......Y:::::Y.....................t:::::t............................l:::::l...iiii...................
-Y::::::Y.....Y::::::Y.....................t:::::t............................l:::::l..........................
-YYY:::::Y...Y:::::YYYaaaaaaaaaaaaa..ttttttt:::::ttttttt....uuuuuu....uuuuuu...l::::l.iiiiiiinnnn..nnnnnnnn....
-...Y:::::Y.Y:::::Y...a::::::::::::a.t:::::::::::::::::t....u::::u....u::::u...l::::l.i:::::in:::nn::::::::nn..
-....Y:::::Y:::::Y....aaaaaaaaa:::::at:::::::::::::::::t....u::::u....u::::u...l::::l..i::::in::::::::::::::nn.
-.....Y:::::::::Y..............a::::atttttt:::::::tttttt....u::::u....u::::u...l::::l..i::::inn:::::::::::::::n
-......Y:::::::Y........aaaaaaa:::::a......t:::::t..........u::::u....u::::u...l::::l..i::::i..n:::::nnnn:::::n
-.......Y:::::Y.......aa::::::::::::a......t:::::t..........u::::u....u::::u...l::::l..i::::i..n::::n....n::::n
-.......Y:::::Y......a::::aaaa::::::a......t:::::t..........u::::u....u::::u...l::::l..i::::i..n::::n....n::::n
-.......Y:::::Y.....a::::a....a:::::a......t:::::t....ttttttu:::::uuuu:::::u...l::::l..i::::i..n::::n....n::::n
-.......Y:::::Y.....a::::a....a:::::a......t::::::tttt:::::tu:::::::::::::::uul::::::li::::::i.n::::n....n::::n
-....YYYY:::::YYYY..a:::::aaaa::::::a......tt::::::::::::::t.u:::::::::::::::ul::::::li::::::i.n::::n....n::::n
-....Y:::::::::::Y...a::::::::::aa:::a.......tt:::::::::::tt..uu::::::::uu:::ul::::::li::::::i.n::::n....n::::n
-....YYYYYYYYYYYYY....aaaaaaaaaa..aaaa.........ttttttttttt......uuuuuuuu..uuuulllllllliiiiiiii.nnnnnn....nnnnnn
-                                                                                                              
 Research suggests that there is a strong correlation between size of a team name and amazingness of said team's
 final submission.
 
