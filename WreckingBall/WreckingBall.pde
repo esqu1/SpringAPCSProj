@@ -57,8 +57,13 @@ void playing() {
   translate(-width / 2, -height, 0);
   // Now draw the board and everything on it.
   board.draw();
-  Ball b = new Ball(500,500);
+  Ball b = new Ball(mouseX,mouseY);
+  //Paddle p = new Paddle(100,mouseX,500);
+  //p.draw();
   b.draw();
+  RectPrism r = new RectPrism(100,100,100,100,100);
+  r.draw();
+  println(r.ballInside(b));
 }
 
 void dead() {

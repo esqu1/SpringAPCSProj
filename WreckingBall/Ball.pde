@@ -1,6 +1,6 @@
 public class Ball {
   private PVector position, velocity, acceleration;
-  private final int BALLRADIUS = 100; //temporary
+  private final int BALLRADIUS = 50; //temporary
   public Ball(float x, float y) {
     position = new PVector(x,y,BALLRADIUS);
     velocity = new PVector();

@@ -1,6 +1,6 @@
 public class RectPrism extends Brick {
   /* We need the ball radius to do anything.*/
-  private final int BALLRADIUS = 2; //temporary
+  private final int BALLRADIUS = 50; //temporary
   private int px, py, l, w, h;
 
   public RectPrism(int px, int py, int l, int w, int h) {
