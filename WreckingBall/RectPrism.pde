@@ -15,11 +15,15 @@ public class RectPrism extends Brick {
     float x = b.getPosition().x;
     float y = b.getPosition().y;
     if (x <= px + (l / 2.0) && x >= px - (l / 2.0) && abs(y - py) <= (w / 2.0) + BALLRADIUS) {
-      b.getVelocity().set(b.getVelocity().x,-b.getVelocity().y);
-    }else if (y <= py + (w / 2.0) && y >= py - (w / 2.0) && abs(x - px) <= (l / 2.0) + BALLRADIUS) {
-      b.getVelocity().set(-b.getVelocity().x,b.getVelocity().y);
+      b.getVelocity().set(b.getVelocity().x, -b.getVelocity().y);
+      return true;
+    } else if (y <= py + (w / 2.0) && y >= py - (w / 2.0) && abs(x - px) <= (l / 2.0) + BALLRADIUS) {
+      b.getVelocity().set(-b.getVelocity().x, b.getVelocity().y);
+      return true;
+    } else if (sqrt(((px + (l / 2.0) - x)*(px + (l / 2.0) - x)) + ((py + (l / 2.0) - y)*(py + (l / 2.0) - y))) <= BALLRADIUS){
+      
     }
-    return true;
+      return false;
   }
 
   public void draw() {
