@@ -61,6 +61,9 @@ void playing() {
   //Paddle p = new Paddle(100,mouseX,500);
   //p.draw();
   b.draw();
+  float[][] thing = {{100,150},{200,100},{200,200},{100,200}};
+  Brick d= new Brick(thing, 100);
+  d.draw();
   //RectPrism r = new RectPrism(100,100,100,100,100);
   //r.draw();
   //println(r.ballInside(b));
