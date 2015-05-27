@@ -1,56 +1,26 @@
-import java.util.*;
-public class Brick {
-  //This will be a parent class for Rectangular Prism, TrianglePrism, PentagonalPrism, Sphere (?)
-  private float[][] vertices;
-  private float prismHeight;
+public interface Brick {
 
-  public Brick(float[][] v, float h) {
-    vertices = v;
-    prismHeight = h;
-  }
-  public boolean ballInside(Ball b) {
-    return true;
-  }
+  // draws the brick
+  public void draw();
 
-  public void draw() {
-    beginShape();
-    for (float[] i : vertices) {
-      vertex(i[0],i[1],prismHeight);
-    }
-    endShape(CLOSE);
-    beginShape();
-    for (float[] i : vertices) {
-      vertex(i[0],i[1],0);
-    }
-    endShape(CLOSE);
-    for(int i = 0; i < vertices.length - 1; i++){
-      println(Arrays.toString(vertices[i]));
-      beginShape();
-      vertex(vertices[i][0],vertices[i][1],prismHeight);
-      vertex(vertices[i+1][0],vertices[i+1][1],prismHeight);
-      vertex(vertices[i+1][0],vertices[i+1][1],0);
-      vertex(vertices[i][0],vertices[i][1],0);
-      endShape();
-    }
-    beginShape();
-    vertex(vertices[vertices.length - 1][0], vertices[vertices.length - 1][1],prismHeight);
-    vertex(vertices[0][0],vertices[0][1],prismHeight);
-    vertex(vertices[0][0],vertices[0][1],0);
-    vertex(vertices[vertices.length - 1][0], vertices[vertices.length - 1][1],0);
-    endShape();
-  }
-  // checks whether b is inside the brick. 
-  public void reflectBall(Ball b){
-    
-  }
-  // calculate the angle of reflection and change the ball's attributes accordingly.
-  public void setTexture(){
-    /* idk what arg here yet */
-  }
-  // sets texture 
-  public void breakBrick(){
-    
-  }
-  // breaks the brick and updates player's score
+  // returns the height of the brick
+  public float getHeight();
+
+  // returns the center of the brick (to be implemented later)
+  // public float[] getCenter();
+
+  // checks if Ball b is inside (or tangent to) the brick
+  public boolean ballInside(Ball b);
+
+  // changes velocity of Ball b assuming ballInside(b) returns true
+  public void reflectBall(Ball b);
+
+  // releases any powerups the brick has (to be implemented later)
+  // public void releasePowerup();
+
+  // sets the color of the brick
+  public void setColor(color rgb);
+
+  // sets the texture of the brick (to be implemented later)
+  // public void setTexture(PImage img);
 }
-
