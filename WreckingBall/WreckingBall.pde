@@ -18,26 +18,23 @@ void setup() {
   if (frame != null)
     frame.setResizable(true);
   mode = MENU;
-  lights();
-  //noStroke();
 }
 
 void draw() {
   background(0);
-  
   switch (mode) {
-  case TITLE:
-    title();
-    break;
-  case MENU:
-    menu();
-    break;
-  case PLAYING:
-    playing();
-    break;
-  case DEAD:
-    dead();
-    break;
+    case TITLE:
+      title();
+      break;
+    case MENU:
+      menu();
+      break;
+    case PLAYING:
+      playing();
+      break;
+    case DEAD:
+      dead();
+      break;
   }
 }
 
@@ -45,7 +42,7 @@ void title() {
 }
 
 void menu() {
-  board = new Board(#63F702);
+  board = new Board();
   mode = PLAYING;
 }
 
@@ -57,16 +54,6 @@ void playing() {
   translate(-width / 2, -height, 0);
   // Now draw the board and everything on it.
   board.draw();
-  Ball b = new Ball(mouseX,mouseY);
-  //Paddle p = new Paddle(100,mouseX,500);
-  //p.draw();
-  b.draw();
-  float[][] thing = {{100,150},{200,100},{200,200},{100,200}};
-  Brick d= new Brick(thing, 100);
-  d.draw();
-  //RectPrism r = new RectPrism(100,100,100,100,100);
-  //r.draw();
-  //println(r.ballInside(b));
 }
 
 void dead() {
@@ -83,7 +70,8 @@ void mouseDragged() {
       viewAngleX += (pmouseY - mouseY) / 1000.;
       if (viewAngleX < 0)
         viewAngleX = 0;
-    } else if (pmouseY > mouseY && viewAngleX < HALF_PI) {
+    }
+    else if (pmouseY > mouseY && viewAngleX < HALF_PI) {
       viewAngleX += (pmouseY - mouseY) / 1000.;
       if (viewAngleX > HALF_PI)
         viewAngleX = HALF_PI;
@@ -101,7 +89,8 @@ void mouseDragged() {
       viewAngleY += (mouseX - pmouseX) / 1000.;
       if (viewAngleY < -QUARTER_PI)
         viewAngleY = -QUARTER_PI;
-    } else if (mouseX > pmouseX && viewAngleY < QUARTER_PI) {
+    }
+    else if (mouseX > pmouseX && viewAngleY < QUARTER_PI) {
       viewAngleY += (mouseX - pmouseX) / 1000.;
       if (viewAngleY > QUARTER_PI)
         viewAngleY = QUARTER_PI;
@@ -119,30 +108,29 @@ void mouseWheel(MouseEvent me) {
     // the field of view is increased.
     fov += PI / 360;
   perspective(
-  fov, // field-of-view angle for vertical direction
-  float(width) / float(height), // aspect ratio
-  (height / 2.0) / tan(fov / 2.0) / 10.0, 
-  // z-position of nearest clipping plane
-  (height / 2.0) / tan(fov / 2.0) * 10.0
+    fov, // field-of-view angle for vertical direction
+    float(width) / float(height), // aspect ratio
+    (height / 2.0) / tan(fov / 2.0) / 10.0,
+    // z-position of nearest clipping plane
+    (height / 2.0) / tan(fov / 2.0) * 10.0
     // z-position of farthest clipping plane
-  );
+    );
 }
 
 void keyPressed(KeyEvent ke) {
   // View angles and fov are reset when ctrl-/alt-/cmd-R
   // is pressed.
   if (
-  (ke.isControlDown() || ke.isAltDown() || ke.isMetaDown()
+    (ke.isControlDown() || ke.isAltDown() || ke.isMetaDown()
     ) && ke.getKeyCode() == 'R') {
     viewAngleX = PI / 3;
     viewAngleY = 0;
     fov = PI / 3;
     perspective(
-    fov, 
-    float(width) / float(height), 
-    (height / 2.0) / tan(fov / 2.0) / 10.0, 
-    (height / 2.0) / tan(fov / 2.0) * 10.0
+      fov,
+      float(width) / float(height),
+      (height / 2.0) / tan(fov / 2.0) / 10.0,
+      (height / 2.0) / tan(fov / 2.0) * 10.0
       );
   }
 }
-
