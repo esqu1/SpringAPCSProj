@@ -32,6 +32,12 @@ public class Brick {
       vertex(vertices[i][0],vertices[i][1],0);
       endShape();
     }
+    beginShape();
+    vertex(vertices[vertices.length - 1][0], vertices[vertices.length - 1][1],prismHeight);
+    vertex(vertices[0][0],vertices[0][1],prismHeight);
+    vertex(vertices[0][0],vertices[0][1],0);
+    vertex(vertices[vertices.length - 1][0], vertices[vertices.length - 1][1],0);
+    endShape();
   }
   // checks whether b is inside the brick. 
   public void reflectBall(Ball b){
