@@ -1,42 +1,56 @@
-Brick[] bricks;
-int mode;
-final int PLAYING = 0, TITLESCREEN = 1, MENU = 2;
+final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3;
+int mode = TITLE;
+Board board;
+float viewAngle = PI/3;
 
 void setup() {
-  size(1000, 800, P3D);
+	size(1000, 800, P3D);
+	// FOR NOW
+	mode = MENU;
 }
 
 void draw() {
-  background(0);
-  rotateX(PI/6);
-  Paddle p = new Paddle(100, mouseX, 500);
-  p.draw();
-  RectPrism r = new RectPrism(400,400,50,50,50);
-  r.draw();
-  mode = PLAYING;
-  switch(mode) {
-  case PLAYING:
-    driver();
-  case TITLESCREEN:
-    titleScreen();
-  case MENU:
-    menu();
-  }
+	background(0);
+	switch (mode) {
+		case TITLE:
+		title();
+		break;
+		case MENU:
+		menu();
+		break;
+		case PLAYING:
+		playing();
+		break;
+		case DEAD:
+		dead();
+		break;
+	}
 }
 
-void titleScreen() {
-  // Intro to the game, go to main menu.
+void title() {
 }
 
 void menu() {
-  // Select options 
-  // Start Game, Setting (Change Music, Volume), Quit, Choose Level
+	board = new Board(#63F702);
+	mode = PLAYING;
 }
 
-void driver() {
-  //plays the game and stuff y'know 
-  fill(#63F702);
-  rect(100, 100, 700, 500);
-  
+void playing() {
+	translate(0, height, 0);
+	rotateX(viewAngle);
+	translate(0, -height, 0);
+	board.draw();
 }
 
+void dead() {
+}
+
+void mouseDragged() {
+	if (mouseButton == RIGHT && ((pmouseY > mouseY && viewAngle < HALF_PI) || (pmouseY < mouseY && viewAngle > 0))) {
+		viewAngle += (pmouseY - mouseY) / 1000.;
+		if (viewAngle < 0)
+			viewAngle = 0;
+		if (viewAngle > HALF_PI)
+			viewAngle = HALF_PI;
+	}
+}
