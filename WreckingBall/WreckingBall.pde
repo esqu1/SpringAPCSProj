@@ -19,13 +19,12 @@ void setup() {
     frame.setResizable(true);
   mode = MENU;
   lights();
-  noStroke();
+  //noStroke();
 }
 
 void draw() {
   background(0);
-  Ball b = new Ball(500,500);
-  b.draw();
+  
   switch (mode) {
   case TITLE:
     title();
@@ -58,6 +57,8 @@ void playing() {
   translate(-width / 2, -height, 0);
   // Now draw the board and everything on it.
   board.draw();
+  Ball b = new Ball(500,500);
+  b.draw();
 }
 
 void dead() {
