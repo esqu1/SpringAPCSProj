@@ -18,6 +18,8 @@ void setup() {
   if (frame != null)
     frame.setResizable(true);
   mode = MENU;
+  lights();
+  noStroke();
 }
 
 void draw() {

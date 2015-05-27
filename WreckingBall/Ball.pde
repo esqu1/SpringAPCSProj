@@ -11,6 +11,7 @@ public class Ball {
   }
   
   public void draw(){ // ************************** TEMPORARY *************************
+    fill(128);
     pushMatrix();
     translate(position.x - BALLRADIUS,position.y - BALLRADIUS, BALLRADIUS);
     sphere(BALLRADIUS);
