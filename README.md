@@ -46,4 +46,5 @@ Dennis then modified the WreckerBall class to allow users to resize the board (r
 the game window), rotate the board, zoom toward and away from the board, and reset to default settings.
 
 5/27/15<br />
-Brandon figured out how to draw brick prisms with irregular polygons as faces.
+Brandon figured out how to draw brick prisms with irregular polygons as faces. He also started working on a method that would detect collisions between the ball and a prism.
+Dennis made the board 1x1 in order to scale objects easily.
