@@ -23,7 +23,7 @@ public class Board {
     //fill(c);
     rect(0, 0, width, height);
     for (Brick b : bricks){
-      b.setTexture("texture1.jpg");
+      b.setTexture("texture1.jpg"); // REMOVE THIS PART IF YOU WANT, WAS TESTING TEXTURES
       b.draw();
     }
     /*
