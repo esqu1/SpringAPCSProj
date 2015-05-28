@@ -1,5 +1,6 @@
 public interface Brick {
 
+
   // draws the brick
   public void draw();
 
@@ -21,6 +22,6 @@ public interface Brick {
   // sets the color of the brick
   public void setColor(color rgb);
 
-  // sets the texture of the brick (to be implemented later)
-  // public void setTexture(PImage img);
+  // sets the texture of the brick (to be implemented later)  
+  public void setTexture(String s);
 }

@@ -3,6 +3,7 @@ public class Prism implements Brick {
   private float[][] vertices;
   private float h;
   private color c;
+  private String texture;
 
   public Prism(float[][] v, float prismHeight) {
     vertices = v;
@@ -11,7 +12,7 @@ public class Prism implements Brick {
   }
 
   public void draw() {
-    fill(c);
+    PImage p = loadImage(texture);
     int i;
     // Draw the top face.
     beginShape();
@@ -26,14 +27,16 @@ public class Prism implements Brick {
     // Draw the first vertices.length - 1 faces.
     for (i = 0; i < vertices.length - 1; i++) {
       beginShape();
-      vertex(vertices[i][0] * width, vertices[i][1] * height, h);
-      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, h);
-      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, 0);
-      vertex(vertices[i][0] * width, vertices[i][1] * height, 0);
+      texture(p);
+      //textureMode(NORMAL);
+      vertex(vertices[i][0] * width, vertices[i][1] * height, h,0,0);
+      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, h,0,100);
+      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, 0,100,1)00;
+      vertex(vertices[i][0] * width, vertices[i][1] * height, 0,100,0);
       endShape(); // do we need a "CLOSE" here?
     }
     // Draw the last face.
-    if (vertices.length > 1) {
+    if (vertices.length > 1) {     
       beginShape();
       vertex(vertices[vertices.length - 1][0] * width, vertices[vertices.length - 1][1] * height, h);
       vertex(vertices[0][0] * width, vertices[0][1] * height, h);
@@ -41,6 +44,7 @@ public class Prism implements Brick {
       vertex(vertices[vertices.length - 1][0] * width, vertices[vertices.length - 1][1] * height, 0);
       endShape(); // do we need a "CLOSE" here?
     }
+    //texture();
   }
 
   public float getHeight() {
@@ -49,8 +53,7 @@ public class Prism implements Brick {
 
   public boolean ballInside(Ball b) {
     // UMMMMMM...
-    for(int i = 0; i < vertices.length - 1; i++){
-      
+    for (int i = 0; i < vertices.length - 1; i++) {
     }
     return true;
   }
@@ -61,6 +64,10 @@ public class Prism implements Brick {
 
   public void setColor(color rgb) {
     c = rgb;
+  }
+
+  public void setTexture(String s) {
+    texture = s;
   }
 }
 

@@ -20,10 +20,12 @@ public class Board {
     paddles = new Paddle[0];
   }
   public void draw() {
-    fill(c);
+    //fill(c);
     rect(0, 0, width, height);
-    for (Brick b : bricks)
+    for (Brick b : bricks){
+      b.setTexture("texture1.jpg");
       b.draw();
+    }
     /*
     for (Ball b : balls)
       b.draw();
