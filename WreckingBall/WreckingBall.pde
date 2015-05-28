@@ -47,6 +47,15 @@ void menu() {
 }
 
 void playing() {
+  // Set the perspective.
+  perspective(
+    fov, // field-of-view angle for vertical direction
+    float(width) / float(height), // aspect ratio
+    (height / 2.0) / tan(fov / 2.0) / 10.0,
+    // z-position of nearest clipping plane
+    (height / 2.0) / tan(fov / 2.0) * 10.0
+    // z-position of farthest clipping plane
+    );
   // Rotate the grid according to the view angles.
   translate(width / 2, height, 0);
   rotateX(viewAngleX);
@@ -107,14 +116,6 @@ void mouseWheel(MouseEvent me) {
     // If the wheel was rotated down or toward the player,
     // the field of view is increased.
     fov += PI / 360;
-  perspective(
-    fov, // field-of-view angle for vertical direction
-    float(width) / float(height), // aspect ratio
-    (height / 2.0) / tan(fov / 2.0) / 10.0,
-    // z-position of nearest clipping plane
-    (height / 2.0) / tan(fov / 2.0) * 10.0
-    // z-position of farthest clipping plane
-    );
 }
 
 void keyPressed(KeyEvent ke) {
@@ -126,11 +127,5 @@ void keyPressed(KeyEvent ke) {
     viewAngleX = PI / 3;
     viewAngleY = 0;
     fov = PI / 3;
-    perspective(
-      fov,
-      float(width) / float(height),
-      (height / 2.0) / tan(fov / 2.0) / 10.0,
-      (height / 2.0) / tan(fov / 2.0) * 10.0
-      );
   }
 }
