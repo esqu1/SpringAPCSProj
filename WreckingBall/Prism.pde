@@ -16,8 +16,9 @@ public class Prism implements Brick {
     int i;
     // Draw the top face.
     beginShape();
+    texture(p);
     for (i = 0; i < vertices.length; i++)
-      vertex(vertices[i][0] * width, vertices[i][1] * height, h);
+      vertex(vertices[i][0] * width, vertices[i][1] * height, h,vertices[i][0] * width, vertices[i][1] * height);
     endShape(CLOSE);
     // Draw the bottom face.
     beginShape();
@@ -30,9 +31,9 @@ public class Prism implements Brick {
       texture(p);
       //textureMode(NORMAL);
       vertex(vertices[i][0] * width, vertices[i][1] * height, h,0,0);
-      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, h,0,100);
-      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, 0,100,1)00;
-      vertex(vertices[i][0] * width, vertices[i][1] * height, 0,100,0);
+      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, h,100,0);
+      vertex(vertices[i + 1][0] * width, vertices[i + 1][1] * height, 0,100,100);
+      vertex(vertices[i][0] * width, vertices[i][1] * height, 0,0,100);
       endShape(); // do we need a "CLOSE" here?
     }
     // Draw the last face.

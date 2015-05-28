@@ -48,3 +48,6 @@ the game window), rotate the board, zoom toward and away from the board, and res
 5/27/15<br />
 Brandon figured out how to draw brick prisms with irregular polygons as faces. He also started working on a method that would detect collisions between the ball and a prism.
 Dennis made the board 1x1 in order to scale objects easily.
+
+5/28/15<br />
+Brandon figured out how to work textures onto the bricks.
