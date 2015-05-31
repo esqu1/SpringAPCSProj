@@ -1,36 +1,44 @@
 public class Ball {
-  private PVector position, velocity, acceleration;
-  private final int BALLRADIUS = 50; //temporary
-  public Ball(float x, float y) {
-    position = new PVector(x, y, BALLRADIUS);
-    velocity = new PVector();
-    acceleration = new PVector();
-  }
-  public void applyForce(double[] force) {
+
+  private float[] position, velocity, acceleration;
+  private float radius;
+  private color c;
+
+  public Ball() {
+    position = new float[3];
+    velocity = new float[3];
+    acceleration = new float[3];
+    radius = 20;
+    c = #FFFFFF;
   }
 
-  public void draw() { // ************************** TEMPORARY *************************
-    fill(128);
+  public void draw() {
+    fill(c);
     pushMatrix();
-    translate(position.x - BALLRADIUS, position.y - BALLRADIUS, BALLRADIUS);
-    sphere(BALLRADIUS);
+    translate(position[0], position[1], position[2]);
+    sphere(radius);
     popMatrix();
   }
 
-  public void move() {
-    position = new PVector(position.x + velocity.x / 10.0, position.y + velocity.y / 10.0, position.z + velocity.z / 10.0);
+  public void mousePressed() {
+  	position[0] = mouseX * 4 / 3.;
+  	position[1] = mouseY * 4 / 3.;
+  	position[2] = radius;
   }
 
-  public PVector getPosition() {
+  public float getRadius() {
+  	return radius;
+  }
+
+  public float[] getPosition() {
     return position;
   }
 
-  public PVector getVelocity() {
+  public float[] getVelocity() {
     return velocity;
   }
 
-  public PVector getAcceleration() {
+  public float[] getAcceleration() {
     return acceleration;
   }
 }
-
