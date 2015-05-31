@@ -18,144 +18,143 @@ int zoomFactor = 0;
 float cameraZ = defaultCameraZ;
 
 void setup() {
-	// The default shape of the window is a square.
-	size(boardLength * 3 / 4, boardLength * 3 / 4, P3D);
-	// If the game is running inside a web browser, the frame
-	// variable will be null.  Otherwise, the frame will be
-	// resizable.
-	if (frame != null)
-		frame.setResizable(true);
-	mode = MENU;
+  // The default shape of the window is a square.
+  size(boardLength * 3 / 4, boardLength * 3 / 4, P3D);
+  // If the game is running inside a web browser, the frame
+  // variable will be null.  Otherwise, the frame will be
+  // resizable.
+  if (frame != null)
+    frame.setResizable(true);
+  mode = MENU;
 }
 
 void draw() {
-	background(0);
-	switch (mode) {
-		case TITLE:
-			title();
-			break;
-		case MENU:
-			menu();
-			break;
-		case PLAYING:
-			playing();
-			break;
-		case DEAD:
-			dead();
-			break;
-	}
+  background(0);
+  switch (mode) {
+  case TITLE:
+    title();
+    break;
+  case MENU:
+    menu();
+    break;
+  case PLAYING:
+    playing();
+    break;
+  case DEAD:
+    dead();
+    break;
+  }
 }
 
 void title() {
 }
 
 void menu() {
-	board = new Board();
-	mode = PLAYING;
+  board = new Board();
+  mode = PLAYING;
 }
 
 void playing() {
-	// Set the lights.
-	pointLight(
-		255, 255, 255, // light color
-		width / 2.0, height / 2.0, cameraZ // light position
-		);
-	// Set the camera.
-	camera(
-		width / 2.0, height / 2.0, cameraZ, // camera position
-		width / 2.0, height / 2.0, 0, // center of scene
-		0.0, 1.0, 0.0 // y-axis is facing upward
-		);
-	// Set the perspective.
-	perspective(
-		PI / 3, // field-of-view angle
-		1.0, // aspect ratio
-		cameraZ / 10.0,
-		// minimum distance from camera at which rendering stops
-		cameraZ + boardLength
-		// maximum distance from camera at which rendering stops
-		);
-	// Put the board in the center of the window.
-	translate(
-		(width - boardLength) / 2.0,
-		(height - boardLength) / 2.0,
-		0
-		);
-	// Rotate the grid according to the view angles.
-	translate(boardLength / 2, boardLength, 0);
-	rotateX(viewAngleX);
-	rotateY(viewAngleY);
-	translate(-boardLength / 2, -boardLength, 0);
-	// Draw the board and everything on it.
-	board.draw();
+  // Set the lights.
+  pointLight(
+  255, 255, 255, // light color
+  width / 2.0, height / 2.0, cameraZ // light position
+  );
+  // Set the camera.
+  camera(
+  width / 2.0, height / 2.0, cameraZ, // camera position
+  width / 2.0, height / 2.0, 0, // center of scene
+  0.0, 1.0, 0.0 // y-axis is facing upward
+  );
+  // Set the perspective.
+  perspective(
+  PI / 3, // field-of-view angle
+  1.0, // aspect ratio
+  cameraZ / 10.0, 
+  // minimum distance from camera at which rendering stops
+  cameraZ + boardLength
+    // maximum distance from camera at which rendering stops
+  );
+  // Put the board in the center of the window.
+  translate(
+  (width - boardLength) / 2.0, 
+  (height - boardLength) / 2.0, 
+  0
+    );
+  // Rotate the grid according to the view angles.
+  translate(boardLength / 2, boardLength, 0);
+  rotateX(viewAngleX);
+  rotateY(viewAngleY);
+  translate(-boardLength / 2, -boardLength, 0);
+  // Draw the board and everything on it.
+  board.draw();
 }
 
 void dead() {
 }
 
 void mouseDragged() {
-	// A downward swipe will bring the viewAngleX closer
-	// to zero (a vertical board), while an upward
-	// swipe will bring the viewAngleX closer to HALF_PI
-	// (a horizontal board).  The viewAngleX cannot go
-	// outside the range [0, HALF_PI].
-	if (mode == PLAYING && mouseButton == RIGHT) {
-		if (pmouseY < mouseY && viewAngleX > 0) {
-			viewAngleX += (pmouseY - mouseY) / 1000.;
-			if (viewAngleX < 0)
-				viewAngleX = 0;
-		}
-		else if (pmouseY > mouseY && viewAngleX < HALF_PI) {
-			viewAngleX += (pmouseY - mouseY) / 1000.;
-			if (viewAngleX > HALF_PI)
-				viewAngleX = HALF_PI;
-		}
-	}
-	// A leftward swipe will bring the viewAngleY closer
-	// to -QUARTER_PI (the right edge of the board is
-	// closer than the left edge), while a rightward
-	// swipe will bring the viewAngleY closer to
-	// QUARTER_PI (the left edge of the board is closer
-	// than the right edge).  The viewAngleY cannot go
-	// outside the range [-QUARTER_PI, QUARTER_PI].
-	if (mode == PLAYING && mouseButton == RIGHT) {
-		if (mouseX < pmouseX && viewAngleY > -QUARTER_PI) {
-			viewAngleY += (mouseX - pmouseX) / 1000.;
-			if (viewAngleY < -QUARTER_PI)
-				viewAngleY = -QUARTER_PI;
-		}
-		else if (mouseX > pmouseX && viewAngleY < QUARTER_PI) {
-			viewAngleY += (mouseX - pmouseX) / 1000.;
-			if (viewAngleY > QUARTER_PI)
-				viewAngleY = QUARTER_PI;
-		}
-	}
+  // A downward swipe will bring the viewAngleX closer
+  // to zero (a vertical board), while an upward
+  // swipe will bring the viewAngleX closer to HALF_PI
+  // (a horizontal board).  The viewAngleX cannot go
+  // outside the range [0, HALF_PI].
+  if (mode == PLAYING && mouseButton == RIGHT) {
+    if (pmouseY < mouseY && viewAngleX > 0) {
+      viewAngleX += (pmouseY - mouseY) / 1000.;
+      if (viewAngleX < 0)
+        viewAngleX = 0;
+    } else if (pmouseY > mouseY && viewAngleX < HALF_PI) {
+      viewAngleX += (pmouseY - mouseY) / 1000.;
+      if (viewAngleX > HALF_PI)
+        viewAngleX = HALF_PI;
+    }
+  }
+  // A leftward swipe will bring the viewAngleY closer
+  // to -QUARTER_PI (the right edge of the board is
+  // closer than the left edge), while a rightward
+  // swipe will bring the viewAngleY closer to
+  // QUARTER_PI (the left edge of the board is closer
+  // than the right edge).  The viewAngleY cannot go
+  // outside the range [-QUARTER_PI, QUARTER_PI].
+  if (mode == PLAYING && mouseButton == RIGHT) {
+    if (mouseX < pmouseX && viewAngleY > -QUARTER_PI) {
+      viewAngleY += (mouseX - pmouseX) / 1000.;
+      if (viewAngleY < -QUARTER_PI)
+        viewAngleY = -QUARTER_PI;
+    } else if (mouseX > pmouseX && viewAngleY < QUARTER_PI) {
+      viewAngleY += (mouseX - pmouseX) / 1000.;
+      if (viewAngleY > QUARTER_PI)
+        viewAngleY = QUARTER_PI;
+    }
+  }
 }
 
 void mouseWheel(MouseEvent me) {
-	if (me.getClickCount() < 0 && cameraZ > 5)
-	// If the wheel was rotated up or away from the player,
-	// move the camera closer to the board.
-		zoomFactor--;
-	else if (cameraZ < boardLength * 5)
-	// If the wheel was rotated down or toward the player,
-	// move the camera away from the board.
-		zoomFactor++;
-	// Zoom out slowly at first, then faster and faster, or
-	// zoom in quicly at first, then slower and slower.
-	cameraZ = defaultCameraZ * pow(1.12, zoomFactor / 4.0) + 2.5 * zoomFactor;
+  if (me.getClickCount() < 0 && cameraZ > 5)
+    // If the wheel was rotated up or away from the player,
+    // move the camera closer to the board.
+    zoomFactor--;
+  else if (cameraZ < boardLength * 5)
+    // If the wheel was rotated down or toward the player,
+    // move the camera away from the board.
+    zoomFactor++;
+  // Zoom out slowly at first, then faster and faster, or
+  // zoom in quicly at first, then slower and slower.
+  cameraZ = defaultCameraZ * pow(1.12, zoomFactor / 4.0) + 2.5 * zoomFactor;
 }
 
 void keyPressed(KeyEvent ke) {
-	// View angles and camera position are reset when
-	// ctrl-/alt-/cmd-R is pressed.
-	if (
-		(ke.isControlDown() || ke.isAltDown() || ke.isMetaDown()) &&
-		ke.getKeyCode() == 'R'
-		) {
-		viewAngleX = PI / 3;
-		viewAngleY = 0;
-		zoomFactor = 0;
-		cameraZ = defaultCameraZ;
-	}
+  // View angles and camera position are reset when
+  // ctrl-/alt-/cmd-R is pressed.
+  if (
+  (ke.isControlDown() || ke.isAltDown() || ke.isMetaDown()) &&
+    ke.getKeyCode() == 'R'
+    ) {
+    viewAngleX = PI / 3;
+    viewAngleY = 0;
+    zoomFactor = 0;
+    cameraZ = defaultCameraZ;
+  }
 }
+
