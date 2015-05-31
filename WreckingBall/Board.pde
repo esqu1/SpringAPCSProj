@@ -101,7 +101,7 @@ public class Board {
 			}, 100, 0, "texture1.jpg"),
 		};
 		balls = new Ball[] {
-			new Ball()
+			new Ball(40, #FFFFFF)
 		};
 		paddles = new Paddle[0];
 	}
@@ -110,11 +110,16 @@ public class Board {
 		translate(500, 500, -10);
 		box(1000, 1000, 20);
 		translate(-500, -500, 10);
-		for (Brick b : bricks)
-			b.draw();
-		for (Ball b : balls) {
-			b.move();
-			b.draw();
+		for (Brick brick : bricks)
+			if (brick != null)
+				brick.draw();
+		for (Ball ball : balls) {
+			ball.draw();
+			for (int i = 0; i < bricks.length; i++)
+				if (bricks[i] != null && bricks[i].ballColliding(ball)) {
+					bricks[i].reflectBall(ball);
+					bricks[i] = null;
+				}
 		}
 		/*
 		for (Paddle p : paddles)
