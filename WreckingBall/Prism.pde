@@ -6,7 +6,7 @@ public class Prism implements Brick {
 	private color c;
 	private PImage t;
 	private float minX, minY; // for textures...
-	private float[] reflectionEdge; // for reflecting the ball
+	private float[] reflectionNorm; // for reflecting the ball
 
 	public Prism(
 		float[][] vertices,
@@ -153,10 +153,10 @@ public class Prism implements Brick {
 		stroke(#FFFFFF);
 		strokeWeight(6);
 		for (int i = 0; i < v.length - 1; i++) {
-			n = normal(v[i], v[i + 1], 100);
+			n = scale(normal(v[i], v[i + 1]), 100);
 			line(v[i][0], v[i][1], sum(n, v[i])[0], sum(n, v[i])[1]);
 		}
-		n = normal(v[v.length - 1], v[0], 100);
+		n = scale(normal(v[v.length - 1], v[0]), 100);
 		line(
 			v[v.length - 1][0],
 			v[v.length - 1][1],
@@ -199,9 +199,9 @@ public class Prism implements Brick {
 					b.getPosition()
 					) < 0
 				)
-				reflectionEdge = difference(v[1], v[0]);
+				reflectionNorm = difference(v[1], v[0]);
 			else
-				reflectionEdge = difference(v[0], v[v.length - 1]);
+				reflectionNorm = difference(v[0], v[v.length - 1]);
 			return true;
 		}
 		// Check if the ball is next to any of the next v.length - 2
@@ -219,9 +219,9 @@ public class Prism implements Brick {
 						b.getPosition()
 						) < 0
 					)
-					reflectionEdge = difference(v[i + 1], v[i]);
+					reflectionNorm = difference(v[i + 1], v[i]);
 				else
-					reflectionEdge = difference(v[i], v[i - 1]);
+					reflectionNorm = difference(v[i], v[i - 1]);
 				return true;
 			}
 		// Check if the ball is next to the last vertex of the prism.
@@ -237,35 +237,35 @@ public class Prism implements Brick {
 					b.getPosition()
 					) < 0
 				)
-				reflectionEdge = difference(v[0], v[v.length - 1]);
+				reflectionNorm = difference(v[0], v[v.length - 1]);
 			else
-				reflectionEdge = difference(v[v.length - 1], v[v.length - 2]);
+				reflectionNorm = difference(v[v.length - 1], v[v.length - 2]);
 			return true;
 		}
 		float[] n;
 		// Check if the ball is next to any of the first
 		// v.length - 1 faces of the prism.
 		for (i = 0; i < v.length - 1; i++) {
-			n = normal(v[i], v[i + 1], r);
+			n = scale(normal(v[i], v[i + 1]), r);
 			if (
 				sideOf(v[i], v[i + 1], b.getPosition()) >= 0 &&
 				sideOf(sum(v[i], n), sum(v[i + 1], n), b.getPosition()) <= 0 &&
 				sideOf(v[i], sum(v[i], n), b.getPosition()) < 0 &&
 				sideOf(v[i + 1], sum(v[i + 1], n), b.getPosition()) > 0
 				) {
-				reflectionEdge = difference(v[i + 1], v[i]);
+				reflectionNorm = difference(v[i + 1], v[i]);
 				return true;
 			}
 		}
 		// Check if the ball is next to the last face.
-		n = normal(v[v.length - 1], v[0], r);
+		n = scale(normal(v[v.length - 1], v[0]), r);
 		if (
 			sideOf(v[v.length - 1], v[0], b.getPosition()) >= 0 &&
 			sideOf(sum(v[v.length - 1], n), sum(v[0], n), b.getPosition()) <= 0 &&
 			sideOf(v[v.length - 1], sum(v[v.length - 1], n), b.getPosition()) < 0 &&
 			sideOf(v[0], sum(v[0], n), b.getPosition()) > 0
 			) {
-			reflectionEdge = difference(v[0], v[v.length - 1]);
+			reflectionNorm = difference(v[0], v[v.length - 1]);
 			return true;
 		}
 		// SHOULD I CHECK IF THE BALL IS INSIDE THE PRISM??? WILL THAT EVER HAPPEN???
@@ -276,6 +276,20 @@ public class Prism implements Brick {
 		// returns the distance from point1 to point2
 		return
 			sqrt(sq(point2[0] - point1[0]) + sq(point2[1] - point1[1]));
+	}
+
+	private float mag(float[] vector) {
+		// returns the magnitude of vector
+		return sqrt(sq(vector[0]) + sq(vector[1]));
+	}
+
+	private float[] scale(float[] vector, float length) {
+		// scales vector by a factor of length
+		return
+			new float[] {
+				vector[0] * length,
+				vector[1] * length
+			};
 	}
 
 	private float[] sum(float[] vector1, float[] vector2) {
@@ -305,14 +319,18 @@ public class Prism implements Brick {
 			};
 	}
 
-	private float[] normal(float[] point1, float[] point2, float length) {
+	private float dot(float[] vector1, float[] vector2) {
+		// returns the dot product of vector1 and vector2
+		return vector1[0] * vector2[0] + vector1[1] * vector2[1];
+	}
+
+	private float[] normal(float[] point1, float[] point2) {
 		// returns one of the normals to the line from point1 to point2
-		// scaled by a factor of length (this normal points to the right
-		// of the line)
+		// (this normal points to the right of the line)
 		return
 			new float[] {
-				-length * (point2[1] - point1[1]) / dist(point1, point2),
-				length * (point2[0] - point1[0]) / dist(point1, point2)
+				(point1[1] - point2[1]) / dist(point1, point2),
+				(point2[0] - point1[0]) / dist(point1, point2)
 			};
 	}
 
@@ -327,16 +345,45 @@ public class Prism implements Brick {
 			(point2[1] - point1[1]) * (point3[0] - point1[0]);
 		// This is the z-coordinate of the cross-product of the vector
 		// from point1 to point2 and the vector from point1 to point3.
-		// However, remember that Processing uses a left-hand coordinate
-		// system.
+		// When figuring out what's right and what's left, remember
+		// that Processing uses a left-hand coordinate system.
+	}
+
+	private float[] rotate(float[] vector, float theta) {
+		// rotates vector by theta degrees in a clockwise direction
+		return
+			new float[] {
+				vector[0] * cos(theta) - vector[1] * sin(theta),
+				vector[0] * sin(theta) + vector[1] * cos(theta)
+			};
 	}
 
 	public void reflectBall(Ball b) {
-		reflectBall(b, reflectionEdge);
+		reflectBall(b, reflectionNorm);
 	}
 
-	private void reflectBall(Ball b, float[] reflectionEdge) {
-
+	private void reflectBall(Ball b, float[] reflectionNorm) {
+		if (reflectionNorm == null)
+			throw new Error(
+				"ERROR: reflectBall() can only be called after ballColliding()"
+				);
+		// v_r = v_i - 2(v_i . n)n
+		b.setVelocity(
+			difference(
+				b.getVelocity(),
+				scale(
+					rotate(scale(reflectionNorm, 1 / mag(reflectionNorm)), PI / 2),
+					2 * dot(
+						b.getVelocity(),
+						rotate(
+							scale(reflectionNorm, 1 / mag(reflectionNorm)),
+							PI / 2
+							)
+						)
+					)
+				)
+			);
+		reflectionNorm = null;
 	}
 
 	public void setColor(color rgb) {
