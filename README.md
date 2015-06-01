@@ -46,8 +46,26 @@ Dennis then modified the WreckerBall class to allow users to resize the board (r
 the game window), rotate the board, zoom toward and away from the board, and reset to default settings.
 
 5/27/15<br />
-Brandon figured out how to draw brick prisms with irregular polygons as faces. He also started working on a method that would detect collisions between the ball and a prism.
-Dennis made the board 1x1 in order to scale objects easily.
+Brandon figured out how to draw brick prisms with irregular polygons as faces. He also started working on a method that would detect collisions between the ball and a prism. <br />
+Dennis made the board 1x1 in the hopes that this would make coding the levels simpler.
 
 5/28/15<br />
-Brandon figured out how to work textures onto the bricks.
+Brandon figured out how to work textures onto the bricks. <br />
+Dennis realized that his board scaling idea was stupid and that his former board resizing idea was flawed.<br />
+Dennis then came up with an outline for detecting collisions between a ball and a prism.
+
+5/29/15<br />
+Dennis reimplemented zooming and window resizing using a compination of the camera() and perspective() functions.<br />
+Dennis then redid Brandon's texture-drawing mechanism so that the textures would not be scaled as they were drawn.<br />
+Dennis then started writing the collision detection function.
+
+5/30/15<br />
+Dennis continued writing the collision detection function, which he realized was mad work.<br />
+Taking a break, Dennis added lighting to the game, and then wrote a lot of useful mathematical functions to be used in the collision detection function, as well as anywhere else they may be needed.<br />
+
+5/31/15<br />
+Dennis realized that Processing's left-hand coordinate system had been causing his vector determinants to return the negatives of the values he was expecting.<br />
+After correcting that issue, Dennis wrote a function for reflecting balls off the edges of prisms.<br />
+Dennis then fixed an issue that occured when balls collided with vertices of prisms, finishing off the ball-bouncing mechanism.<br />
+Dennis then created a Container class that would hold various elements in the board.<br />
+Finally, Dennis started working on a way to add textures to balls.
