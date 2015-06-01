@@ -35,7 +35,8 @@ public class Ball {
 
   private void drawWithoutTexture() {
     fill(c);
-    //shininess(4.0);
+    noStroke();
+    shininess(4.0);
     pushMatrix();
     translate(position[0], position[1], r);
     sphere(r);
@@ -44,6 +45,7 @@ public class Ball {
   }
 
   private void drawWithTexture() {
+
   }
 
   private void move() {
@@ -89,4 +91,3 @@ public class Ball {
     acceleration = a;
   }
 }
-
