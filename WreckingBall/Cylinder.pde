@@ -39,7 +39,7 @@ public class Cylinder implements Brick {
   }
   
   public boolean ballColliding(Ball b){
-    return (x - b.getPosition().x)*(x - b.getPosition().x) + (y - b.getPosition().y)*(y - b.getPosition().y) <= b.getRadius() + radius;   
+    return (cx - b.getPosition()[0])*(cx - b.getPosition()[0]) + (cy - b.getPosition()[1])*(cy - b.getPosition()[1]) <= b.getRadius() + radius;   
   }
   
   public void reflectBall(Ball b){
