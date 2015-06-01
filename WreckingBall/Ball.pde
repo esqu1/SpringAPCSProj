@@ -90,4 +90,8 @@ public class Ball {
   public void setAcceleration(float[] a) {
     acceleration = a;
   }
+  
+  public boolean outOfBounds(){
+    return position[0] <= 0 || position[1] <= 0 || position[0] >= 1000 || position[1] >= 1000; 
+  }
 }
