@@ -1,6 +1,6 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3;
 int mode = TITLE;
-
+Menu menu;
 Board board;
 // The board's size is 1000 * 1000;
 final int boardLength = 1000;
@@ -50,6 +50,9 @@ void title() {
 }
 
 void menu() {
+  //menu = new Menu(this);
+  //menu.draw();
+  // Eventually, menu will do the following:
   board = new Board();
   mode = PLAYING;
 }
