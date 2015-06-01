@@ -34,14 +34,23 @@ public class Cylinder implements Brick {
     return cylHeight;
   }
 
-    
-  
   public void draw(){
     // Now this is going to get complicated... going to figure out something with beginShape(QUAD_STRIP) to draw a cylinder. 
-    
   }
   
   public boolean ballColliding(Ball b){
     return (x - b.getPosition().x)*(x - b.getPosition().x) + (y - b.getPosition().y)*(y - b.getPosition().y) <= b.getRadius() + radius;   
+  }
+  
+  public void reflectBall(Ball b){
+    
+  }
+  
+  public void setColor(color c){
+    this.c = c;
+  }
+  
+  public void setTexture(String s){
+    t = loadImage(s);
   }
 }
