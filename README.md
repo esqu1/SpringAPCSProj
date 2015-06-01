@@ -69,3 +69,6 @@ After correcting that issue, Dennis wrote a function for reflecting balls off th
 Dennis then fixed an issue that occured when balls collided with vertices of prisms, finishing off the ball-bouncing mechanism.<br />
 Dennis then created a Container class that would hold various elements in the board.<br />
 Finally, Dennis started working on a way to add textures to balls.
+
+6/1/15<br />
+Brandon wrote a Cylinder class for a new kind of brick.
