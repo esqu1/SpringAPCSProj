@@ -11,124 +11,88 @@ public class Board {
     c = #63F702;
     bricks = new Container<Brick>(15);
     bricks.add(
-      new Prism(new float[][] {
-        {100, 200},
-        {200, 200},
-        {200, 100},
-        {100, 150}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {50, 200},
+          {150, 200},
+          {150, 100},
+          {50, 150}
+        },
+        100, 0, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {300, 200},
-        {400, 200},
-        {400, 100},
-        {300, 150}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {250, 200},
+          {350, 200},
+          {350, 100},
+          {250, 150}
+        },
+        10, 0, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {500, 200},
-        {600, 200},
-        {600, 100},
-        {500, 150}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {450, 200},
+          {550, 200},
+          {550, 150},
+          {500, 100},
+          {450, 150}
+        },
+        30, 70, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {700, 200},
-        {800, 200},
-        {800, 100},
-        {700, 150}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {650, 200},
+          {750, 200},
+          {750, 150},
+          {650, 100}
+        },
+        10, 0, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {900, 200},
-        {1000, 200},
-        {1000, 100},
-        {900, 150}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {850, 200},
+          {950, 200},
+          {950, 150},
+          {850, 100}
+        },
+        100, 0, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {100, 400},
-        {200, 400},
-        {200, 300},
-        {100, 350}
-      }, 100, 0, "texture1.jpg")
+      new Prism(
+        new float[][] {
+          {500, 300},
+          {500 - 150*sqrt(3)/2, 525},
+          {500 + 150*sqrt(3)/2, 525},
+        },
+        30, 0, "texture1.jpg"
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {300, 400},
-        {400, 400},
-        {400, 300},
-        {300, 350}
-      }, 100, 0, "texture1.jpg")
+      new Sphere(
+        new float[] {300, 450},
+        50, 0, #888888
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {500, 400},
-        {600, 400},
-        {600, 300},
-        {500, 350}
-      }, 100, 0, "texture1.jpg")
+      new Sphere(
+        new float[] {500, 450},
+        75, 30, #888888
+        )
       );
     bricks.add(
-      new Prism(new float[][] {
-        {700, 400},
-        {800, 400},
-        {800, 300},
-        {700, 350}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {900, 400},
-        {1000, 400},
-        {1000, 300},
-        {900, 350}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {100, 600},
-        {200, 600},
-        {200, 500},
-        {100, 550}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {300, 600},
-        {400, 600},
-        {400, 500},
-        {300, 550}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {500, 600},
-        {600, 600},
-        {600, 500},
-        {500, 550}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {700, 600},
-        {800, 600},
-        {800, 500},
-        {700, 550}
-      }, 100, 0, "texture1.jpg")
-      );
-    bricks.add(
-      new Prism(new float[][] {
-        {900, 600},
-        {1000, 600},
-        {1000, 500},
-        {900, 550}
-      }, 100, 0, "texture1.jpg")
+      new Sphere(
+        new float[] {700, 450},
+        50, 0, #888888
+        )
       );
     balls = new Container<Ball>(1);
     balls.add(new Ball(40, #FFFFFF));
