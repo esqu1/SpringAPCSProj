@@ -121,11 +121,11 @@ public class Prism implements Brick {
         );
       vertex(
         v[i + 1][0], v[i + 1][1], d + h,
-        dist(v[i], v[i + 1]), h
+        M.dist(v[i], v[i + 1]), h
         );
       vertex(
         v[i + 1][0], v[i + 1][1], d,
-        dist(v[i], v[i + 1]), 0
+        M.dist(v[i], v[i + 1]), 0
         );
       vertex(
         v[i][0], v[i][1], d,
@@ -141,11 +141,11 @@ public class Prism implements Brick {
       0, h);
     vertex(
       v[0][0], v[0][1], d + h,
-      dist(v[v.length - 1], v[0]), h
+      M.dist(v[v.length - 1], v[0]), h
       );
     vertex(
       v[0][0], v[0][1], d,
-      dist(v[v.length - 1], v[0]), 0
+      M.dist(v[v.length - 1], v[0]), 0
       );
     vertex(
       v[v.length - 1][0], v[v.length - 1][1], d,
@@ -164,15 +164,20 @@ public class Prism implements Brick {
     stroke(#FFFFFF);
     strokeWeight(6);
     for (int i = 0; i < v.length - 1; i++) {
-      normal = scale(normal(v[i], v[i + 1]), 100);
-      line(v[i][0], v[i][1], sum(normal, v[i])[0], sum(normal, v[i])[1]);
+      normal = M.scale(M.norm(v[i], v[i + 1]), 100);
+      line(
+        v[i][0],
+        v[i][1],
+        M.sum(normal, v[i])[0],
+        M.sum(normal, v[i])[1]
+        );
     }
-    normal = scale(normal(v[v.length - 1], v[0]), 100);
+    normal = M.scale(M.norm(v[v.length - 1], v[0]), 100);
     line(
       v[v.length - 1][0],
       v[v.length - 1][1],
-      sum(normal, v[v.length - 1])[0],
-      sum(normal, v[v.length - 1])[1]
+      M.sum(normal, v[v.length - 1])[0],
+      M.sum(normal, v[v.length - 1])[1]
       );
     strokeWeight(1);
     stroke(#000000);
@@ -185,50 +190,46 @@ public class Prism implements Brick {
     stroke(#FFFFFF);
     strokeWeight(6);
     float[] midline;
-    midline = sum(
+    midline = M.sum(
       v[0],
-      scale(
-        difference(v[0], v[1]),
-        100 / mag(difference(v[0], v[1]))
+      M.scale(
+        M.dif(v[0], v[1]),
+        100 / M.mag(M.dif(v[0], v[1]))
         ),
-      scale(
-        difference(v[0], v[v.length - 1]),
-        100 / mag(difference(v[0], v[v.length - 1]))
+      M.scale(
+        M.dif(v[0], v[v.length - 1]),
+        100 / M.mag(M.dif(v[0], v[v.length - 1]))
         )
       );
     line(v[0][0], v[0][1], midline[0], midline[1]);
     for (int i = 1; i < v.length - 1; i++) {
-      midline = sum(
+      midline = M.sum(
         v[i],
-        scale(
-          difference(v[i], v[i + 1]),
-          100 / mag(difference(v[i], v[i + 1]))
+        M.scale(
+          M.dif(v[i], v[i + 1]),
+          100 / M.mag(M.dif(v[i], v[i + 1]))
           ),
-        scale(
-          difference(v[i], v[i - 1]),
-          100 / mag(difference(v[i], v[i - 1]))
+        M.scale(
+          M.dif(v[i], v[i - 1]),
+          100 / M.mag(M.dif(v[i], v[i - 1]))
           )
         );
       line(v[i][0], v[i][1], midline[0], midline[1]);
     }
-    midline = sum(
+    midline = M.sum(
       v[v.length - 1],
-      scale(
-        difference(v[v.length - 1], v[0]),
-        100 / mag(difference(v[v.length - 1], v[0]))
+      M.scale(
+        M.dif(v[v.length - 1], v[0]),
+        100 / M.mag(M.dif(v[v.length - 1], v[0]))
         ),
-      scale(
-        difference(v[v.length - 1], v[v.length - 2]),
-        100 / mag(difference(v[v.length - 1], v[v.length - 2]))
+      M.scale(
+        M.dif(v[v.length - 1], v[v.length - 2]),
+        100 / M.mag(M.dif(v[v.length - 1], v[v.length - 2]))
         )
       );
     line(v[v.length - 1][0], v[v.length - 1][1], midline[0], midline[1]);
     strokeWeight(1);
     stroke(#000000);
-  }
-
-  public float getHeight() {
-    return h;
   }
 
   public boolean ballColliding(Ball b) {
@@ -250,185 +251,109 @@ public class Prism implements Brick {
     // Check if the ball is next to any of the first
     // v.length - 1 faces of the prism.
     for (i = 0; i < v.length - 1; i++) {
-      normalRadius = scale(normal(v[i], v[i + 1]), r);
+      normalRadius = M.scale(M.norm(v[i], v[i + 1]), r);
       if (
-        sideOf(
+        M.sideOf(
           v[i],
           v[i + 1],
           b.getPosition()
           ) > 0 &&
-        sideOf(
-          sum(v[i], normalRadius),
-          sum(v[i + 1], normalRadius),
+        M.sideOf(
+          M.sum(v[i], normalRadius),
+          M.sum(v[i + 1], normalRadius),
           b.getPosition()
           ) < 0 &&
-        sideOf(
+        M.sideOf(
           v[i],
-          sum(v[i], normalRadius),
+          M.sum(v[i], normalRadius),
           b.getPosition()
           ) <= 0 &&
-        sideOf(
+        M.sideOf(
           v[i + 1],
-          sum(v[i + 1], normalRadius),
+          M.sum(v[i + 1], normalRadius),
           b.getPosition()
           ) >= 0
         ) {
-        reflectionNormal = normal(v[i], v[i + 1]);
+        reflectionNormal = M.norm(v[i], v[i + 1]);
         return true;
       }
     }
     // Check if the ball is next to the last face.
-    normalRadius = scale(normal(v[v.length - 1], v[0]), r);
+    normalRadius = M.scale(M.norm(v[v.length - 1], v[0]), r);
     if (
-      sideOf(
+      M.sideOf(
         v[v.length - 1],
         v[0],
         b.getPosition()
         ) > 0 &&
-      sideOf(
-        sum(v[v.length - 1], normalRadius),
-        sum(v[0], normalRadius),
+      M.sideOf(
+        M.sum(v[v.length - 1], normalRadius),
+        M.sum(v[0], normalRadius),
         b.getPosition()
         ) < 0 &&
-      sideOf(
+      M.sideOf(
         v[v.length - 1],
-        sum(v[v.length - 1], normalRadius),
+        M.sum(v[v.length - 1], normalRadius),
         b.getPosition()
         ) <= 0 &&
-      sideOf(
+      M.sideOf(
         v[0],
-        sum(v[0], normalRadius),
+        M.sum(v[0], normalRadius),
         b.getPosition()
         ) >= 0
       ) {
-      reflectionNormal = normal(v[v.length - 1], v[0]);
+      reflectionNormal = M.norm(v[v.length - 1], v[0]);
       return true;
     }
     // Check if the ball is next to the first vertex of the prism.
-    if (dist(v[0], b.getPosition()) < r) {
+    if (M.dist(v[0], b.getPosition()) < r) {
       // Find which face the ball will hit first.
       if (
-        sideOf(
+        M.sideOf(
           b.getPosition(),
-          sum(b.getPosition(), b.getVelocity()),
+          M.sum(b.getPosition(), b.getVelocity()),
           v[0]
           ) >= 0
         )
-        reflectionNormal = normal(v[0], v[1]);
+        reflectionNormal = M.norm(v[0], v[1]);
       else
-        reflectionNormal = normal(v[v.length - 1], v[0]);
+        reflectionNormal = M.norm(v[v.length - 1], v[0]);
       return true;
     }
     // Check if the ball is next to any of the next v.length - 2
     // vertices of the prism.
     for (i = 1; i < v.length - 1; i++)
-      if (dist(v[i], b.getPosition()) < r) {
+      if (M.dist(v[i], b.getPosition()) < r) {
         // Find which face the ball will hit first.
         if (
-          sideOf(
+          M.sideOf(
             b.getPosition(),
-            sum(b.getPosition(), b.getVelocity()),
+            M.sum(b.getPosition(), b.getVelocity()),
             v[i]
             ) >= 0
           )
-          reflectionNormal = normal(v[i], v[i + 1]);
+          reflectionNormal = M.norm(v[i], v[i + 1]);
         else
-          reflectionNormal = normal(v[i - 1], v[i]);
+          reflectionNormal = M.norm(v[i - 1], v[i]);
         return true;
       }
     // Check if the ball is next to the last vertex of the prism.
-    if (dist(v[v.length - 1], b.getPosition()) < r) {
+    if (M.dist(v[v.length - 1], b.getPosition()) < r) {
       // Find which face the ball will hit first.
       if (
-        sideOf(
+        M.sideOf(
           b.getPosition(),
-          sum(b.getPosition(), b.getVelocity()),
+          M.sum(b.getPosition(), b.getVelocity()),
           v[v.length - 1]
           ) >= 0
         )
-        reflectionNormal = normal(v[v.length - 1], v[0]);
+        reflectionNormal = M.norm(v[v.length - 1], v[0]);
       else
-        reflectionNormal = normal(v[v.length - 2], v[v.length - 1]);
+        reflectionNormal = M.norm(v[v.length - 2], v[v.length - 1]);
       return true;
     }
-    // SHOULD I CHECK IF THE BALL IS INSIDE THE PRISM??? WILL THAT EVER HAPPEN???
+    // SHOULD I CHECK IF THE BALL IS INSIDE THE PRISM???
     return false;
-  }
-
-  private float dist(float[] point1, float[] point2) {
-    // returns the distance from point1 to point2
-    return sqrt(sq(point2[0] - point1[0]) + sq(point2[1] - point1[1]));
-  }
-
-  private float mag(float[] vector) {
-    // returns the magnitude of vector
-    return sqrt(sq(vector[0]) + sq(vector[1]));
-  }
-
-  private float[] scale(float[] vector, float length) {
-    // scales vector by a factor of length
-    return
-      new float[] {
-        vector[0] * length,
-        vector[1] * length
-      };
-  }
-
-  private float[] sum(float[] vector1, float[] vector2) {
-    // returns the sum of vector1 and vector2
-    return
-      new float[] {
-        vector1[0] + vector2[0],
-        vector1[1] + vector2[1]
-      };
-  }
-
-  private float[] sum(float[] vector1, float[] vector2, float[] vector3) {
-    // returns the sum of vector1, vector2, and vector3
-    return
-      new float[] {
-        vector1[0] + vector2[0] + vector3[0],
-        vector1[1] + vector2[1] + vector3[1]
-      };
-  }
-
-  private float[] difference(float[] vector1, float[] vector2) {
-    // returns the difference between vector1 and vector2
-    return
-      new float[] {
-        vector1[0] - vector2[0],
-        vector1[1] - vector2[1]
-      };
-  }
-
-  private float dot(float[] vector1, float[] vector2) {
-    // returns the dot product of vector1 and vector2
-    return vector1[0] * vector2[0] + vector1[1] * vector2[1];
-  }
-
-  private float[] normal(float[] point1, float[] point2) {
-    // returns one of the normals to the ray from point1 to point2
-    // (this normal points to the right of the ray)
-    return
-      new float[] {
-        (point1[1] - point2[1]) / dist(point1, point2),
-        (point2[0] - point1[0]) / dist(point1, point2)
-      };
-  }
-
-  private float sideOf(float[] point1, float[] point2, float[] point3) {
-    // returns a positive value if point3 is to the right of the line
-    // from point1 to point2
-    // returns a negative value if point3 is to the left of the line
-    // from point1 to point2
-    // returns 0 if point3 is on the line from point1 to point2
-    return
-      (point2[0] - point1[0]) * (point3[1] - point1[1]) -
-      (point2[1] - point1[1]) * (point3[0] - point1[0]);
-    // This is the z-coordinate of the cross-product of the vector
-    // from point1 to point2 and the vector from point1 to point3.
-    // When figuring out what's right and what's left, remember
-    // that Processing uses a left-hand coordinate system.
   }
 
   public void reflectBall(Ball b) {
@@ -438,15 +363,19 @@ public class Prism implements Brick {
         );
     // v_r = v_i - 2(v_i . n)n
     b.setVelocity(
-      difference(
+      M.dif(
         b.getVelocity(),
-        scale(
+        M.scale(
           reflectionNormal,
-          2 * dot(b.getVelocity(), reflectionNormal)
+          2 * M.dot(b.getVelocity(), reflectionNormal)
           )
         )
       );
     reflectionNormal = null;
+  }
+
+  public float getHeight() {
+    return h;
   }
 
   public void setColor(color rgb) {
