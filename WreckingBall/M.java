@@ -10,17 +10,17 @@ public class M {
         );
   }
 
-  public static float mag(float[] vector) {
-    // returns the magnitude of vector
-    return (float) Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1]);
+  public static float mag(float[] vector1) {
+    // returns the magnitude of vector1
+    return (float) Math.sqrt(vector1[0] * vector1[0] + vector1[1] * vector1[1]);
   }
 
-  public static float[] scale(float[] vector, float length) {
-    // scales vector by a factor of length
+  public static float[] scale(float[] vector1, float length) {
+    // returns vector1 scaled by a factor of length
     return
       new float[] {
-        vector[0] * length,
-        vector[1] * length
+        vector1[0] * length,
+        vector1[1] * length
       };
   }
 
@@ -77,7 +77,7 @@ public class M {
       (point2[1] - point1[1]) * (point3[0] - point1[0]);
     // This is the z-coordinate of the cross-product of the vector
     // from point1 to point2 and the vector from point1 to point3.
-    // When figuring out what's right and what's left, remember
-    // that Processing uses a left-hand coordinate system.
+    // When figuring out what negative and positive values mean,
+    // remember that Processing uses a left-hand coordinate system.
   }
 }
