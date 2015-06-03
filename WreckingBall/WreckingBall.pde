@@ -17,6 +17,8 @@ int zoomFactor = 0;
 // The default camera position is defaultCameraZ.
 float cameraZ = defaultCameraZ;
 
+
+
 void setup() {
   // The default shape of the window is a square.
   size(boardLength * 3 / 4, boardLength * 3 / 4, P3D);
@@ -25,6 +27,7 @@ void setup() {
   // resizable.
   if (frame != null)
     frame.setResizable(true);
+
   mode = MENU;
 }
 
@@ -38,9 +41,9 @@ void draw() {
       menu();
       break;
     case PLAYING:
-      //playing();
-      Menu menu = new Menu(this);
-      menu.draw();
+      playing();
+      //Menu menu = new Menu(this);
+      //menu.draw();
       break;
     case DEAD:
       dead();
@@ -50,14 +53,18 @@ void draw() {
 
 void title() {
   // title stuff goes here...
-  //Menu menu = new Menu(this);
-  //mode = MENU;
+
+  mode = MENU;
 }
 
 void menu() {
-  //menu.draw();
+  Menu menu = new Menu(this);
+  menu.draw();
   board = new Board();
-  mode = PLAYING;
+  if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 100 && mouseY >= height / 2.0 - 200){
+    mode = PLAYING;
+  }
+    
 }
 
 void playing() {

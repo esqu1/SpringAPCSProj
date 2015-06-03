@@ -8,6 +8,9 @@ public class Menu {
     fill(0);
     textFont(font,72);
     text("Wrecking Ball", width / 2.0 - 250, 100);
-    rect(width / 2.0 - 100, height / 2.0 - 100,200,100);
+    fill(#2AF011);
+    strokeWeight(5);
+    rect(width / 2.0 - 200, height / 2.0 - 200,400,100);
+    //rect(width / 2.0 - 100
   }
 }
