@@ -38,7 +38,9 @@ void draw() {
       menu();
       break;
     case PLAYING:
-      playing();
+      //playing();
+      Menu menu = new Menu(this);
+      menu.draw();
       break;
     case DEAD:
       dead();
