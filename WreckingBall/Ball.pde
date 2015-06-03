@@ -27,6 +27,9 @@ public class Ball {
 
   public void draw() {
     move();
+    if(mode == PLAYING){
+      boundReflect();
+    }
     if (t != null)
       drawWithTexture();
     else
@@ -93,5 +96,16 @@ public class Ball {
   
   public boolean outOfBounds(){
     return position[0] <= 0 || position[1] <= 0 || position[0] >= 1000 || position[1] >= 1000; 
+  }
+  
+  public void boundReflect(){
+   if(outOfBounds()){
+     if(position[0] <= 0 || position[0] >= 1000){
+       setVelocity(new float[] {-velocity[0], velocity[1]});
+     }else if(position[1] <= 0 || position[1] >= 1000){
+       setVelocity(new float[] {velocity[0], -velocity[1]}); 
+     }
+     
+   } 
   }
 }

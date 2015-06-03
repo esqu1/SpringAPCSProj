@@ -59,7 +59,6 @@ void mouseClicked(){
   
 void title() {
   // title stuff goes here...
-
   mode = MENU;
 }
 
