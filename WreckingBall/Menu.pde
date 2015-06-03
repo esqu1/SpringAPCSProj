@@ -37,7 +37,5 @@ public class Menu {
     return M.dist(b1.getPosition(),b2.getPosition()) < b1.getRadius() + b2.getRadius();
   }
   
-  public 
-  
   
 }
