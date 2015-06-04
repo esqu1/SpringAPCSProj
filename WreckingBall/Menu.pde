@@ -33,11 +33,16 @@ public class Menu {
     }      
     strokeWeight(6);
     rect(width / 2.0 - 200, height / 2.0 - 200,400,100,50);
-    fill(#2AF011);
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 +50 && mouseY >= height / 2.0 - 50){
+      fill(#F6FF08);
+    }else{
+      fill(#2AF011);
+    }   
     rect(width / 2.0 - 200, height / 2.0 - 50, 400,100,50);
     textFont(font,36);
     fill(0);
     text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
+    text("Exit", width / 2.0 - 25, height / 2.0);
   }
   
   public boolean colliding(){
