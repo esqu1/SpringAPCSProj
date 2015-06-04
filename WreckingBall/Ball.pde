@@ -56,7 +56,7 @@ public class Ball {
     position[0] += velocity[0] / 60 + acceleration[0] / 7200;
     position[1] += velocity[1] / 60 + acceleration[1] / 7200;
     // FOR DEBUGGING
-    if (mousePressed) {
+    if (mode == PLAYING && mousePressed) {
       position[0] = mouseX * 4 / 3.;
       position[1] = mouseY * 4 / 3.;
     }
