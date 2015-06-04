@@ -69,7 +69,7 @@ void menu() {
     255, 255, 255, // light color
     width / 2.0, height / 2.0, 100 // light position
     );*/
-  //lights();
+  lights();
   menu.draw();
   
 }

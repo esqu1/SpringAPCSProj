@@ -24,25 +24,38 @@ public class Menu {
     boundReflect(b1);
     boundReflect(b2);
     fill(0);
+    shininess(4.0);
     textFont(font,72);
     text("Wrecking Ball", width / 2.0 - 250, 100);
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 100 && mouseY >= height / 2.0 - 200){
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
       fill(#F6FF08);
     }else{
       fill(#2AF011);
     }      
     strokeWeight(6);
-    rect(width / 2.0 - 200, height / 2.0 - 200,400,100,50);
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 +50 && mouseY >= height / 2.0 - 50){
+    pushMatrix();
+    textFont(font,36);
+    translate(width / 2.0, height / 2.0 - 100);
+    box(400,100,50);
+    fill(0);
+    translate(-75,0,50);
+    text("Play Now!", 0,0);
+    popMatrix();
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
       fill(#F6FF08);
     }else{
       fill(#2AF011);
-    }   
-    rect(width / 2.0 - 200, height / 2.0 - 50, 400,100,50);
-    textFont(font,36);
+    }
+    pushMatrix();
+    translate(width / 2.0, height / 2.0 + 100);
+    box(400,100,50);
     fill(0);
-    text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
-    text("Exit", width / 2.0 - 25, height / 2.0);
+    translate(-37,0,50);
+    text("Exit",0,0);
+    popMatrix();
+    fill(0);
+    //text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
+    //text("Exit", width / 2.0 - 25, height / 2.0);
   }
   
   public boolean colliding(){
