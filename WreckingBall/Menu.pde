@@ -7,10 +7,10 @@ public class Menu {
     Random r = new Random();
     b1 = new Ball(75,#FF050E);
     b1.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
-    b1.setVelocity(new float[] {r.nextInt(100),r.nextInt(100)});
+    b1.setVelocity(new float[] {r.nextInt(50)+50,r.nextInt(50)+50});
     b2 = new Ball(75,#05FFDC);
     b2.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
-    b2.setVelocity(new float[] {r.nextInt(100),r.nextInt(100)});
+    b2.setVelocity(new float[] {r.nextInt(50)+50,r.nextInt(50)+50});
   }
   public void draw() {
     background(#FFFFFF);
