@@ -5,9 +5,10 @@ public class Menu {
     font = loadFont("Comfortaa-Bold-72.vlw");
     b1 = new Ball(100,#FF050E);
     b1.setPosition(new float[] {200,700});
-    b1.setVelocity(new float[] {10,-60});
+    b1.setVelocity(new float[] {60,-60});
     b2 = new Ball(100,#05FFDC);
     b2.setPosition(new float[] {500,700});
+    b2.setVelocity(new float[] {-40,50});
   }
   public void draw() {
     background(#FFFFFF);
