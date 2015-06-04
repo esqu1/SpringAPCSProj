@@ -1,16 +1,19 @@
 import java.util.Random;
 public class Menu {
   private PFont font;
+  private int count = 0;
   private Ball b1, b2;
   public Menu() {
     font = loadFont("Comfortaa-Bold-72.vlw");
-    Random r = new Random();
     b1 = new Ball(75,#FF050E);
-    b1.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
-    b1.setVelocity(new float[] {r.nextInt(50)+50,r.nextInt(50)+50});
+    b1.setPosition(new float[] {random(width),random(height)});
+    b1.setVelocity(new float[] {random(50)+50,random(50)+50});
     b2 = new Ball(75,#05FFDC);
-    b2.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
-    b2.setVelocity(new float[] {r.nextInt(50)+50,r.nextInt(50)+50});
+    b2.setPosition(new float[] {random(width),random(height)});
+    while(colliding()){
+      b2.setPosition(new float[] {random(width),random(height)});
+    }
+    b2.setVelocity(new float[] {random(50)+50,random(50)+50});
   }
   public void draw() {
     background(#FFFFFF);
@@ -52,6 +55,9 @@ public class Menu {
     fill(0);
     translate(-37,0,50);
     text("Exit",0,0);
+    translate(-200,100);
+    textFont(font,20);
+    text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
     popMatrix();
     fill(0);
     //text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
