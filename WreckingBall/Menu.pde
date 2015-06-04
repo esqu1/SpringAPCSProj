@@ -1,14 +1,16 @@
+import java.util.Random;
 public class Menu {
   private PFont font;
   private Ball b1, b2;
   public Menu() {
     font = loadFont("Comfortaa-Bold-72.vlw");
-    b1 = new Ball(100,#FF050E);
-    b1.setPosition(new float[] {200,700});
-    b1.setVelocity(new float[] {60,-60});
-    b2 = new Ball(100,#05FFDC);
-    b2.setPosition(new float[] {500,700});
-    b2.setVelocity(new float[] {-40,50});
+    Random r = new Random();
+    b1 = new Ball(75,#FF050E);
+    b1.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
+    b1.setVelocity(new float[] {r.nextInt(100),r.nextInt(100)});
+    b2 = new Ball(75,#05FFDC);
+    b2.setPosition(new float[] {r.nextInt(width),r.nextInt(height)});
+    b2.setVelocity(new float[] {r.nextInt(100),r.nextInt(100)});
   }
   public void draw() {
     background(#FFFFFF);
@@ -30,9 +32,9 @@ public class Menu {
       fill(#2AF011);
     }      
     strokeWeight(6);
-    rect(width / 2.0 - 200, height / 2.0 - 200,400,100);
+    rect(width / 2.0 - 200, height / 2.0 - 200,400,100,50);
     fill(#2AF011);
-    rect(width / 2.0 - 200, height / 2.0 - 50, 400,100);
+    rect(width / 2.0 - 200, height / 2.0 - 50, 400,100,50);
     textFont(font,36);
     fill(0);
     text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
