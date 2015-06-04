@@ -4,9 +4,10 @@ public class Menu {
   public Menu() {
     font = loadFont("Comfortaa-Bold-72.vlw");
     b1 = new Ball(100,#FF050E);
-    b1.setPosition(new float[] {400,900});
+    b1.setPosition(new float[] {200,700});
+    b1.setVelocity(new float[] {10,-60});
     b2 = new Ball(100,#05FFDC);
-    b2.setPosition(new float[] {500,900});
+    b2.setPosition(new float[] {500,700});
   }
   public void draw() {
     background(#FFFFFF);
@@ -16,6 +17,9 @@ public class Menu {
     b1.draw();
     b2.draw();
     popMatrix();
+    reflect();
+    boundReflect(b1);
+    boundReflect(b2);
     fill(0);
     textFont(font,72);
     text("Wrecking Ball", width / 2.0 - 250, 100);
@@ -24,7 +28,7 @@ public class Menu {
     }else{
       fill(#2AF011);
     }      
-    strokeWeight(5);
+    strokeWeight(6);
     rect(width / 2.0 - 200, height / 2.0 - 200,400,100);
     fill(#2AF011);
     rect(width / 2.0 - 200, height / 2.0 - 50, 400,100);
@@ -37,5 +41,20 @@ public class Menu {
     return M.dist(b1.getPosition(),b2.getPosition()) < b1.getRadius() + b2.getRadius();
   }
   
+  public void reflect(){
+    if(colliding()){
+      float[] temp = b1.getVelocity();
+      b1.setVelocity(b2.getVelocity());
+      b2.setVelocity(temp); 
+    }
+  }
+  
+  public void boundReflect(Ball b){
+    if(b.getPosition()[0] <= 0 || b.getPosition()[0] >= width){
+      b.setVelocity(new float[] {-b.getVelocity()[0], b.getVelocity()[1]}); 
+    }else if(b.getPosition()[1] <= 0 || b.getPosition()[1] >= height){
+      b.setVelocity(new float[] {b.getVelocity()[0], -b.getVelocity()[1]}); 
+    }
+  }
   
 }
