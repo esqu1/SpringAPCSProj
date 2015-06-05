@@ -1,35 +1,32 @@
 public class Ball {
-  private float[] position, velocity, acceleration;
+  private float[] p, v, a;
   private float r;
   private color c;
   private PImage t;
 
   public Ball(float radius, color rgb) {
-    position = new float[2];
-    velocity = new float[2];
-    acceleration = new float[2];
+    p = new float[2];
+    v = new float[2];
+    a = new float[2];
     r = radius;
     c = rgb;
     // FOR DEBUGGING
-    velocity[0] = 0;
-    velocity[1] = -60;
-    position[0] = 500;
-    position[1] = 800;
+    v[0] = 0;
+    v[1] = -60;
+    p[0] = 500;
+    p[1] = 800;
   }
 
   public Ball(float radius, String texture) {
-    position = new float[2];
-    velocity = new float[2];
-    acceleration = new float[2];
+    p = new float[2];
+    v = new float[2];
+    a = new float[2];
     r = radius;
     t = loadImage(texture);
   }
 
   public void draw() {
     move();
-    if(mode == PLAYING){
-      boundReflect();
-    }
     if (t != null)
       drawWithTexture();
     else
@@ -41,7 +38,7 @@ public class Ball {
     noStroke();
     shininess(4.0);
     pushMatrix();
-    translate(position[0], position[1], r);
+    translate(p[0], p[1], r);
     sphere(r);
     popMatrix();
     move();
@@ -52,13 +49,18 @@ public class Ball {
   }
 
   private void move() {
+    // out of bounds handling
+    if (p[0] <= r || p[0] >= boardLength - r)
+      v[0] *= -1;
+    if (p[1] <= r || p[1] >= boardLength - r)
+      v[1] *= -1;
     // x(t) = x_0 + v_0 * t + 1/2 * a * t^2
-    position[0] += velocity[0] / 60 + acceleration[0] / 7200;
-    position[1] += velocity[1] / 60 + acceleration[1] / 7200;
+    p[0] += v[0] / 60 + a[0] / 7200;
+    p[1] += v[1] / 60 + a[1] / 7200;
     // FOR DEBUGGING
     if (mode == PLAYING && mousePressed && mouseButton == LEFT) {
-      position[0] = mouseX * 4 / 3.;
-      position[1] = mouseY * 4 / 3.;
+      p[0] = mouseX * 4 / 3.;
+      p[1] = mouseY * 4 / 3.;
     }
   }
 
@@ -67,45 +69,30 @@ public class Ball {
   }
 
   public float[] getPosition() {
-    return position;
+    return p;
   }
 
   public float[] getVelocity() {
-    return velocity;
+    return v;
   }
 
   public float[] getAcceleration() {
-    return acceleration;
+    return a;
   }
 
-  public float setRadius(float radius) {
-    return r;
+  public void setRadius(float radius) {
+    r = radius;
   }
 
-  public void setPosition(float[] p) {
-    position = p;
+  public void setPosition(float[] position) {
+    p = position;
   }
 
-  public void setVelocity(float[] v) {
-    velocity = v;
+  public void setVelocity(float[] velocity) {
+    v = velocity;
   }
 
-  public void setAcceleration(float[] a) {
-    acceleration = a;
-  }
-  
-  public boolean outOfBounds(){
-    return position[0] <= 0 || position[1] <= 0 || position[0] >= 1000 || position[1] >= 1000; 
-  }
-  
-  public void boundReflect(){
-   if(outOfBounds()){
-     if(position[0] <= 0 || position[0] >= 1000){
-       setVelocity(new float[] {-velocity[0], velocity[1]});
-     }else if(position[1] <= 0 || position[1] >= 1000){
-       setVelocity(new float[] {velocity[0], -velocity[1]}); 
-     }
-     
-   } 
+  public void setAcceleration(float[] acceleration) {
+    a = acceleration;
   }
 }
