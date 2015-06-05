@@ -152,8 +152,6 @@ public class Prism implements Brick {
       0, 0
       );
     endShape(CLOSE);
-    // drawNormals();
-    // drawCornerLines();
     stroke(#000000);
   }
 
@@ -234,24 +232,24 @@ public class Prism implements Brick {
 
   public boolean ballColliding(Ball b) {
     int i;
-    float r;
+    float eqRadius; // equivalent ball radius
     float[] normalRadius;
     if (b.getRadius() > d + h)
       // if the bottom half of the ball may hit the prism
-      r = sqrt(sq(b.getRadius()) - sq(b.getRadius() - d - h));
+      eqRadius = sqrt(sq(b.getRadius()) - sq(b.getRadius() - d - h));
     else if (b.getRadius() > d)
       // if the equatorial plane of the ball may hit the prism
-      r = b.getRadius();
+      eqRadius = b.getRadius();
     else
       // if the top half of the ball may hit the prism
       // (will only occur if the ball hits the prism
       // as the prism is falling and there are no other
       // bricks under the prism)
-      r = sqrt(sq(b.getRadius()) - sq(d - b.getRadius()));
+      eqRadius = sqrt(sq(b.getRadius()) - sq(d - b.getRadius()));
     // Check if the ball is next to any of the first
     // v.length - 1 faces of the prism.
     for (i = 0; i < v.length - 1; i++) {
-      normalRadius = M.scale(M.norm(v[i], v[i + 1]), r);
+      normalRadius = M.scale(M.norm(v[i], v[i + 1]), eqRadius);
       if (
         M.sideOf(
           v[i],
@@ -279,7 +277,7 @@ public class Prism implements Brick {
       }
     }
     // Check if the ball is next to the last face.
-    normalRadius = M.scale(M.norm(v[v.length - 1], v[0]), r);
+    normalRadius = M.scale(M.norm(v[v.length - 1], v[0]), eqRadius);
     if (
       M.sideOf(
         v[v.length - 1],
@@ -306,7 +304,7 @@ public class Prism implements Brick {
       return true;
     }
     // Check if the ball is next to the first vertex of the prism.
-    if (M.dist(v[0], b.getPosition()) < r) {
+    if (M.dist(v[0], b.getPosition()) < eqRadius) {
       // Find which face the ball will hit first.
       if (
         M.sideOf(
@@ -323,7 +321,7 @@ public class Prism implements Brick {
     // Check if the ball is next to any of the next v.length - 2
     // vertices of the prism.
     for (i = 1; i < v.length - 1; i++)
-      if (M.dist(v[i], b.getPosition()) < r) {
+      if (M.dist(v[i], b.getPosition()) < eqRadius) {
         // Find which face the ball will hit first.
         if (
           M.sideOf(
@@ -338,7 +336,7 @@ public class Prism implements Brick {
         return true;
       }
     // Check if the ball is next to the last vertex of the prism.
-    if (M.dist(v[v.length - 1], b.getPosition()) < r) {
+    if (M.dist(v[v.length - 1], b.getPosition()) < eqRadius) {
       // Find which face the ball will hit first.
       if (
         M.sideOf(
