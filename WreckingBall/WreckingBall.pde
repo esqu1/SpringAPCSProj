@@ -34,7 +34,7 @@ void setup() {
 
 void draw() {
   background(0);
-  smooth(4);
+  noSmooth();
   switch (mode) {
     case TITLE:
       title();
