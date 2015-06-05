@@ -50,9 +50,9 @@ public class Ball {
 
   private void move() {
     // out of bounds handling
-    if (p[0] <= r || p[0] >= boardLength - r)
+    if (mode == PLAYING && p[0] <= r || p[0] >= boardLength - r)
       v[0] *= -1;
-    if (p[1] <= r || p[1] >= boardLength - r)
+    if (mode == PLAYING && p[1] <= r || p[1] >= boardLength - r)
       v[1] *= -1;
     // x(t) = x_0 + v_0 * t + 1/2 * a * t^2
     p[0] += v[0] / 60 + a[0] / 7200;

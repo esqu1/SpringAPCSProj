@@ -29,6 +29,7 @@ void setup() {
   menu = new Menu();
   board = new Board();
   mode = MENU;
+  //smooth(8);
 }
 
 void draw() {
