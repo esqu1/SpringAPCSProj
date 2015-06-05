@@ -34,7 +34,8 @@ public class Menu {
       fill(#F6FF08);
     }else{
       fill(#2AF011);
-    }      
+    } 
+    
     pushMatrix();
     textFont(font,36);
     translate(width / 2.0, height / 2.0 - 100);
@@ -43,17 +44,19 @@ public class Menu {
     translate(-75,0,50);
     text("Play Now!", 0,0);
     popMatrix();
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
+    
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){ //
       fill(#F6FF08);
     }else{
       fill(#2AF011);
     }
+    
     pushMatrix();
     translate(width / 2.0, height / 2.0 + 100);
     box(400,100,50);
     fill(0);
-    translate(-37,0,50);
-    text("Exit",0,0);
+    translate(-70,-10,50);
+    text("Options",0,0);
     translate(-200,100);
     textFont(font,20);
     text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
@@ -61,6 +64,10 @@ public class Menu {
     fill(0);
     //text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
     //text("Exit", width / 2.0 - 25, height / 2.0);
+  }
+  
+  public void drawOptions(){
+    
   }
   
   public boolean colliding(){

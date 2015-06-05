@@ -1,4 +1,4 @@
-final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3;
+final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE;
 
 Board board;
@@ -49,6 +49,9 @@ void draw() {
     case DEAD:
       dead();
       break;
+    case OPTIONS:
+      options();
+      break;
   }
 }
 
@@ -56,7 +59,7 @@ void mouseClicked(){
   if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
     mode = PLAYING;
   }else if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
-    exit();
+    mode = OPTIONS;
   }
 }
   
@@ -66,13 +69,12 @@ void title() {
 }
 
 void menu() {
-  /*pointLight(
-    255, 255, 255, // light color
-    width / 2.0, height / 2.0, 200 // light position
-    )*/
   lights();
   menu.draw();
-  
+}
+
+void options() {
+  menu.drawOptions();
 }
 
 void playing() {
