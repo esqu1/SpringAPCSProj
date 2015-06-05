@@ -104,12 +104,4 @@ public class Sphere implements Brick {
   public void setTexture(String texture) {
     t = loadImage(texture);
   }
-
-  // MATH-RELATED METHODS
-
-  private float dist(float[] point1, float[] point2) {
-    // returns the distance from point1 to point2
-    return sqrt(sq(point2[0] - point1[0]) + sq(point2[1] - point1[1]));
-  }
-
 }
