@@ -16,20 +16,8 @@ public class Menu {
     b2.setVelocity(new float[] {random(50)+50,random(50)+50});
   }
   public void draw() {
-    background(#FFFFFF); // white
-    textSize(32);
-    pushMatrix();
-    translate(0,0,-200); // -200 to make sure the balls appear below the prisms
-    b1.draw(); // Draw the spheres.
-    b2.draw();
-    popMatrix();
-    reflect(); // if the balls are colliding, reflect them.
-    boundReflect(b1);
-    boundReflect(b2);
-    fill(0);
-    shininess(4.0);
-    textFont(font,72);
-    text("Wrecking Ball", width / 2.0 - 250, 100); // title
+    drawDefaults();
+    
     if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
       fill(#F6FF08);
     }else{
@@ -57,17 +45,52 @@ public class Menu {
     fill(0);
     translate(-70,-10,50);
     text("Options",0,0);
+    popMatrix();
+    
+    pushMatrix();
+    translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
+    textFont(font,20);
+    text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
+    popMatrix();
+    fill(0);
+  }
+  
+  public void drawDefaults(){
+    background(#FFFFFF); // white
+    textSize(32);
+    pushMatrix();
+    translate(0,0,-200); // -200 to make sure the balls appear below the prisms
+    b1.draw(); // Draw the spheres.
+    b2.draw();
+    popMatrix();
+    reflect(); // if the balls are colliding, reflect them.
+    boundReflect(b1);
+    boundReflect(b2);
+    fill(0);
+    shininess(4.0);
+    textFont(font,72);
+    text("Wrecking Ball", width / 2.0 - 250, 100); // title
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+      fill(#F6FF08);
+    }else{
+      fill(#2AF011);
+    } 
+    
+    pushMatrix();
+    translate(width / 2.0, height / 2.0 + 100);
+    box(400,100,50);
+    fill(0);
+    translate(-70,-10,50);
+    text("Options",0,0);
     translate(-200,100);
     textFont(font,20);
     text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
     popMatrix();
     fill(0);
-    //text("Play Now!", width / 2.0 - 75, height / 2.0 - 150);
-    //text("Exit", width / 2.0 - 25, height / 2.0);
   }
   
   public void drawOptions(){
-    
+    drawDefaults();
   }
   
   public boolean colliding(){

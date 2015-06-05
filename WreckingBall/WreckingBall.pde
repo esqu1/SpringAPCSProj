@@ -74,6 +74,7 @@ void menu() {
 }
 
 void options() {
+  lights();
   menu.drawOptions();
 }
 
