@@ -15,6 +15,7 @@ public class Menu {
     }
     b2.setVelocity(new float[] {random(50)+50,random(50)+50});
   }
+  
   public void draw() {
     drawDefaults();
     
@@ -33,20 +34,21 @@ public class Menu {
     text("Play Now!", 0,0);
     popMatrix();
     
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){ //
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){ // for the options box
       fill(#F6FF08);
     }else{
       fill(#2AF011);
     }
-    
-    pushMatrix();
+        
+    pushMatrix(); // drawing the options box
+    textSize(36);
     translate(width / 2.0, height / 2.0 + 100);
     box(400,100,50);
     fill(0);
     translate(-70,-10,50);
     text("Options",0,0);
     popMatrix();
-    
+
     pushMatrix();
     translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
     textFont(font,20);
@@ -70,22 +72,13 @@ public class Menu {
     shininess(4.0);
     textFont(font,72);
     text("Wrecking Ball", width / 2.0 - 250, 100); // title
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
-      fill(#F6FF08);
-    }else{
-      fill(#2AF011);
-    } 
-    
-    pushMatrix();
-    translate(width / 2.0, height / 2.0 + 100);
-    box(400,100,50);
-    fill(0);
-    translate(-70,-10,50);
-    text("Options",0,0);
-    translate(-200,100);
+
+    pushMatrix(); // For drawing the team name
+    translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
     textFont(font,20);
     text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
     popMatrix();
+    
     fill(0);
   }
   
