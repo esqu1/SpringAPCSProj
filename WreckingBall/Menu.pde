@@ -59,8 +59,9 @@ public class Menu {
   
   public void drawDefaults(){
     background(#FFFFFF); // white
-    textSize(32);
+
     pushMatrix();
+    textSize(32);
     translate(0,0,-200); // -200 to make sure the balls appear below the prisms
     b1.draw(); // Draw the spheres.
     b2.draw();
@@ -70,9 +71,10 @@ public class Menu {
     boundReflect(b2);
     fill(0);
     shininess(4.0);
-    textFont(font,72);
-    text("Wrecking Ball", width / 2.0 - 250, 100); // title
-
+    
+    textFont(font,72);  // title    
+    text("Wrecking Ball", width / 2.0 - 250, 100);
+    
     pushMatrix(); // For drawing the team name
     translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
     textFont(font,20);
