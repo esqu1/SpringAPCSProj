@@ -12,10 +12,14 @@ public class Prism implements Brick {
   private PImage t;
   // texture of prism
 
-  private float minX, minY; // for textures
+  private float[] textureX;
+  // x-coordinates of points on the texture image used in
+  // mapping the image to the lateral faces of the prism
+
+  private float minX, minY;
   // smallest x- and y-coordinates of the vertices of the prism
 
-  private float[] reflectionNormal; // for reflecting the ball
+  private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
 
   public Prism(
@@ -28,6 +32,14 @@ public class Prism implements Brick {
     h = prismHeight;
     d = distanceToBoard;
     c = rgb;
+    minX = v[0][0];
+    minY = v[0][1];
+    for (int i = 1; i < v.length; i++) {
+      if (v[i][0] < minX)
+        minX = v[i][0];
+      if (v[i][1] < minY)
+        minY = v[i][1];
+    }
   }
 
   public Prism(
@@ -40,14 +52,24 @@ public class Prism implements Brick {
     h = prismHeight;
     d = distanceToBoard;
     t = loadImage(texture);
+    int i;
     minX = v[0][0];
     minY = v[0][1];
-    for (int i = 1; i < v.length; i++) {
+    for (i = 1; i < v.length; i++) {
       if (v[i][0] < minX)
         minX = v[i][0];
       if (v[i][1] < minY)
         minY = v[i][1];
     }
+    textureX = new float[v.length + 1];
+    textureX[0] = 0;
+    for (i = 1; i < v.length; i++)
+      textureX[i] =
+        textureX[i - 1] +
+        M.dist(v[i - 1], v[i]);
+    textureX[v.length] =
+      textureX[v.length - 1] +
+      M.dist(v[v.length - 1], v[0]);
   }
 
   public void draw() {
@@ -59,103 +81,62 @@ public class Prism implements Brick {
 
   private void drawWithoutTexture() {
     fill(c);
+    pushMatrix();
+    translate(0, 0, d);
     int i;
     // Draw the bottom face.
     beginShape();
     for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], d);
+      vertex(v[i][0], v[i][1], 0);
     endShape(CLOSE);
     // Draw the top face.
     beginShape();
     for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], d + h);
+      vertex(v[i][0], v[i][1], h);
     endShape(CLOSE);
-    // Draw the first v.length - 1 faces.
-    for(i = 0; i < v.length - 1; i++) {
-      beginShape();
-      vertex(v[i][0], v[i][1], d + h);
-      vertex(v[i + 1][0], v[i + 1][1], d + h);
-      vertex(v[i + 1][0], v[i + 1][1], d);
-      vertex(v[i][0], v[i][1], d);
-      endShape(CLOSE);
+    // Draw the lateral faces.
+    beginShape(QUAD_STRIP);
+    for(i = 0; i < v.length; i++) {
+      vertex(v[i][0], v[i][1], h);
+      vertex(v[i][0], v[i][1], 0);
     }
-    // Draw the last face.
-    if (v.length > 1) {
-      beginShape();
-      vertex(v[v.length - 1][0], v[v.length - 1][1], d + h);
-      vertex(v[0][0], v[0][1], d + h);
-      vertex(v[0][0], v[0][1], d);
-      vertex(v[v.length - 1][0], v[v.length - 1][1], d);
-      endShape(CLOSE);
-    }
+    vertex(v[0][0], v[0][1], h);
+    vertex(v[0][0], v[0][1], 0);
+    endShape(CLOSE);
+    popMatrix();
   }
 
   private void drawWithTexture() {
     noStroke();
+    pushMatrix();
+    translate(0, 0, d);
     int i;
     // Draw the bottom face.
     beginShape();
     texture(t);
     for (i = 0; i < v.length; i++)
-      vertex(
-        v[i][0], v[i][1], d,
-        v[i][0] - minX, v[i][1] - minY
-        );
+      vertex(v[i][0], v[i][1], 0, v[i][0] - minX, v[i][1] - minY);
     endShape(CLOSE);
     // Draw the top face.
     beginShape();
     texture(t);
     for (i = 0; i < v.length; i++)
-      vertex(
-        v[i][0], v[i][1], d + h,
-        v[i][0] - minX, v[i][1] - minY
-        );
+      vertex(v[i][0], v[i][1], h, v[i][0] - minX, v[i][1] - minY);
     endShape(CLOSE);
-    // Draw the first v.length - 1 faces.
-    for(i = 0; i < v.length - 1; i++) {
-      beginShape();
-      texture(t);
-      vertex(
-        v[i][0], v[i][1], d + h,
-        0, h
-        );
-      vertex(
-        v[i + 1][0], v[i + 1][1], d + h,
-        M.dist(v[i], v[i + 1]), h
-        );
-      vertex(
-        v[i + 1][0], v[i + 1][1], d,
-        M.dist(v[i], v[i + 1]), 0
-        );
-      vertex(
-        v[i][0], v[i][1], d,
-        0, 0
-        );
-      endShape(CLOSE);
-    }
-    // Draw the last face.
-    beginShape();
+    // Draw the lateral faces.
+    beginShape(QUAD_STRIP);
     texture(t);
-    vertex(
-      v[v.length - 1][0], v[v.length - 1][1], d + h,
-      0, h);
-    vertex(
-      v[0][0], v[0][1], d + h,
-      M.dist(v[v.length - 1], v[0]), h
-      );
-    vertex(
-      v[0][0], v[0][1], d,
-      M.dist(v[v.length - 1], v[0]), 0
-      );
-    vertex(
-      v[v.length - 1][0], v[v.length - 1][1], d,
-      0, 0
-      );
+    for(i = 0; i < v.length; i++) {
+      vertex(v[i][0], v[i][1], h, textureX[i], 0);
+      vertex(v[i][0], v[i][1], 0, textureX[i], h);
+    }
+    vertex(v[0][0], v[0][1], h, textureX[v.length], 0);
+    vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
     endShape(CLOSE);
-    stroke(#000000);
+    popMatrix();
   }
 
-  // FOR DEBUGGING
+  // COULD BE USEFUL?
   private void drawNormals() {
     // draws normals to each of the vertical faces of the prism
     float[] normal;
@@ -350,7 +331,6 @@ public class Prism implements Brick {
         reflectionNormal = M.norm(v[v.length - 2], v[v.length - 1]);
       return true;
     }
-    // SHOULD I CHECK IF THE BALL IS INSIDE THE PRISM???
     return false;
   }
 
@@ -383,5 +363,16 @@ public class Prism implements Brick {
 
   public void setTexture(String texture) {
     t = loadImage(texture);
+    if (textureX == null) {
+      textureX = new float[v.length + 1];
+      textureX[0] = 0;
+      for (int i = 1; i < v.length; i++)
+        textureX[i] =
+          textureX[i - 1] +
+          M.dist(v[i - 1], v[i]);
+      textureX[v.length] =
+        textureX[v.length - 1] +
+        M.dist(v[v.length - 1], v[0]);
+    }
   }
 }

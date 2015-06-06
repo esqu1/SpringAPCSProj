@@ -1,31 +1,31 @@
 public class Cylinder implements Brick {
-  private final int detail = 36;
-  // number of quadrilaterals used to draw cylinder
+  private int detail = 36;
+  // number of points that determine the top and bottom
+  // faces of the cylinder
 
-  private float[] unitCircleX = new float[detail];
-  private float[] unitCircleY = new float[detail];
-  // store the vertices of a regular polygon with detail
-  // sides inscribed in the unit circle (slight improvement
-  // in efficiency)
-
-  private float unitSideLength;
-  // stores the side length of a regular polygon with
-  // detail sides inscribed in the unit circle (another
-  // slight improvement in efficiency)
+  private float[][] unitCircleXY;
+  // coordinates of evenly-spaced points on a unit circle
 
   private float[] center;
-  // center of the prism
+  // center of the cylinder
 
   private float r, h, d;
-  // radius, height, and elevation of prism
+  // radius, height, and elevation of cylinder
 
   private color c;
-  // color of prism
+  // color of cylinder
 
   private PImage t;
-  // texture of prism
+  // texture of cylinder
 
-  private float[] reflectionNormal; // for reflecting the ball
+  private float[] textureX;
+  // x-coordinates of points on the texture image that divide
+  // it into detail sections
+
+  // The point (textureX[i], y) will map to (unitCircleXY[i][0],
+  // unitCircleXY[i][1], y) on the unit cylinder (r = 1, d = 0).
+
+  private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
 
   public Cylinder(
@@ -40,11 +40,11 @@ public class Cylinder implements Brick {
     h = cylHeight;
     d = distanceToBoard;
     c = rgb;
-    for (int i = 0; i < detail; i++) {
-      unitCircleX[i] = cos(i * TWO_PI / detail);
-      unitCircleY[i] = sin(i * TWO_PI / detail);
+    unitCircleXY = new float[detail + 1][2];
+    for (int i = 0; i <= detail; i++) {
+      unitCircleXY[i][0] = cos(i * TWO_PI / detail);
+      unitCircleXY[i][1] = sin(i * TWO_PI / detail);
     }
-    unitSideLength = sqrt(2 - 2 * cos(TWO_PI / detail));
   }
 
   public Cylinder(
@@ -59,11 +59,13 @@ public class Cylinder implements Brick {
     h = cylHeight;
     d = distanceToBoard;
     t = loadImage(texture);
-    for (int i = 0; i < detail; i++) {
-      unitCircleX[i] = cos(i * TWO_PI / detail);
-      unitCircleY[i] = sin(i * TWO_PI / detail);
+    unitCircleXY = new float[detail + 1][2];
+    textureX = new float[detail + 1];
+    for (int i = 0; i <= detail; i++) {
+      unitCircleXY[i][0] = cos(i * TWO_PI / detail);
+      unitCircleXY[i][1] = sin(i * TWO_PI / detail);
+      textureX[i] = i * sqrt(2 - 2 * cos(TWO_PI / detail));
     }
-    unitSideLength = sqrt(2 - 2 * cos(TWO_PI / detail));
   }
 
   public void draw() {
@@ -75,66 +77,61 @@ public class Cylinder implements Brick {
 
   private void drawWithoutTexture() {
     fill(c);
+    pushMatrix();
+    translate(center[0], center[1], d);
     int i;
     // Draw the bottom face.
     beginShape();
     for (i = 0; i < detail; i++)
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        0
         );
     endShape(CLOSE);
     // Draw the top face.
     beginShape();
     for (i = 0; i < detail; i++)
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d + h
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        h
         );
     endShape(CLOSE);
     // Draw the lateral face.
     noStroke();
     beginShape(QUAD_STRIP);
-    for (i = 0; i < detail; i++) {
+    for (i = 0; i <= detail; i++) {
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        h
         );
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d + h
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        0
         );
     }
-    vertex(
-      center[0] + r * unitCircleX[0],
-      center[1] + r * unitCircleY[0],
-      d
-      );
-    vertex(
-      center[0] + r * unitCircleX[0],
-      center[1] + r * unitCircleY[0],
-      d + h
-      );
     endShape(CLOSE);
+    popMatrix();
   }
 
   private void drawWithTexture() {
     noStroke();
+    pushMatrix();
+    translate(center[0], center[1], d);
     int i;
     // Draw the bottom face.
     beginShape();
     texture(t);
     for (i = 0; i < detail; i++)
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d,
-        r * (1 + unitCircleX[i]),
-        r * (1 + unitCircleY[i])
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        0,
+        r * (1 + unitCircleXY[i][0]),
+        r * (1 + unitCircleXY[i][1])
         );
     endShape(CLOSE);
     // Draw the top face.
@@ -142,47 +139,34 @@ public class Cylinder implements Brick {
     texture(t);
     for (i = 0; i < detail; i++)
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d + h,
-        r * (1 + unitCircleX[i]),
-        r * (1 + unitCircleY[i])
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        h,
+        r * (1 + unitCircleXY[i][0]),
+        r * (1 + unitCircleXY[i][1])
         );
     endShape(CLOSE);
     // Draw the lateral face.
     beginShape(QUAD_STRIP);
     texture(t);
-    for (i = 0; i < detail; i++) {
+    for (i = 0; i <= detail; i++) {
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d,
-        i * r * unitSideLength,
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        h,
+        r * textureX[i],
         0
         );
       vertex(
-        center[0] + r * unitCircleX[i],
-        center[1] + r * unitCircleY[i],
-        d + h,
-        i * r * unitSideLength,
+        r * unitCircleXY[i][0],
+        r * unitCircleXY[i][1],
+        0,
+        r * textureX[i],
         h
         );
     }
-    vertex(
-      center[0] + r * unitCircleX[0],
-      center[1] + r * unitCircleY[0],
-      d,
-      (detail + 1) * r * unitSideLength,
-      0
-      );
-    vertex(
-      center[0] + r * unitCircleX[0],
-      center[1] + r * unitCircleY[0],
-      d + h,
-      (detail + 1) * r * unitSideLength,
-      h
-      );
     endShape(CLOSE);
+    popMatrix();
   }
 
   public boolean ballColliding(Ball b) {
@@ -239,5 +223,10 @@ public class Cylinder implements Brick {
 
   public void setTexture(String texture) {
     t = loadImage(texture);
+    if (textureX == null) {
+      textureX = new float[detail + 1];
+      for (int i = 0; i <= detail; i++)
+        textureX[i] = i * sqrt(2 - 2 * cos(TWO_PI / detail));
+    }
   }
 }

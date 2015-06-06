@@ -18,7 +18,7 @@ public class Board {
           {150, 100},
           {50, 150}
         },
-        100, 0, "texture1.jpg"
+        100, 0, "gray_brick.jpg"
         )
       );
     bricks.add(
@@ -29,7 +29,7 @@ public class Board {
           {350, 100},
           {250, 150}
         },
-        10, 0, "texture1.jpg"
+        10, 0, "gray_brick.jpg"
         )
       );
     bricks.add(
@@ -41,7 +41,7 @@ public class Board {
           {500, 100},
           {450, 150}
         },
-        30, 70, "texture1.jpg"
+        30, 70, "world.jpg"
         )
       );
     bricks.add(
@@ -52,7 +52,7 @@ public class Board {
           {750, 150},
           {650, 100}
         },
-        10, 0, "texture1.jpg"
+        10, 0, "gray_brick.jpg"
         )
       );
     bricks.add(
@@ -63,7 +63,7 @@ public class Board {
           {950, 150},
           {850, 100}
         },
-        100, 0, "texture1.jpg"
+        100, 0, "gray_brick.jpg"
         )
       );
     bricks.add(
@@ -73,9 +73,21 @@ public class Board {
           {500 - 150*sqrt(3)/2, 525},
           {500 + 150*sqrt(3)/2, 525},
         },
-        30, 0, "texture1.jpg"
+        30, 0, "gray_brick.jpg"
         )
       );
+    bricks.add(
+    	new Cylinder(
+    		new float[] {100, 600},
+    		75, 300, 0, "mr_k.jpg"
+    		)
+    	);
+    bricks.add(
+    	new Cylinder(
+    		new float[] {900, 600},
+    		75, 300, 0, "mr_k.jpg"
+    		)
+    	);
     bricks.add(
       new Sphere(
         new float[] {300, 450},
@@ -85,7 +97,7 @@ public class Board {
     bricks.add(
       new Sphere(
         new float[] {500, 450},
-        75, 30, #888888
+        75, 30, "world.jpg"
         )
       );
     bricks.add(
