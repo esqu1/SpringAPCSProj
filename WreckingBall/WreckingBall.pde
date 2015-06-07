@@ -1,5 +1,5 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
-int mode = TITLE, smooth = 2;
+int mode = TITLE;
 int[][] m = {{-55,-155,0},{60,-40,2},{175,75,4},{290,190,8}};
 boolean mouseClicked = false;
 
@@ -18,6 +18,7 @@ float viewAngleY = 0;
 int zoomFactor = 0;
 // The default camera position is defaultCameraZ.
 float cameraZ = defaultCameraZ;
+
 Menu menu;
 
 void setup() {
@@ -33,15 +34,8 @@ void setup() {
   mode = MENU;
 }
 
-void checkSmooth(){
-  if(smooth != 0) noSmooth();
-  else smooth(smooth);
-}
-
 void draw() {
   background(0);
-  println(smooth);
-  checkSmooth();
   switch (mode) {
     case TITLE:
       title();
@@ -62,7 +56,6 @@ void draw() {
       break;
   }
 }
-
   
 void title() {
   // title stuff goes here...
@@ -231,7 +224,7 @@ public void mouseReleased(){
       if(menu.pressed == i[0] && mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
         menu.selected = i[0];
         menu.pressed = 0;
-        smooth = i[2];
+        smooth(i[2]);
         break;
       }
     }
