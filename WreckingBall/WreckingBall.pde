@@ -1,6 +1,6 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE, smooth = 0;
-int[][] m = {{-55,-155,0},{60,-40,2},{175,75,4},{290,190,8}};
+int[][] m = {{-55,-155,0},{60,-40,1},{175,75,2},{290,190,4}};
 boolean mouseClicked = false;
 
 Board board;
@@ -34,11 +34,15 @@ void setup() {
   //smooth(8);
 }
 
+void checkSmooth(){
+  if(smooth != 0 && smooth != 1) smooth(smooth);
+  else if(smooth == 1) smooth();
+  else noSmooth();
+}
+
 void draw() {
   background(0);
-  println(mode);
-  if(smooth != 0) smooth(smooth);
-  else noSmooth();
+  checkSmooth();
   switch (mode) {
     case TITLE:
       title();
