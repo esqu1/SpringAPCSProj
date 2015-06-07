@@ -3,7 +3,7 @@ public class Menu {
   private PFont font;
   private int count = 0;
   private Ball b1, b2;
-  public int pressed, selected, pressed2;
+  public int pressed, selected = 60, pressed2;
   private int[][] m = {{-55,-155},{60,-40},{175,75},{290,190}};
   public Menu() {
     font = loadFont("Comfortaa-Bold-72.vlw");
@@ -60,7 +60,7 @@ public class Menu {
     }
     fill(0);
     translate(-70,-10,50);
-    text("Options",0,0, pressed2 == 2 ? -30 : 0);
+    text("Settings",0,0, pressed2 == 2 ? -30 : 0);
     popMatrix();
 
     pushMatrix();
@@ -76,9 +76,11 @@ public class Menu {
     drawDefaults();
     
     pushMatrix();
-    textFont(font,20);
     fill(0);
     translate(width / 2.0 - 300, height / 2.0 - 100,-12.5);
+    textFont(font,16);
+    text("Smoothness is only available on certain devices.",200,100);
+    textFont(font,20);
     text("Smoothness",0,0);
     translate(200,0);
 

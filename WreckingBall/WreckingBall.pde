@@ -1,5 +1,5 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
-int mode = TITLE, smooth = 0;
+int mode = TITLE, smooth = 2;
 int[][] m = {{-55,-155,0},{60,-40,1},{175,75,2},{290,190,4}};
 boolean mouseClicked = false;
 
@@ -31,13 +31,11 @@ void setup() {
   menu = new Menu();
   board = new Board();
   mode = MENU;
-  //smooth(8);
 }
 
 void checkSmooth(){
-  if(smooth != 0 && smooth != 1) smooth(smooth);
-  else if(smooth == 1) smooth();
-  else noSmooth();
+  if(smooth != 0) noSmooth();
+  else smooth(smooth);
 }
 
 void draw() {
