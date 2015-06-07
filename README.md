@@ -66,12 +66,32 @@ Taking a break, Dennis added lighting to the game, and then wrote a lot of usefu
 5/31/15<br />
 Dennis realized that Processing's left-hand coordinate system had been causing his vector determinants to return the negatives of the values he was expecting.<br />
 After correcting that issue, Dennis wrote a function for reflecting balls off the edges of prisms.<br />
-Dennis then fixed an issue that occured when balls collided with vertices of prisms, finishing off the ball-bouncing mechanism.<br />
-Dennis then created a Container class that would hold various elements in the board.<br />
-Finally, Dennis started working on a way to add textures to balls.
+Dennis then fixed an issue that occured when balls collided with vertices, finishing off the ball-bouncing mechanism for prisms.<br />
+Dennis then created a Container class that would hold various elements in the board (because the ArrayList class was too inefficient for him).
 
 6/1/15<br />
-Brandon wrote a Cylinder class for a new kind of brick.
+Brandon started writing a Cylinder class for a new kind of brick, while Dennis started writing a Sphere class.<br />
+Dennis then created an M.java class that would house all static math-related methods.<br />
+Dennis then made some changes to accomodate a menu.<br />
+
+6/2/15<br />
+Dennis made a simple draw() method for cylinders that only allowed for solid colors (rather than textures).
 
 6/3/15<br />
-Brandon wrote code for a menu screen with a colliding sphere background.
+Brandon wrote code for a menu screen with a colliding sphere background.<br />
+Dennis made a ball-bouncing mechanism for cylinders, which was much simpler than the one for prisms.
+
+6/4/15<br />
+Dennis made a ball-bouncing mechanism for spheres, which was simpler than both the previous ones he had written.<br />
+Dennis then started working on a way to add textures to cylinders.
+
+6/5/15<br />
+Dennis finished off the texturing mechanism for cylinders.<br />
+Dennis then made a nice out-of-bounds detection mechanism for balls.<br />
+Dennis then spent some time working on a way to add textures to spheres, but couldn't get it quite right.
+
+6/6/15<br />
+Dennis created a superb texturing mechanism for spheres.<br />
+Dennis then changed the draw() functions of prisms and cylinders to make them much more efficient and to make the code more consistent.<br />
+Dennis then allowed spheres to spin around a central axis and put a spinning model of the Earth on the board.<br />
+Dennis then used Photoshop to make a high-resolution gray brick texture that could be used later on.
