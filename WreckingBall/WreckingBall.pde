@@ -1,6 +1,7 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE, smooth = 0;
-int[][] m = {{-55,-155},{60,-40},{175,75},{290,190}};
+int[][] m = {{-55,-155,0},{60,-40,2},{175,75,4},{290,190,8}};
+boolean mouseClicked = false;
 
 Board board;
 // The board's size is 1000 * 1000;
@@ -35,6 +36,7 @@ void setup() {
 
 void draw() {
   background(0);
+  println(smooth);
   if(smooth != 0) smooth(smooth);
   else noSmooth();
   switch (mode) {
@@ -62,7 +64,7 @@ void mouseClicked(){
   if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
     mode = PLAYING;
   }else if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
-    mode = OPTIONS;
+    mode = OPTIONS;  
   }
 }
   
@@ -157,6 +159,20 @@ void mouseDragged() {
       }
     }
   }
+  if(mode == OPTIONS){
+    for(int[] i : m){
+      if(i[0] == menu.pressed && !(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)){
+        menu.pressed = 0;
+        break; 
+      }
+    } 
+  }
+  if(mode == MENU){
+    if((menu.pressed2 == 1 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)) || 
+    (menu.pressed2 == 2 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50))){
+      menu.pressed2 = 0; 
+    }
+  }
 }
 
 void mouseWheel(MouseEvent me) {
@@ -182,23 +198,38 @@ void mouseWheel(MouseEvent me) {
 public void mousePressed(){
   if(mode == OPTIONS){
     for(int[] i : m){
-      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
         menu.pressed = i[0];
         break;
       }
     }
+  }
+  if(mode == MENU){
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
+      menu.pressed2 = 1;
+    }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
+      menu.pressed2 = 2;
+    }  
   }
 }
 
 public void mouseReleased(){
   if(mode == OPTIONS){
    for(int[] i : m){
-      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+      if(menu.pressed == i[0] && mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
         menu.selected = i[0];
         menu.pressed = 0;
+        smooth = i[2];
         break;
       }
     }
+  }
+  if(mode == MENU){
+    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
+      mode = PLAYING;
+    }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
+      mode = OPTIONS;
+    }  
   } 
 }
 
