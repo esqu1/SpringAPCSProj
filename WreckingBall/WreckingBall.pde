@@ -36,7 +36,7 @@ void setup() {
 
 void draw() {
   background(0);
-  println(mode);
+  println(menu.pressed2);
   if(smooth != 0) smooth(smooth);
   else noSmooth();
   switch (mode) {
@@ -200,7 +200,8 @@ void mouseWheel(MouseEvent me) {
 }
 
 public void mousePressed(){
-  if(mode == OPTIONS){
+  switch(mode){
+  case OPTIONS:
     for(int[] i : m){
       if(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
         menu.pressed = 999; 
@@ -211,9 +212,7 @@ public void mousePressed(){
         break;
       }
     }
-    
-  }
-  if(mode == MENU){
+  case MENU:
     if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
       menu.pressed2 = 1;
     }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
@@ -227,6 +226,7 @@ public void mouseReleased(){
    for(int[] i : m){
       if(menu.pressed == 999 && mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
         menu.pressed = 0;
+        menu.pressed2 = 0;
         mode = MENU; 
         return;
       }
