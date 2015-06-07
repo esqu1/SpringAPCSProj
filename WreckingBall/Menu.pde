@@ -86,7 +86,7 @@ public class Menu {
       if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ 
         fill(#F6FF08);
       }else if(i[0] == selected){
-        fill(#BF00B6);
+        fill(#FF58F7);
       }else{
         fill(#045813);
       }
@@ -118,6 +118,9 @@ public class Menu {
     }else{
       box(175,100,75);
     }
+    translate(-50,-5,38);
+    fill(0);
+    text("Return to\nMenu",0,0,pressed == 999 ? -30 : 0);
 
     popMatrix();
     
