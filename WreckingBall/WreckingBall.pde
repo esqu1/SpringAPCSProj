@@ -36,7 +36,7 @@ void setup() {
 
 void draw() {
   background(0);
-  println(smooth);
+  println(mode);
   if(smooth != 0) smooth(smooth);
   else noSmooth();
   switch (mode) {
@@ -161,6 +161,10 @@ void mouseDragged() {
   }
   if(mode == OPTIONS){
     for(int[] i : m){
+      if(menu.pressed == 999 && !(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225)){
+        menu.pressed = 0;
+        return;
+      }
       if(i[0] == menu.pressed && !(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)){
         menu.pressed = 0;
         break; 
@@ -198,11 +202,16 @@ void mouseWheel(MouseEvent me) {
 public void mousePressed(){
   if(mode == OPTIONS){
     for(int[] i : m){
+      if(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
+        menu.pressed = 999; 
+        break;
+      }
       if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
         menu.pressed = i[0];
         break;
       }
     }
+    
   }
   if(mode == MENU){
     if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
@@ -216,6 +225,11 @@ public void mousePressed(){
 public void mouseReleased(){
   if(mode == OPTIONS){
    for(int[] i : m){
+      if(menu.pressed == 999 && mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
+        menu.pressed = 0;
+        mode = MENU; 
+        return;
+      }
       if(menu.pressed == i[0] && mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
         menu.selected = i[0];
         menu.pressed = 0;
@@ -226,8 +240,10 @@ public void mouseReleased(){
   }
   if(mode == MENU){
     if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
+      menu.pressed2 = 0;
       mode = PLAYING;
     }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
+      menu.pressed2 = 0;
       mode = OPTIONS;
     }  
   } 

@@ -83,10 +83,10 @@ public class Menu {
     translate(200,0);
 
     for(int[] i : m){
-      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ 
         fill(#F6FF08);
       }else if(i[0] == selected){
-        fill(#2AF011);
+        fill(#BF00B6);
       }else{
         fill(#045813);
       }
@@ -105,6 +105,20 @@ public class Menu {
     text("Low",-350,0,pressed == 60 ? -30 : 0);
     text("Medium",-255,0,pressed == 175 ? -30 : 0);
     text("High",-135,0, pressed == 290 ? -30 : 0);
+    translate(-175,375,-38);
+    if(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){ 
+        fill(#F6FF08);
+      }else{
+        fill(#2AF011);
+    }
+    if(pressed == 999){
+      translate(0,0,-18.75);
+      box(175,100,37.5);
+      translate(0,0,18.75);
+    }else{
+      box(175,100,75);
+    }
+
     popMatrix();
     
   }
