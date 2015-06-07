@@ -55,7 +55,7 @@ Dennis realized that his board scaling idea was stupid and that his former board
 Dennis then came up with an outline for detecting collisions between a ball and a prism.
 
 5/29/15<br />
-Dennis reimplemented zooming and window resizing using a compination of the camera() and perspective() functions.<br />
+Dennis reimplemented zooming and window resizing using a combination of the camera() and perspective() functions.<br />
 Dennis then redid Brandon's texture-drawing mechanism so that the textures would not be scaled as they were drawn.<br />
 Dennis then started writing the collision detection function.
 
@@ -72,10 +72,10 @@ Dennis then created a Container class that would hold various elements in the bo
 6/1/15<br />
 Brandon started writing a Cylinder class for a new kind of brick, while Dennis started writing a Sphere class.<br />
 Dennis then created an M.java class that would house all static math-related methods.<br />
-Dennis then made some changes to accomodate a menu.<br />
+Dennis then made some changes in order to accomodate a menu.<br />
 
 6/2/15<br />
-Dennis made a simple draw() method for cylinders that only allowed for solid colors (rather than textures).
+Dennis made a draw() method for cylinders that only allowed for solid colors (rather than textures).
 
 6/3/15<br />
 Brandon wrote code for a menu screen with a colliding sphere background.<br />
