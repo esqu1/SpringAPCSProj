@@ -66,8 +66,11 @@ After correcting that issue, Dennis wrote a function for reflecting balls off th
 Dennis then fixed an issue that occured when balls collided with vertices, finishing off the ball-bouncing mechanism for prisms.<br />
 Dennis then created a Container class that would hold various elements in the board (because the ArrayList class was too inefficient for him).
 
+-- The "june1" branch contains the demo version. --
+
 6/1/15<br />
 Brandon started writing a Cylinder class for a new kind of brick, while Dennis started writing a Sphere class.<br />
+Brandon also made the balls on the board detect out of bounds, and made the reflect if they did.
 Dennis then created an M.java class that would house all static math-related methods.<br />
 Dennis then made some changes in order to accomodate a menu.<br />
 
@@ -75,10 +78,12 @@ Dennis then made some changes in order to accomodate a menu.<br />
 Dennis made a draw() method for cylinders that only allowed for solid colors (rather than textures).
 
 6/3/15<br />
-Brandon wrote code for a menu screen with a colliding sphere background.<br />
+Brandon wrote code for a menu screen.
 Dennis made a ball-bouncing mechanism for cylinders, which was much simpler than the one for prisms.
 
 6/4/15<br />
+Brandon made two spheres in the background that collide, but the physics behind their collision may be screwed up.
+Brandon also fixed an issue where the balls would glue together when loading.
 Dennis made a ball-bouncing mechanism for spheres, which was simpler than both the previous ones he had written.<br />
 Dennis then started working on a way to add textures to cylinders.
 
@@ -95,3 +100,4 @@ Dennis then used Photoshop to make a high-resolution gray brick texture that cou
 
 6/7/15<br />
 Brandon created an options menu that allows the user to change the smoothness of the game.
+While doing this, Brandon fixed a bug that would cause the user to start playing the game while adjusting smoothness.
