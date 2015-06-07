@@ -1,18 +1,25 @@
 public class M {
   // M stands for Math ¯\_(-_-)_/¯
 
+  public static float sq(float a) {
+    return a * a;
+  }
+
+  public static float sqrt(float a) {
+    return (float) Math.sqrt(a);
+  }
+
+  // 2D THINGS
+
   public static float dist(float[] point1, float[] point2) {
     // returns the distance from point1 to point2
     return
-      (float) Math.sqrt(
-        (point2[0] - point1[0]) * (point2[0] - point1[0]) +
-        (point2[1] - point1[1]) * (point2[1] - point1[1])
-        );
+      sqrt(sq(point2[0] - point1[0]) + sq(point2[1] - point1[1]));
   }
 
   public static float mag(float[] vector1) {
     // returns the magnitude of vector1
-    return (float) Math.sqrt(vector1[0] * vector1[0] + vector1[1] * vector1[1]);
+    return sqrt(sq(vector1[0]) + sq(vector1[1]));
   }
 
   public static float[] scale(float[] vector1, float length) {
@@ -79,5 +86,49 @@ public class M {
     // from point1 to point2 and the vector from point1 to point3.
     // When figuring out what negative and positive values mean,
     // remember that Processing uses a left-hand coordinate system.
+  }
+
+  // 3D THINGS
+
+  public static float[] normalize(float[] vector1) {
+    // returns vector1 scaled so that it has a magnitude of 1
+    float mag = sqrt(sq(vector1[0]) + sq(vector1[1]) + sq(vector1[2]));
+    return
+      new float[] {
+        vector1[0] / mag,
+        vector1[1] / mag,
+        vector1[2] / mag
+      };
+  }
+
+  public static float[] cross(float[] vector1, float[] vector2) {
+    // returns the cross product of vector1 and vector2
+    return
+      new float[] {
+        vector1[1] * vector2[2] - vector1[2] * vector2[1],
+        vector1[2] * vector2[0] - vector1[0] * vector2[2],
+        vector1[0] * vector2[1] - vector1[1] * vector2[0]
+      };
+  }
+
+  public static float[] norm(float[] point1, float[] point2, float[] point3) {
+    // returns the normal to the surface defined by the three points
+    return
+      normalize(
+        cross(
+          new float[] {
+            point1[0] - point2[0],
+            point1[1] - point2[1],
+            point1[2] - point2[2]
+          },
+          new float[] {
+            point3[0] - point2[0],
+            point3[1] - point2[1],
+            point3[2] - point2[2]
+          }
+        )
+      );
+    // If the points are seen as being in a clockwise order, the normal
+    // is in the same direction as the observer's line of sight.
   }
 }

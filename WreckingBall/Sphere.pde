@@ -1,11 +1,13 @@
 public class Sphere implements Brick {
-  private int detailX = 24;
-  private int detailY = 12;
+  private int detailX, detailY;
   // number of points that determine any circle of latitude
   // of the sphere and any meridian of the sphere, respectively
 
   private float[][][] unitSphereXYZ;
   // coordinates of evenly-spaced points on a unit sphere
+
+  private float[][][] normals;
+  // normals to each of the faces of the sphere
 
   private float[] center;
   // center of sphere
@@ -43,6 +45,8 @@ public class Sphere implements Brick {
     r = radius;
     d = distanceToBoard;
     c = rgb;
+    detailX = 60;
+    detailY = 30;
     int i, j;
     unitSphereXYZ = new float[detailX + 1][detailY + 1][3];
     for (i = 0; i <= detailX; i++)
@@ -61,6 +65,15 @@ public class Sphere implements Brick {
         unitSphereXYZ[i][j][2] =
           cos(PI - j * PI / detailY);
       }
+    normals = new float[detailX][detailY][3];
+    for (i = 0; i < detailX; i++)
+      for (j = 0; j < detailY; j++)
+        normals[i][j] =
+          M.norm(
+            unitSphereXYZ[i + 1][j],
+            unitSphereXYZ[i][j],
+            unitSphereXYZ[i][j + 1]
+            );
   }
 
   public Sphere(
@@ -73,6 +86,8 @@ public class Sphere implements Brick {
     r = radius;
     d = distanceToBoard;
     t = loadImage(texture);
+    detailX = 60;
+    detailY = 30;
     int i, j;
     unitSphereXYZ = new float[detailX + 1][detailY + 1][3];
     for (i = 0; i <= detailX; i++)
@@ -91,6 +106,15 @@ public class Sphere implements Brick {
         unitSphereXYZ[i][j][2] =
           cos(PI - j * PI / detailY);
       }
+    normals = new float[detailX][detailY][3];
+    for (i = 0; i < detailX; i++)
+      for (j = 0; j < detailY; j++)
+        normals[i][j] =
+          M.norm(
+            unitSphereXYZ[i + 1][j],
+            unitSphereXYZ[i][j],
+            unitSphereXYZ[i][j + 1]
+            );
     textureX = new float[detailX + 1];
     for (i = 0; i <= detailX; i++)
       textureX[i] = 1.0 * t.width * i / detailX;
@@ -115,7 +139,12 @@ public class Sphere implements Brick {
     int i, j;
     for (j = 0; j < detailY; j++) {
       beginShape(QUAD_STRIP);
-      for (i = 0; i <= detailX; i++) {
+      for (i = 0; i < detailX; i++) {
+        normal(
+          normals[i][j][0],
+          normals[i][j][1],
+          normals[i][j][2]
+          );
         vertex(
           r * unitSphereXYZ[i][j + 1][0],
           r * unitSphereXYZ[i][j + 1][1],
@@ -125,6 +154,16 @@ public class Sphere implements Brick {
           r * unitSphereXYZ[i][j][0],
           r * unitSphereXYZ[i][j][1],
           r * unitSphereXYZ[i][j][2]
+          );
+        vertex(
+          r * unitSphereXYZ[i + 1][j + 1][0],
+          r * unitSphereXYZ[i + 1][j + 1][1],
+          r * unitSphereXYZ[i + 1][j + 1][2]
+          );
+        vertex(
+          r * unitSphereXYZ[i + 1][j][0],
+          r * unitSphereXYZ[i + 1][j][1],
+          r * unitSphereXYZ[i + 1][j][2]
           );
       }
       endShape(CLOSE);
@@ -138,8 +177,7 @@ public class Sphere implements Brick {
     noStroke();
     pushMatrix();
     translate(center[0], center[1], r + d);
-    // Flip the ball upside down because the z-axis
-    // is pointing downward.
+    // Flip the ball upside down so it's drawn correctly. // TEMP FIX
     rotateX(PI);
     // Rotate the ball by the angle of revolution.
     rotateZ(anlgeOfRevolution);
@@ -147,7 +185,12 @@ public class Sphere implements Brick {
     for (j = 0; j < detailY; j++) {
       beginShape(QUAD_STRIP);
       texture(t);
-      for (i = 0; i <= detailX; i++) {
+      for (i = 0; i < detailX; i++) {
+        normal(
+          normals[i][j][0],
+          normals[i][j][1],
+          normals[i][j][2]
+          );
         vertex(
           r * unitSphereXYZ[i][j + 1][0],
           r * unitSphereXYZ[i][j + 1][1],
@@ -160,6 +203,20 @@ public class Sphere implements Brick {
           r * unitSphereXYZ[i][j][1],
           r * unitSphereXYZ[i][j][2],
           textureX[i],
+          textureY[j]
+          );
+        vertex(
+          r * unitSphereXYZ[i + 1][j + 1][0],
+          r * unitSphereXYZ[i + 1][j + 1][1],
+          r * unitSphereXYZ[i + 1][j + 1][2],
+          textureX[i + 1],
+          textureY[j + 1]
+          );
+        vertex(
+          r * unitSphereXYZ[i + 1][j][0],
+          r * unitSphereXYZ[i + 1][j][1],
+          r * unitSphereXYZ[i + 1][j][2],
+          textureX[i + 1],
           textureY[j]
           );
       }

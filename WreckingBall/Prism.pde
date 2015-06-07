@@ -3,6 +3,9 @@ public class Prism implements Brick {
   // v must have at least two vertices
   // vertices MUST be listed in counter-clockwise order
 
+  private float[][] normals;
+  // normals to each of the lateral faces of the prism
+
   private float h, d;
   // height and elevation of prism
 
@@ -32,9 +35,14 @@ public class Prism implements Brick {
     h = prismHeight;
     d = distanceToBoard;
     c = rgb;
+    int i;
+    normals = new float[v.length][2];
+    for (i = 0; i < v.length - 1; i++)
+      normals[i] = M.norm(v[i], v[i + 1]);
+    normals[v.length - 1] = M.norm(v[v.length - 1], v[0]);
     minX = v[0][0];
     minY = v[0][1];
-    for (int i = 1; i < v.length; i++) {
+    for (i = 1; i < v.length; i++) {
       if (v[i][0] < minX)
         minX = v[i][0];
       if (v[i][1] < minY)
@@ -53,6 +61,10 @@ public class Prism implements Brick {
     d = distanceToBoard;
     t = loadImage(texture);
     int i;
+    normals = new float[v.length][2];
+    for (i = 0; i < v.length - 1; i++)
+      normals[i] = M.norm(v[i], v[i + 1]);
+    normals[v.length - 1] = M.norm(v[v.length - 1], v[0]);
     minX = v[0][0];
     minY = v[0][1];
     for (i = 1; i < v.length; i++) {
@@ -86,20 +98,28 @@ public class Prism implements Brick {
     int i;
     // Draw the bottom face.
     beginShape();
+    normal(0, 0, -1);
     for (i = 0; i < v.length; i++)
       vertex(v[i][0], v[i][1], 0);
     endShape(CLOSE);
     // Draw the top face.
     beginShape();
+    normal(0, 0, 1);
     for (i = 0; i < v.length; i++)
       vertex(v[i][0], v[i][1], h);
     endShape(CLOSE);
     // Draw the lateral faces.
     beginShape(QUAD_STRIP);
-    for(i = 0; i < v.length; i++) {
+    for(i = 0; i < v.length - 1; i++) {
+      normal(normals[i][0], normals[i][1], 0);
       vertex(v[i][0], v[i][1], h);
       vertex(v[i][0], v[i][1], 0);
+      vertex(v[i + 1][0], v[i + 1][1], h);
+      vertex(v[i + 1][0], v[i + 1][1], 0);
     }
+    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], h);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], 0);
     vertex(v[0][0], v[0][1], h);
     vertex(v[0][0], v[0][1], 0);
     endShape(CLOSE);
@@ -114,22 +134,30 @@ public class Prism implements Brick {
     // Draw the bottom face.
     beginShape();
     texture(t);
+    normal(0, 0, -1);
     for (i = 0; i < v.length; i++)
       vertex(v[i][0], v[i][1], 0, v[i][0] - minX, v[i][1] - minY);
     endShape(CLOSE);
     // Draw the top face.
     beginShape();
     texture(t);
+    normal(0, 0, 1);
     for (i = 0; i < v.length; i++)
       vertex(v[i][0], v[i][1], h, v[i][0] - minX, v[i][1] - minY);
     endShape(CLOSE);
     // Draw the lateral faces.
     beginShape(QUAD_STRIP);
     texture(t);
-    for(i = 0; i < v.length; i++) {
+    for(i = 0; i < v.length - 1; i++) {
+      normal(normals[i][0], normals[i][1], 0);
       vertex(v[i][0], v[i][1], h, textureX[i], 0);
       vertex(v[i][0], v[i][1], 0, textureX[i], h);
+      vertex(v[i + 1][0], v[i + 1][1], h, textureX[i + 1], 0);
+      vertex(v[i + 1][0], v[i + 1][1], 0, textureX[i + 1], h);
     }
+    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], h, textureX[v.length - 1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], 0, textureX[v.length - 1], h);
     vertex(v[0][0], v[0][1], h, textureX[v.length], 0);
     vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
     endShape(CLOSE);
