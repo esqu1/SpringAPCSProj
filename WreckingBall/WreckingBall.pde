@@ -1,5 +1,6 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE, smooth = 0;
+int[][] m = {{-55,-155},{60,-40},{175,75},{290,190}};
 
 Board board;
 // The board's size is 1000 * 1000;
@@ -176,6 +177,29 @@ void mouseWheel(MouseEvent me) {
       defaultCameraZ * pow(1.12, zoomFactor / 4.0) +
       2.5 * zoomFactor;
   }
+}
+
+public void mousePressed(){
+  if(mode == OPTIONS){
+    for(int[] i : m){
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+        menu.pressed = i[0];
+        break;
+      }
+    }
+  }
+}
+
+public void mouseReleased(){
+  if(mode == OPTIONS){
+   for(int[] i : m){
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+        menu.selected = i[0];
+        menu.pressed = 0;
+        break;
+      }
+    }
+  } 
 }
 
 void keyPressed(KeyEvent ke) {
