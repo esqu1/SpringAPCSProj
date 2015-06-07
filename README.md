@@ -101,3 +101,4 @@ Dennis then used Photoshop to make a high-resolution gray brick texture that cou
 6/7/15<br />
 Brandon created an options menu that allows the user to change the smoothness of the game.
 While doing this, Brandon fixed a bug that would cause the user to start playing the game while adjusting smoothness.
+He also realized that he was being silly and his computer doesn't support smoothness, but he implemented it anyway.
