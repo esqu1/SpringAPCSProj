@@ -1,5 +1,5 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
-int mode = TITLE;
+int mode = TITLE, smooth = 0;
 
 Board board;
 // The board's size is 1000 * 1000;
@@ -34,7 +34,8 @@ void setup() {
 
 void draw() {
   background(0);
-  noSmooth();
+  if(smooth != 0) smooth(smooth);
+  else noSmooth();
   switch (mode) {
     case TITLE:
       title();

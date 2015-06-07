@@ -86,6 +86,31 @@ public class Menu {
   
   public void drawOptions(){
     drawDefaults();
+    
+    pushMatrix();
+    textFont(font,20);
+    fill(0);
+    translate(width / 2.0 - 300, height / 2.0 - 100,-12.5);
+    text("Smoothness",0,0);
+    translate(200,0);
+    int[][] m = {{-55,-155},{60,-40},{175,75},{290,190}};
+    for(int[] i : m){
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the play now box
+        fill(#F6FF08);
+      }else{
+        fill(#2AF011);
+      }
+      box(100,100,75);
+      fill(0);
+      translate(110,0);
+    }
+    translate(0,5,38);
+    text("None",-465,0);
+    text("Low",-350,0);
+    text("Medium",-255,0);
+    text("High",-135,0);
+    popMatrix();
+    
   }
   
   public boolean colliding(){
