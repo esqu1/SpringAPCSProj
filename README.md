@@ -33,9 +33,6 @@ Brandon created this directory.
 5/22/15<br />
 Brandon made a couple of skeleton files for classes that might come in handy.
 
-5/23/15<br />
-Dennis discovered that he could write code on his phone, which greatly amused him.
-
 5/25/15<br />
 Brandon made a simple paddle that could follow the player's mouse.
 
@@ -95,3 +92,6 @@ Dennis created a superb texturing mechanism for spheres.<br />
 Dennis then changed the draw() functions of prisms and cylinders to make them much more efficient and to make the code more consistent.<br />
 Dennis then allowed spheres to spin around a central axis and put a spinning model of the Earth on the board.<br />
 Dennis then used Photoshop to make a high-resolution gray brick texture that could be used later on.
+
+6/7/15<br />
+Brandon created an options menu that allows the user to change the smoothness of the game.

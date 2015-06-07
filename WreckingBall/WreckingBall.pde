@@ -36,7 +36,7 @@ void setup() {
 
 void draw() {
   background(0);
-  println(menu.pressed2);
+  println(mode);
   if(smooth != 0) smooth(smooth);
   else noSmooth();
   switch (mode) {
@@ -60,13 +60,6 @@ void draw() {
   }
 }
 
-void mouseClicked(){
-  if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
-    mode = PLAYING;
-  }else if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
-    mode = OPTIONS;  
-  }
-}
   
 void title() {
   // title stuff goes here...
@@ -123,7 +116,8 @@ void dead() {
 }
 
 void mouseDragged() {
-  if (mode == PLAYING) {
+  switch(mode){
+    case PLAYING:
     if (mouseButton == RIGHT) {
       // A downward swipe will bring the viewAngleX closer
       // to zero (a vertical board), while an upward
@@ -158,8 +152,8 @@ void mouseDragged() {
           viewAngleY = QUARTER_PI;
       }
     }
-  }
-  if(mode == OPTIONS){
+  
+  case OPTIONS:
     for(int[] i : m){
       if(menu.pressed == 999 && !(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225)){
         menu.pressed = 0;
@@ -170,8 +164,8 @@ void mouseDragged() {
         break; 
       }
     } 
-  }
-  if(mode == MENU){
+  
+  case MENU:
     if((menu.pressed2 == 1 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)) || 
     (menu.pressed2 == 2 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50))){
       menu.pressed2 = 0; 
@@ -222,8 +216,9 @@ public void mousePressed(){
 }
 
 public void mouseReleased(){
-  if(mode == OPTIONS){
-   for(int[] i : m){
+  switch(mode){
+    case OPTIONS:
+      for(int[] i : m){
       if(menu.pressed == 999 && mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
         menu.pressed = 0;
         menu.pressed2 = 0;
@@ -237,16 +232,15 @@ public void mouseReleased(){
         break;
       }
     }
-  }
-  if(mode == MENU){
-    if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
+  case MENU:
+    if(mode == MENU && mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){
       menu.pressed2 = 0;
       mode = PLAYING;
     }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
       menu.pressed2 = 0;
       mode = OPTIONS;
     }  
-  } 
+  }
 }
 
 void keyPressed(KeyEvent ke) {
