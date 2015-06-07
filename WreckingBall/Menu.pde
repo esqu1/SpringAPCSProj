@@ -3,6 +3,8 @@ public class Menu {
   private PFont font;
   private int count = 0;
   private Ball b1, b2;
+  public int pressed, selected, pressed2;
+  private int[][] m = {{-55,-155},{60,-40},{175,75},{290,190}};
   public Menu() {
     font = loadFont("Comfortaa-Bold-72.vlw");
     b1 = new Ball(75,#FF050E);
@@ -27,11 +29,17 @@ public class Menu {
     
     pushMatrix();
     textFont(font,36);
-    translate(width / 2.0, height / 2.0 - 100);
-    box(400,100,50); // prism for "Play now!" box
+    translate(width / 2.0, height / 2.0 - 100,-12.5);
+    if(pressed2 == 1){
+      translate(0,0,-18.75);
+      box(400,100,37.5);
+      translate(0,0,18.75);
+    }else{
+      box(400,100,75);
+    }
     fill(0);
     translate(-75,0,50);
-    text("Play Now!", 0,0);
+    text("Play Now!", 0,0, pressed2 == 1 ? -30 : 0);
     popMatrix();
     
     if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){ // for the options box
@@ -42,11 +50,17 @@ public class Menu {
         
     pushMatrix(); // drawing the options box
     textSize(36);
-    translate(width / 2.0, height / 2.0 + 100);
-    box(400,100,50);
+    translate(width / 2.0, height / 2.0 + 100,-12.5);
+    if(pressed2 == 2){
+      translate(0,0,-18.75);
+      box(400,100,37.5);
+      translate(0,0,18.75);
+    }else{
+      box(400,100,75);
+    }
     fill(0);
     translate(-70,-10,50);
-    text("Options",0,0);
+    text("Options",0,0, pressed2 == 2 ? -30 : 0);
     popMatrix();
 
     pushMatrix();
@@ -56,6 +70,62 @@ public class Menu {
     popMatrix();
     fill(0);
   }
+
+  
+  public void drawOptions(){
+    drawDefaults();
+    
+    pushMatrix();
+    textFont(font,20);
+    fill(0);
+    translate(width / 2.0 - 300, height / 2.0 - 100,-12.5);
+    text("Smoothness",0,0);
+    translate(200,0);
+
+    for(int[] i : m){
+      if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ 
+        fill(#F6FF08);
+      }else if(i[0] == selected){
+        fill(#FF58F7);
+      }else{
+        fill(#045813);
+      }
+      if(i[0] == pressed){
+        translate(0,0,-18.75);
+        box(100,100,37.5);
+        translate(0,0,18.75);
+      }else{
+        box(100,100,75);
+      }
+      fill(0);
+      translate(110,0);
+    }
+    translate(0,5,38);
+    text("None",-465,0, pressed == -55 ? -30 : 0 );
+    text("Low",-350,0,pressed == 60 ? -30 : 0);
+    text("Medium",-255,0,pressed == 175 ? -30 : 0);
+    text("High",-135,0, pressed == 290 ? -30 : 0);
+    translate(-175,375,-38);
+    if(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){ 
+        fill(#F6FF08);
+      }else{
+        fill(#2AF011);
+    }
+    if(pressed == 999){
+      translate(0,0,-18.75);
+      box(175,100,37.5);
+      translate(0,0,18.75);
+    }else{
+      box(175,100,75);
+    }
+    translate(-50,-5,38);
+    fill(0);
+    text("Return to\nMenu",0,0,pressed == 999 ? -30 : 0);
+
+    popMatrix();
+    
+  }
+  
   
   public void drawDefaults(){
     background(#FFFFFF); // white
@@ -82,10 +152,6 @@ public class Menu {
     popMatrix();
     
     fill(0);
-  }
-  
-  public void drawOptions(){
-    drawDefaults();
   }
   
   public boolean colliding(){
