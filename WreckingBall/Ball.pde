@@ -3,6 +3,7 @@ public class Ball {
   private float r;
   private color c;
   private PImage t;
+  private float defaultv;
 
   public Ball(float radius, color rgb) {
     p = new float[2];
@@ -10,9 +11,10 @@ public class Ball {
     a = new float[2];
     r = radius;
     c = rgb;
+    defaultv = 120;
     // FOR DEBUGGING
     v[0] = 0;
-    v[1] = -60;
+    v[1] = -120;
     p[0] = 500;
     p[1] = 800;
   }
@@ -49,10 +51,15 @@ public class Ball {
   }
 
   private void move() {
+  	// bring velocity back to default
+  	if (M.mag(v) > defaultv)
+  		v = M.scale(v, 0.99);
+  	else if (M.mag(v) < defaultv)
+  		v = M.scale(v, 1.01);
     // out of bounds handling
     if (mode == PLAYING && p[0] <= r || p[0] >= boardLength - r)
       v[0] *= -1;
-    if (mode == PLAYING && p[1] <= r || p[1] >= boardLength - r)
+    if (mode == PLAYING && p[1] <= r)
       v[1] *= -1;
     // x(t) = x_0 + v_0 * t + 1/2 * a * t^2
     p[0] += v[0] / 60 + a[0] / 7200;

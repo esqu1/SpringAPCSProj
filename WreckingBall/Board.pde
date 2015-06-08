@@ -107,8 +107,9 @@ public class Board {
         )
       );
     balls = new Container<Ball>(1);
-    balls.add(new Ball(40, #FFFFFF));
-    paddles = new Container<Paddle>(0);
+    balls.add(new Ball(20, #FFFFFF));
+    paddles = new Container<Paddle>(1);
+    paddles.add(new Paddle(100.0, "colors.jpg"));
   }
   public void draw() {
     int i,j;
@@ -118,6 +119,8 @@ public class Board {
     translate(-500, -500, 10);
     for (i = 0; i < bricks.size(); i++)
       bricks.get(i).draw();
+    for (i = 0; i < paddles.size(); i++)
+      paddles.get(i).draw();
     for (i = 0; i < balls.size(); i++) {
       balls.get(i).draw();
       for (j = 0; j < bricks.size(); j++) {
@@ -126,8 +129,10 @@ public class Board {
           bricks.remove(j);
         }
       }
-    }/*
-    for (i = 0; i < paddles.size(); i++)
-      paddles.get(i).draw();*/
+      for (j = 0; j < paddles.size(); j++) {
+      	if (paddles.get(j).ballColliding(balls.get(i)))
+      		paddles.get(j).reflectBall(balls.get(i));
+      }
+    }
   }
 }
