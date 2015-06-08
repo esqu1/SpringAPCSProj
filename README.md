@@ -70,7 +70,7 @@ Dennis then created a Container class that would hold various elements in the bo
 
 6/1/15<br />
 Brandon started writing a Cylinder class for a new kind of brick, while Dennis started writing a Sphere class.<br />
-Brandon also made the balls on the board detect out of bounds, and made the reflect if they did.
+Brandon also made the balls on the board detect when they were out of bounds, and made them reflect if they did.<br />
 Dennis then created an M.java class that would house all static math-related methods.<br />
 Dennis then made some changes in order to accomodate a menu.<br />
 
@@ -78,18 +78,18 @@ Dennis then made some changes in order to accomodate a menu.<br />
 Dennis made a draw() method for cylinders that only allowed for solid colors (rather than textures).
 
 6/3/15<br />
-Brandon wrote code for a menu screen.
+Brandon wrote code for a menu screen.<br />
 Dennis made a ball-bouncing mechanism for cylinders, which was much simpler than the one for prisms.
 
 6/4/15<br />
-Brandon made two spheres in the background that collide, but the physics behind their collision may be screwed up.
-Brandon also fixed an issue where the balls would glue together when loading.
+Brandon made two spheres in the background of the menu that collided, but the physics behind their collision may have been screwed up.<br />
+Brandon also fixed an issue where the balls would glue together when loading.<br />
 Dennis made a ball-bouncing mechanism for spheres, which was simpler than both the previous ones he had written.<br />
 Dennis then started working on a way to add textures to cylinders.
 
 6/5/15<br />
 Dennis finished off the texturing mechanism for cylinders.<br />
-Dennis then made a nice out-of-bounds detection mechanism for balls.<br />
+Dennis then rewrote Brandon's out-of-bounds detection mechanism for balls.<br />
 Dennis then spent some time working on a way to add textures to spheres, but couldn't get it quite right.
 
 6/6/15<br />
@@ -99,6 +99,8 @@ Dennis then allowed spheres to spin around a central axis and put a spinning mod
 Dennis then used Photoshop to make a high-resolution gray brick texture that could be used later on.
 
 6/7/15<br />
-Brandon created an options menu that allows the user to change the smoothness of the game.
-While doing this, Brandon fixed a bug that would cause the user to start playing the game while adjusting smoothness.
-He also realized that he was being silly and his computer doesn't support smoothness, but he implemented it anyway.
+Brandon created an options menu that allows the user to change the smoothness of the game.<br />
+While doing this, Brandon fixed a bug that would cause the user to start playing the game while adjusting smoothness.<br />
+Brandon also realized that he was being silly and his computer doesn't support smoothness, but he implemented it anyway.<br />
+Dennis discovered that Processing had been producing the wrong lighting for all of his bricks, and had to manually set the lighting conditions for each vertex.<br />
+Dennis then found a bunch of very high-resolution textures of celestial bodies that could be used later on.
