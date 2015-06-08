@@ -24,6 +24,12 @@ public class Prism implements Brick {
 
   private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
+  
+  private Brick above, below;
+  // bricks directly above and below this one
+  
+  private float[] velocity;
+  // velocity of the brick
 
   public Prism(
     float[][] vertices,
@@ -85,6 +91,7 @@ public class Prism implements Brick {
   }
 
   public void draw() {
+    move();
     if (t == null)
       drawWithoutTexture();
     else
@@ -162,6 +169,38 @@ public class Prism implements Brick {
     vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
     endShape(CLOSE);
     popMatrix();
+  }
+  
+  private void move() {
+    // x(t) = x_0 + v * t
+    for (int i = 0; i < v.length; i++) {
+      v[i][0] += velocity[0] / 30;
+      v[i][1] += velocity[1] / 30;
+    }
+    if (below == null) {
+      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
+        // if motion has been dampened enough, just stop
+        velocity[2] = 0;
+        d = 0;
+      }
+      if (d > 0)
+        // v(t) = v_0 + a * t
+        velocity[2] -= 0.372;
+      else if (d < 0)
+        // bounce back up
+        velocity[2] *= -0.2
+    }
+    else {
+      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
+        velocity[2] = 0;
+        d = below.d + below.h;
+      }
+      if (d > below.d + below.h)
+        velocity[2] -= 0.372;
+      else if (d < below.d + below.h)
+        velocity[2] *= -0.2
+    }
+    d += velocity[2] / 30;
   }
 
   // COULD BE USEFUL?
@@ -403,4 +442,10 @@ public class Prism implements Brick {
         M.dist(v[v.length - 1], v[0]);
     }
   }
+  
+  public void stack(Brick b) {
+    above = b;
+    b.below = this;
+  }
+  
 }
