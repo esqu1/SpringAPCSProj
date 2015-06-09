@@ -188,7 +188,7 @@ public class Prism implements Brick {
         velocity[2] -= 0.372;
       else if (d < 0)
         // bounce back up
-        velocity[2] *= -0.2
+        velocity[2] *= -0.2;
     }
     else {
       if (velocity[2] < 0.01 && velocity[2] > -0.01) {
@@ -198,7 +198,7 @@ public class Prism implements Brick {
       if (d > below.d + below.h)
         velocity[2] -= 0.372;
       else if (d < below.d + below.h)
-        velocity[2] *= -0.2
+        velocity[2] *= -0.2;
     }
     d += velocity[2] / 30;
   }
