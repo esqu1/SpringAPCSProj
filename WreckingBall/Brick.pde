@@ -1,24 +1,31 @@
 public interface Brick {
-
-  // draws the brick
-  public void draw();
-
   // returns the height of the brick
   public float getHeight();
 
-  // checks if Ball b is inside (or tangent to) the brick
-  public boolean ballColliding(Ball b);
+  // returns the elevation of the brick
+  public float getElevation();
 
-  // changes velocity of Ball b assuming ballInside(b) returns true
-  public void reflectBall(Ball b);
+  // sets the brick directly above this one
+  public void setAbove(Brick b);
 
-  // releases any powerups the brick has (to be implemented later)
-  // public void releasePowerup();
+  // sets the brick directly below this one
+  public void setBelow(Brick b);
+
+  // puts this brick on top of another one
+  public void stack(Brick b);
 
   // sets the color of the brick
   public void setColor(color rgb);
 
   // sets the texture of the brick (to be implemented later)
   public void setTexture(String texture);
+
+  // reflects the ball if collision is detected,
+  // destroys the brick if necessary,
+  // and releases a powerup if necessary
+  public void actOnBall(Ball b);
+
+  // draws the brick
+  public void draw();
 }
 

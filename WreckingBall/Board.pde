@@ -1,116 +1,15 @@
 public class Board {
   private color c;
-  // private texture t; (to be implemented later)
-  private Container<Brick> bricks;
-  private Container<Ball> balls;
-  private Container<Paddle> paddles;
-  // private Powerup[] powerups; (to be implemented later)
+  private PImage t;
 
-  public Board() {
-    // This is all temporary...
-    c = #63F702;
-    bricks = new Container<Brick>(15);
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {50, 200},
-          {150, 200},
-          {150, 100},
-          {50, 150}
-        },
-        100, 0, "gray_brick.jpg"
-        )
-      );
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {250, 200},
-          {350, 200},
-          {350, 100},
-          {250, 150}
-        },
-        10, 0, "gray_brick.jpg"
-        )
-      );
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {450, 200},
-          {550, 200},
-          {550, 150},
-          {500, 100},
-          {450, 150}
-        },
-        30, 70, "world.jpg"
-        )
-      );
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {650, 200},
-          {750, 200},
-          {750, 150},
-          {650, 100}
-        },
-        10, 0, "gray_brick.jpg"
-        )
-      );
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {850, 200},
-          {950, 200},
-          {950, 150},
-          {850, 100}
-        },
-        100, 0, "gray_brick.jpg"
-        )
-      );
-    bricks.add(
-      new Prism(
-        new float[][] {
-          {500, 300},
-          {500 - 150*sqrt(3)/2, 525},
-          {500 + 150*sqrt(3)/2, 525},
-        },
-        30, 0, "gray_brick.jpg"
-        )
-      );
-    bricks.add(
-    	new Cylinder(
-    		new float[] {100, 600},
-    		75, 300, 0, "mr_k.jpg"
-    		)
-    	);
-    bricks.add(
-    	new Cylinder(
-    		new float[] {900, 600},
-    		75, 300, 0, "mr_k.jpg"
-    		)
-    	);
-    bricks.add(
-      new Sphere(
-        new float[] {300, 450},
-        50, 0, #888888
-        )
-      );
-    bricks.add(
-      new Sphere(
-        new float[] {500, 450},
-        75, 30, "world.jpg"
-        )
-      );
-    bricks.add(
-      new Sphere(
-        new float[] {700, 450},
-        50, 0, #888888
-        )
-      );
-    balls = new Container<Ball>(1);
-    balls.add(new Ball(20, #FFFFFF));
-    paddles = new Container<Paddle>(1);
-    paddles.add(new Paddle(100.0, "colors.jpg"));
+  public Board(int level) {
+    switch (level) {
+    	case 1:
+    		level1();
+    		break;
+    }
   }
+
   public void draw() {
     int i,j;
     fill(c);
@@ -123,16 +22,140 @@ public class Board {
       paddles.get(i).draw();
     for (i = 0; i < balls.size(); i++) {
       balls.get(i).draw();
-      for (j = 0; j < bricks.size(); j++) {
-        if (bricks.get(j).ballColliding(balls.get(i))) {
-          bricks.get(j).reflectBall(balls.get(i));
-          bricks.remove(j);
-        }
-      }
-      for (j = 0; j < paddles.size(); j++) {
-      	if (paddles.get(j).ballColliding(balls.get(i)))
-      		paddles.get(j).reflectBall(balls.get(i));
-      }
+      for (j = 0; j < bricks.size(); j++)
+        bricks.get(j).actOnBall(balls.get(i));
+      for (j = 0; j < paddles.size(); j++)
+        if (paddles.get(j).ballColliding(balls.get(i)))
+      	  paddles.get(j).reflectBall(balls.get(i));
     }
+  }
+
+  private void level1() {
+    c = #63F702;
+    balls = new Container<Ball>();
+    balls.add(new Ball(20, #FFFFFF));
+    paddles = new Container<Paddle>();
+    paddles.add(new Paddle(100.0, "colors.jpg"));
+    bricks = new Container<Brick>(12);
+    // stack of three trapezoids in top left
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {50, 200},
+          {150, 200},
+          {150, 100},
+          {50, 150}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {100, 150},
+          {150, 150},
+          {150, 100},
+          {100, 125}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.get(1).stack(bricks.get(0));
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {125, 125},
+          {150, 125},
+          {150, 100},
+          {125, 112.5}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.get(2).stack(bricks.get(1));
+    // stack of three trapezoids in top right
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {850, 200},
+          {850, 100},
+          {950, 150},
+          {950, 200}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {850, 150},
+          {850, 100},
+          {900, 125},
+          {900, 150}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.get(4).stack(bricks.get(3));
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {850, 125},
+          {850, 100},
+          {875, 112.5},
+          {875, 125}
+        },
+        100, "gray_brick.jpg"
+        )
+      );
+    bricks.get(5).stack(bricks.get(4));
+    // two cylinders rotating at 0.25 rev/sec
+    bricks.add(
+    	new Cylinder(
+    		new float[] {100, 600},
+    		75, 300, 60, "mr_k.jpg", 0.25 * TWO_PI
+    		)
+    	);
+    bricks.add(
+    	new Cylinder(
+    		new float[] {900, 600},
+    		75, 300, 60, "mr_k.jpg", -0.25 * TWO_PI
+    		)
+    	);
+    // pentagon in the center moving up and down,
+    // each cycle lasting 20 seconds
+    bricks.add(
+      new Prism(
+        new float[][] {
+          {450, 200},
+          {550, 200},
+          {550, 150},
+          {500, 100},
+          {450, 150}
+        },
+        30, #FF0000,
+        new float[] {0, 10}, 100
+        )
+      );
+    // two spinning tops rotating at 2 rev/sec
+    bricks.add(
+      new Sphere(
+        new float[] {300, 450},
+        50, 60, 4, "colors.jpg", 2 * TWO_PI
+        )
+      );
+    bricks.add(
+      new Sphere(
+        new float[] {700, 450},
+        50, 60, 4, "colors.jpg", -2 * TWO_PI
+        )
+      );
+    // model Earth rotating at 0.1 rev/sec
+    bricks.add(
+      new Sphere(
+        new float[] {500, 450},
+        100, 120, 60, "world.jpg", 0.1 * TWO_PI
+        )
+      );
   }
 }

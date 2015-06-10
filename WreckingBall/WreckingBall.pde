@@ -1,14 +1,21 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE;
-int[][] m = {{-55,-155,0},{60,-40,2},{175,75,4},{290,190,8}};
-boolean mouseClicked = false;
+int frameRate = 60;
+float g = -98;  // acceleration due to gravity
 
 Board board;
+// The level determines how the board is set up;
+int level;
 // The board's size is 1000 * 1000;
 final int boardLength = 1000;
 // The default camera position is adjusted for a window
 // whose sides are 3/4 the boardLength.
 final float defaultCameraZ = boardLength / 2.0 / tan(PI / 6);
+// The board operates on several different Containers.
+Container<Brick> bricks;
+Container<Ball> balls;
+Container<Paddle> paddles;
+// Container<Powerup> powerups;
 
 // The default view angle about the x-axis is PI / 3.
 float viewAngleX = PI / 3;
@@ -20,6 +27,8 @@ int zoomFactor = 0;
 float cameraZ = defaultCameraZ;
 
 Menu menu;
+int[][] m = {{-55,-155,0},{60,-40,2},{175,75,4},{290,190,8}};
+boolean mouseClicked = false;
 
 void setup() {
   // The default shape of the window is a square.
@@ -30,7 +39,7 @@ void setup() {
   if (frame != null)
     frame.setResizable(true);
   menu = new Menu();
-  board = new Board();
+  board = new Board(1);
   mode = MENU;
 }
 
@@ -56,7 +65,7 @@ void draw() {
       break;
   }
 }
-  
+
 void title() {
   // title stuff goes here...
   mode = MENU;
@@ -148,8 +157,8 @@ void mouseDragged() {
           viewAngleY = QUARTER_PI;
       }
     }
-  
-  case OPTIONS:
+
+    case OPTIONS:
     for(int[] i : m){
       if(menu.pressed == 999 && !(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225)){
         menu.pressed = 0;
@@ -157,14 +166,14 @@ void mouseDragged() {
       }
       if(i[0] == menu.pressed && !(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)){
         menu.pressed = 0;
-        break; 
+        break;
       }
-    } 
-  
-  case MENU:
-    if((menu.pressed2 == 1 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)) || 
+    }
+
+    case MENU:
+    if((menu.pressed2 == 1 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150)) ||
     (menu.pressed2 == 2 && !(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50))){
-      menu.pressed2 = 0; 
+      menu.pressed2 = 0;
     }
   }
 }
@@ -194,7 +203,7 @@ public void mousePressed(){
   case OPTIONS:
     for(int[] i : m){
       if(mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
-        menu.pressed = 999; 
+        menu.pressed = 999;
         break;
       }
       if(mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
@@ -207,7 +216,7 @@ public void mousePressed(){
       menu.pressed2 = 1;
     }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
       menu.pressed2 = 2;
-    }  
+    }
   }
 }
 
@@ -218,7 +227,7 @@ public void mouseReleased(){
       if(menu.pressed == 999 && mouseX <= width / 2.0 + 262.5 && mouseX >= width / 2.0 + 75 && mouseY <= height / 2.0 +337.5 && mouseY >= height / 2.0 +225){
         menu.pressed = 0;
         menu.pressed2 = 0;
-        mode = MENU; 
+        mode = MENU;
         return;
       }
       if(menu.pressed == i[0] && mouseX <= width / 2.0 + i[0] && mouseX >= width / 2.0 + i[1] && mouseY <= height / 2.0 - 50 && mouseY >= height / 2.0 - 150){ //is the mouse within the appropriate smoothness box
@@ -235,7 +244,7 @@ public void mouseReleased(){
     }else if(mouseX <= width / 2.0 + 200 && mouseX >= width / 2.0 - 200 && mouseY <= height / 2.0 + 150 && mouseY >= height / 2.0 + 50){
       menu.pressed2 = 0;
       mode = OPTIONS;
-    }  
+    }
   }
 }
 

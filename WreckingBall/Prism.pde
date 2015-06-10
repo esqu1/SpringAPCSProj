@@ -24,23 +24,23 @@ public class Prism implements Brick {
 
   private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
-  
+
   private Brick above, below;
   // bricks directly above and below this one
-  
+
   private float[] velocity;
-  // velocity of the brick
+  // velocity of the prism
+
+  private float maxDist, currentDist;
+  // how far the prism can go and how far it has gone
 
   public Prism(
     float[][] vertices,
-    float prismHeight,
-    float distanceToBoard,
-    color rgb
+    float prismHeight
     ) {
     v = vertices;
     h = prismHeight;
-    d = distanceToBoard;
-    c = rgb;
+    velocity = new float[3];
     int i;
     normals = new float[v.length][2];
     for (i = 0; i < v.length - 1; i++)
@@ -59,29 +59,22 @@ public class Prism implements Brick {
   public Prism(
     float[][] vertices,
     float prismHeight,
-    float distanceToBoard,
+    color rgb
+    ) {
+    this(vertices, prismHeight);
+    c = rgb;
+  }
+
+  public Prism(
+    float[][] vertices,
+    float prismHeight,
     String texture
     ) {
-    v = vertices;
-    h = prismHeight;
-    d = distanceToBoard;
+    this(vertices, prismHeight);
     t = loadImage(texture);
-    int i;
-    normals = new float[v.length][2];
-    for (i = 0; i < v.length - 1; i++)
-      normals[i] = M.norm(v[i], v[i + 1]);
-    normals[v.length - 1] = M.norm(v[v.length - 1], v[0]);
-    minX = v[0][0];
-    minY = v[0][1];
-    for (i = 1; i < v.length; i++) {
-      if (v[i][0] < minX)
-        minX = v[i][0];
-      if (v[i][1] < minY)
-        minY = v[i][1];
-    }
     textureX = new float[v.length + 1];
     textureX[0] = 0;
-    for (i = 1; i < v.length; i++)
+    for (int i = 1; i < v.length; i++)
       textureX[i] =
         textureX[i - 1] +
         M.dist(v[i - 1], v[i]);
@@ -90,195 +83,81 @@ public class Prism implements Brick {
       M.dist(v[v.length - 1], v[0]);
   }
 
-  public void draw() {
-    move();
-    if (t == null)
-      drawWithoutTexture();
-    else
-      drawWithTexture();
+  public Prism(
+    float[][] vertices,
+    float prismHeight,
+    color rgb,
+    float[] prismVelocity,
+    float oscillationDistance
+    ) {
+    this(vertices, prismHeight, rgb);
+    velocity[0] = prismVelocity[0];
+    velocity[1] = prismVelocity[1];
+    maxDist = oscillationDistance;
   }
 
-  private void drawWithoutTexture() {
-    fill(c);
-    pushMatrix();
-    translate(0, 0, d);
-    int i;
-    // Draw the bottom face.
-    beginShape();
-    normal(0, 0, -1);
-    for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], 0);
-    endShape(CLOSE);
-    // Draw the top face.
-    beginShape();
-    normal(0, 0, 1);
-    for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], h);
-    endShape(CLOSE);
-    // Draw the lateral faces.
-    beginShape(QUAD_STRIP);
-    for(i = 0; i < v.length - 1; i++) {
-      normal(normals[i][0], normals[i][1], 0);
-      vertex(v[i][0], v[i][1], h);
-      vertex(v[i][0], v[i][1], 0);
-      vertex(v[i + 1][0], v[i + 1][1], h);
-      vertex(v[i + 1][0], v[i + 1][1], 0);
-    }
-    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
-    vertex(v[v.length - 1][0], v[v.length - 1][1], h);
-    vertex(v[v.length - 1][0], v[v.length - 1][1], 0);
-    vertex(v[0][0], v[0][1], h);
-    vertex(v[0][0], v[0][1], 0);
-    endShape(CLOSE);
-    popMatrix();
+  public Prism(
+    float[][] vertices,
+    float prismHeight,
+    String texture,
+    float[] prismVelocity,
+    float oscillationDistance
+    ) {
+    this(vertices, prismHeight, texture);
+    velocity[0] = prismVelocity[0];
+    velocity[1] = prismVelocity[1];
+    maxDist = oscillationDistance;
   }
 
-  private void drawWithTexture() {
-    noStroke();
-    pushMatrix();
-    translate(0, 0, d);
-    int i;
-    // Draw the bottom face.
-    beginShape();
-    texture(t);
-    normal(0, 0, -1);
-    for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], 0, v[i][0] - minX, v[i][1] - minY);
-    endShape(CLOSE);
-    // Draw the top face.
-    beginShape();
-    texture(t);
-    normal(0, 0, 1);
-    for (i = 0; i < v.length; i++)
-      vertex(v[i][0], v[i][1], h, v[i][0] - minX, v[i][1] - minY);
-    endShape(CLOSE);
-    // Draw the lateral faces.
-    beginShape(QUAD_STRIP);
-    texture(t);
-    for(i = 0; i < v.length - 1; i++) {
-      normal(normals[i][0], normals[i][1], 0);
-      vertex(v[i][0], v[i][1], h, textureX[i], 0);
-      vertex(v[i][0], v[i][1], 0, textureX[i], h);
-      vertex(v[i + 1][0], v[i + 1][1], h, textureX[i + 1], 0);
-      vertex(v[i + 1][0], v[i + 1][1], 0, textureX[i + 1], h);
-    }
-    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
-    vertex(v[v.length - 1][0], v[v.length - 1][1], h, textureX[v.length - 1], 0);
-    vertex(v[v.length - 1][0], v[v.length - 1][1], 0, textureX[v.length - 1], h);
-    vertex(v[0][0], v[0][1], h, textureX[v.length], 0);
-    vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
-    endShape(CLOSE);
-    popMatrix();
-  }
-  
-  private void move() {
-    // x(t) = x_0 + v * t
-    for (int i = 0; i < v.length; i++) {
-      v[i][0] += velocity[0] / 30;
-      v[i][1] += velocity[1] / 30;
-    }
-    if (below == null) {
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        // if motion has been dampened enough, just stop
-        velocity[2] = 0;
-        d = 0;
-      }
-      if (d > 0)
-        // v(t) = v_0 + a * t
-        velocity[2] -= 0.372;
-      else if (d < 0)
-        // bounce back up
-        velocity[2] *= -0.2;
-    }
-    else {
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        velocity[2] = 0;
-        d = below.d + below.h;
-      }
-      if (d > below.d + below.h)
-        velocity[2] -= 0.372;
-      else if (d < below.d + below.h)
-        velocity[2] *= -0.2;
-    }
-    d += velocity[2] / 30;
+  public float getHeight() {
+    return h;
   }
 
-  // COULD BE USEFUL?
-  private void drawNormals() {
-    // draws normals to each of the vertical faces of the prism
-    float[] normal;
-    stroke(#FFFFFF);
-    strokeWeight(6);
-    for (int i = 0; i < v.length - 1; i++) {
-      normal = M.scale(M.norm(v[i], v[i + 1]), 100);
-      line(
-        v[i][0],
-        v[i][1],
-        M.sum(normal, v[i])[0],
-        M.sum(normal, v[i])[1]
-        );
-    }
-    normal = M.scale(M.norm(v[v.length - 1], v[0]), 100);
-    line(
-      v[v.length - 1][0],
-      v[v.length - 1][1],
-      M.sum(normal, v[v.length - 1])[0],
-      M.sum(normal, v[v.length - 1])[1]
-      );
-    strokeWeight(1);
-    stroke(#000000);
+  public float getElevation() {
+    return d;
   }
 
-  // COULD BE USEFUL?
-  private void drawCornerMidlines() {
-    // draws lines that are equidistant from the faces that
-    // meet at each vertex
-    stroke(#FFFFFF);
-    strokeWeight(6);
-    float[] midline;
-    midline = M.sum(
-      v[0],
-      M.scale(
-        M.dif(v[0], v[1]),
-        100 / M.mag(M.dif(v[0], v[1]))
-        ),
-      M.scale(
-        M.dif(v[0], v[v.length - 1]),
-        100 / M.mag(M.dif(v[0], v[v.length - 1]))
-        )
-      );
-    line(v[0][0], v[0][1], midline[0], midline[1]);
-    for (int i = 1; i < v.length - 1; i++) {
-      midline = M.sum(
-        v[i],
-        M.scale(
-          M.dif(v[i], v[i + 1]),
-          100 / M.mag(M.dif(v[i], v[i + 1]))
-          ),
-        M.scale(
-          M.dif(v[i], v[i - 1]),
-          100 / M.mag(M.dif(v[i], v[i - 1]))
-          )
-        );
-      line(v[i][0], v[i][1], midline[0], midline[1]);
-    }
-    midline = M.sum(
-      v[v.length - 1],
-      M.scale(
-        M.dif(v[v.length - 1], v[0]),
-        100 / M.mag(M.dif(v[v.length - 1], v[0]))
-        ),
-      M.scale(
-        M.dif(v[v.length - 1], v[v.length - 2]),
-        100 / M.mag(M.dif(v[v.length - 1], v[v.length - 2]))
-        )
-      );
-    line(v[v.length - 1][0], v[v.length - 1][1], midline[0], midline[1]);
-    strokeWeight(1);
-    stroke(#000000);
+  public void setAbove(Brick b) {
+    above = b;
   }
 
-  public boolean ballColliding(Ball b) {
+  public void setBelow(Brick b) {
+    below = b;
+  }
+
+  public void stack(Brick b) {
+    below = b;
+    b.setAbove(this);
+  }
+
+  public void setColor(color rgb) {
+    c = rgb;
+    t = null;
+  }
+
+  public void setTexture(String texture) {
+    t = loadImage(texture);
+    if (textureX == null) {
+      textureX = new float[v.length + 1];
+      textureX[0] = 0;
+      for (int i = 1; i < v.length; i++)
+        textureX[i] =
+          textureX[i - 1] +
+          M.dist(v[i - 1], v[i]);
+      textureX[v.length] =
+        textureX[v.length - 1] +
+        M.dist(v[v.length - 1], v[0]);
+    }
+  }
+
+  public void actOnBall(Ball b) {
+    if (ballColliding(b)) {
+      reflectBall(b);
+      die();
+    }
+  }
+
+  private boolean ballColliding(Ball b) {
     int i;
     float eqRadius; // equivalent ball radius
     float[] normalRadius;
@@ -401,11 +280,7 @@ public class Prism implements Brick {
     return false;
   }
 
-  public void reflectBall(Ball b) {
-    if (reflectionNormal == null)
-      throw new Error(
-        "ERROR: reflectBall() can only be called if ballColliding() returned true"
-        );
+  private void reflectBall(Ball b) {
     // v_r = v_i - 2(v_i . n)n
     b.setVelocity(
       M.dif(
@@ -419,33 +294,210 @@ public class Prism implements Brick {
     reflectionNormal = null;
   }
 
-  public float getHeight() {
-    return h;
+  private void die() {
+    bricks.remove(this);
+    if (above != null)
+      above.setBelow(below);
   }
 
-  public void setColor(color rgb) {
-    c = rgb;
-    t = null;
+  public void draw() {
+    move();
+    if (t == null)
+      drawWithoutTexture();
+    else
+      drawWithTexture();
   }
 
-  public void setTexture(String texture) {
-    t = loadImage(texture);
-    if (textureX == null) {
-      textureX = new float[v.length + 1];
-      textureX[0] = 0;
-      for (int i = 1; i < v.length; i++)
-        textureX[i] =
-          textureX[i - 1] +
-          M.dist(v[i - 1], v[i]);
-      textureX[v.length] =
-        textureX[v.length - 1] +
-        M.dist(v[v.length - 1], v[0]);
+  private void move() {
+    // x(t) = x_0 + v * t
+    for (int i = 0; i < v.length; i++) {
+      v[i][0] += velocity[0] / frameRate;
+      v[i][1] += velocity[1] / frameRate;
     }
+    currentDist += sqrt(sq(velocity[0] / frameRate) + sq(velocity[1] / frameRate));
+    if (currentDist > maxDist) {
+      velocity[0] *= -1;
+      velocity[1] *= -1;
+      currentDist = 0;
+    }
+    if (below == null) {
+      if (d > 0)
+        // v(t) = v_0 + a * t
+        velocity[2] += g / frameRate;
+      else {
+        // bounce back up with dampened motion
+        velocity[2] /= -3;
+        d = velocity[2] / frameRate;
+      }
+      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
+        // if motion has been dampened enough, stop
+        velocity[2] = 0;
+        d = 0;
+      }
+    }
+    else {
+      if (d > below.getElevation() + below.getHeight())
+        // v(t) = v_0 + a * t
+        velocity[2] += g / frameRate;
+      else {
+        // bounce back up with dampened motion
+        velocity[2] /= -3;
+        d = below.getElevation() + below.getHeight() + velocity[2] / frameRate;
+      }
+      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
+        // if motion has been dampened enough, stop
+        velocity[2] = 0;
+        d = below.getElevation() + below.getHeight();
+      }
+    }
+    d += velocity[2] / frameRate;
   }
-  
-  public void stack(Brick b) {
-    above = b;
-    b.below = this;
+
+  private void drawWithoutTexture() {
+    fill(c);
+    pushMatrix();
+    translate(0, 0, d);
+    int i;
+    // Draw the bottom face.
+    beginShape();
+    normal(0, 0, -1);
+    for (i = 0; i < v.length; i++)
+      vertex(v[i][0], v[i][1], 0);
+    endShape(CLOSE);
+    // Draw the top face.
+    beginShape();
+    normal(0, 0, 1);
+    for (i = 0; i < v.length; i++)
+      vertex(v[i][0], v[i][1], h);
+    endShape(CLOSE);
+    // Draw the lateral faces.
+    beginShape(QUAD_STRIP);
+    for(i = 0; i < v.length - 1; i++) {
+      normal(normals[i][0], normals[i][1], 0);
+      vertex(v[i][0], v[i][1], h);
+      vertex(v[i][0], v[i][1], 0);
+      vertex(v[i + 1][0], v[i + 1][1], h);
+      vertex(v[i + 1][0], v[i + 1][1], 0);
+    }
+    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], h);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], 0);
+    vertex(v[0][0], v[0][1], h);
+    vertex(v[0][0], v[0][1], 0);
+    endShape(CLOSE);
+    popMatrix();
   }
-  
+
+  private void drawWithTexture() {
+    noStroke();
+    pushMatrix();
+    translate(0, 0, d);
+    int i;
+    // Draw the bottom face.
+    beginShape();
+    texture(t);
+    normal(0, 0, -1);
+    for (i = 0; i < v.length; i++)
+      vertex(v[i][0], v[i][1], 0, v[i][0] - minX, v[i][1] - minY);
+    endShape(CLOSE);
+    // Draw the top face.
+    beginShape();
+    texture(t);
+    normal(0, 0, 1);
+    for (i = 0; i < v.length; i++)
+      vertex(v[i][0], v[i][1], h, v[i][0] - minX, v[i][1] - minY);
+    endShape(CLOSE);
+    // Draw the lateral faces.
+    beginShape(QUAD_STRIP);
+    texture(t);
+    for(i = 0; i < v.length - 1; i++) {
+      normal(normals[i][0], normals[i][1], 0);
+      vertex(v[i][0], v[i][1], h, textureX[i], 0);
+      vertex(v[i][0], v[i][1], 0, textureX[i], h);
+      vertex(v[i + 1][0], v[i + 1][1], h, textureX[i + 1], 0);
+      vertex(v[i + 1][0], v[i + 1][1], 0, textureX[i + 1], h);
+    }
+    normal(normals[v.length - 1][0], normals[v.length - 1][1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], h, textureX[v.length - 1], 0);
+    vertex(v[v.length - 1][0], v[v.length - 1][1], 0, textureX[v.length - 1], h);
+    vertex(v[0][0], v[0][1], h, textureX[v.length], 0);
+    vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
+    endShape(CLOSE);
+    popMatrix();
+  }
+
+  // COULD BE USEFUL?
+  private void drawNormals() {
+    // draws normals to each of the vertical faces of the prism
+    float[] normal;
+    stroke(#FFFFFF);
+    strokeWeight(6);
+    for (int i = 0; i < v.length - 1; i++) {
+      normal = M.scale(M.norm(v[i], v[i + 1]), 100);
+      line(
+        v[i][0],
+        v[i][1],
+        M.sum(normal, v[i])[0],
+        M.sum(normal, v[i])[1]
+        );
+    }
+    normal = M.scale(M.norm(v[v.length - 1], v[0]), 100);
+    line(
+      v[v.length - 1][0],
+      v[v.length - 1][1],
+      M.sum(normal, v[v.length - 1])[0],
+      M.sum(normal, v[v.length - 1])[1]
+      );
+    strokeWeight(1);
+    stroke(#000000);
+  }
+
+  // COULD BE USEFUL?
+  private void drawCornerMidlines() {
+    // draws lines that are equidistant from the faces that
+    // meet at each vertex
+    stroke(#FFFFFF);
+    strokeWeight(6);
+    float[] midline;
+    midline = M.sum(
+      v[0],
+      M.scale(
+        M.dif(v[0], v[1]),
+        100 / M.mag(M.dif(v[0], v[1]))
+        ),
+      M.scale(
+        M.dif(v[0], v[v.length - 1]),
+        100 / M.mag(M.dif(v[0], v[v.length - 1]))
+        )
+      );
+    line(v[0][0], v[0][1], midline[0], midline[1]);
+    for (int i = 1; i < v.length - 1; i++) {
+      midline = M.sum(
+        v[i],
+        M.scale(
+          M.dif(v[i], v[i + 1]),
+          100 / M.mag(M.dif(v[i], v[i + 1]))
+          ),
+        M.scale(
+          M.dif(v[i], v[i - 1]),
+          100 / M.mag(M.dif(v[i], v[i - 1]))
+          )
+        );
+      line(v[i][0], v[i][1], midline[0], midline[1]);
+    }
+    midline = M.sum(
+      v[v.length - 1],
+      M.scale(
+        M.dif(v[v.length - 1], v[0]),
+        100 / M.mag(M.dif(v[v.length - 1], v[0]))
+        ),
+      M.scale(
+        M.dif(v[v.length - 1], v[v.length - 2]),
+        100 / M.mag(M.dif(v[v.length - 1], v[v.length - 2]))
+        )
+      );
+    line(v[v.length - 1][0], v[v.length - 1][1], midline[0], midline[1]);
+    strokeWeight(1);
+    stroke(#000000);
+  }
 }
