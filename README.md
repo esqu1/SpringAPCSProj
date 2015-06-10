@@ -104,3 +104,14 @@ While doing this, Brandon fixed a bug that would cause the user to start playing
 Brandon also realized that he was being silly and his computer doesn't support smoothness, but he implemented it anyway.<br />
 Dennis discovered that Processing had been producing the wrong lighting for all of his bricks, and had to manually set the lighting conditions for each vertex.<br />
 Dennis then found a bunch of very high-resolution textures of celestial bodies that could be used later on.
+
+6/8/15<br />
+Dennis made a paddle that was essentially a modified prism whose shape followed the equation y = 0.2(x^6 - 1).<br />
+Dennis then started working on turning bricks into nodes of doubly-linked lists so that they could be stacked one on top of another.
+
+6/9/15<br />
+Dennis allowed bricks to accelerate downwards when the bricks under them were destroyed and then bounce up and down in dampened simple harmonic motion.<br />
+Dennis then gave bricks velocities in the x and y directions as well, so that they could move back and forth along pre-defined paths.<br />
+Dennis then gave bricks angular velocities, so that they could rotate in place or, in the case of spheres, roll along the ground.<br />
+Dennis then redid all the constructors for each type of brick to make them more elegant and efficient, and he also cleaned up the ball-bouncing code.<br />
+Finally, Dennis made the design of new levels much simpler.
