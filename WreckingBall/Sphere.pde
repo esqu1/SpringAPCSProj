@@ -259,7 +259,7 @@ public class Sphere implements Brick {
     // x(t) = x_0 + v * t
     center[0] += velocity[0] / frameRate;
     center[1] += velocity[1] / frameRate;
-    currentDist += sqrt(sq(velocity[0]) + sq(velocity[1]));
+    currentDist += sqrt(sq(velocity[0] / frameRate) + sq(velocity[1] / frameRate));
     if (currentDist > maxDist) {
       velocity[0] *= -1;
       velocity[1] *= -1;
@@ -298,7 +298,7 @@ public class Sphere implements Brick {
     d += velocity[2] / frameRate;
     // theta(t) = theta_0 + omega * t
     // omega = v / r
-    angleOfRolling += sqrt(sq(velocity[0] / frameRate) + sq(velocity[1] / frameRate)) / r / frameRate;
+    angleOfRolling += sqrt(sq(velocity[0]) + sq(velocity[1])) / r / frameRate;
     anlgeOfRotation += rotationVelocity / frameRate;
   }
 
