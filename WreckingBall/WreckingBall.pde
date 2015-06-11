@@ -50,7 +50,7 @@ void setup() {
   board = new Board(level);
   mode = MENU;
   minim = new Minim(this);
-  intro = minim.loadSample("8bit.wav",1024);
+  intro = minim.loadSample("Q.mp3",1024);
   intro.trigger();
 }
 
