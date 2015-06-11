@@ -1,5 +1,9 @@
+import ddf.minim.*;
+
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE;
+Minim minim;
+AudioSample intro;
 
 int frameRate = 60;
 // number of frames per second
@@ -45,6 +49,9 @@ void setup() {
   menu = new Menu();
   board = new Board(level);
   mode = MENU;
+  minim = new Minim(this);
+  intro = minim.loadSample("8bit.wav",1024);
+  intro.trigger();
 }
 
 void draw() {
