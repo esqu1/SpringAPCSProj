@@ -182,7 +182,7 @@ public class Paddle {
   }
 
   private void move() {
-    pos = mouseX;
+    pos = 1.0 * boardLength * mouseX / width;
     if (pos < size)
       pos = size;
     else if (pos > boardLength - size)

@@ -337,10 +337,10 @@ public class Sphere implements Brick {
       highestPointBelow =
         highestBrickBelow.getElevation() +
         highestBrickBelow.getHeight();
-    if (d > highestPointBelow)
+    if (d > highestPointBelow && gravity < 0)
       // if the brick is too high, it should fall down
       velocity[2] += gravity / frameRate;
-    else if (d < highestPointBelow) {
+    if (d < highestPointBelow) {
       // if the brick is too low, it should
       // bounce up with dampened motion
       velocity[2] *= -bounciness;

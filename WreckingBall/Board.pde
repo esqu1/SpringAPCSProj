@@ -36,7 +36,7 @@ public class Board {
     balls.add(new Ball(20, #FFFFFF));
     paddles = new Container<Paddle>();
     paddles.add(new Paddle(100.0, "colors.jpg"));
-    bricks = new Container<Brick>(12);
+    bricks = new Container<Brick>(13);
     // stack of three trapezoids in top left
     bricks.add(
       new Prism(
@@ -134,9 +134,16 @@ public class Board {
           {450, 150}
         },
         30, #FF0000,
-        new float[] {0, 10}, 100
+        new float[] {0, 50}, 100
         )
       );
+    bricks.add(
+      new Sphere(
+        new float[] {500, 150},
+        30, 60, 60, "pluto.jpg",
+        new float[] {0, 50}, 100
+      )
+    );
     // two spinning tops rotating at 2 rev/sec
     bricks.add(
       new Sphere(
