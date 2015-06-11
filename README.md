@@ -1,24 +1,11 @@
 ```
-YYYYYYY       YYYYYYY                        tttt                            lllllll   iiii                   
-Y:::::Y       Y:::::Y                     ttt:::t                            l:::::l  i::::i                  
-Y:::::Y       Y:::::Y                     t:::::t                            l:::::l   iiii                   
-Y::::::Y     Y::::::Y                     t:::::t                            l:::::l                          
-YYY:::::Y   Y:::::YYYaaaaaaaaaaaaa  ttttttt:::::ttttttt    uuuuuu    uuuuuu   l::::l iiiiiiinnnn  nnnnnnnn    
-   Y:::::Y Y:::::Y   a::::::::::::a t:::::::::::::::::t    u::::u    u::::u   l::::l i:::::in:::nn::::::::nn  
-    Y:::::Y:::::Y    aaaaaaaaa:::::at:::::::::::::::::t    u::::u    u::::u   l::::l  i::::in::::::::::::::nn 
-     Y:::::::::Y              a::::atttttt:::::::tttttt    u::::u    u::::u   l::::l  i::::inn:::::::::::::::n
-      Y:::::::Y        aaaaaaa:::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n:::::nnnn:::::n
-       Y:::::Y       aa::::::::::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n::::n    n::::n
-       Y:::::Y      a::::aaaa::::::a      t:::::t          u::::u    u::::u   l::::l  i::::i  n::::n    n::::n
-       Y:::::Y     a::::a    a:::::a      t:::::t    ttttttu:::::uuuu:::::u   l::::l  i::::i  n::::n    n::::n
-       Y:::::Y     a::::a    a:::::a      t::::::tttt:::::tu:::::::::::::::uul::::::li::::::i n::::n    n::::n
-    YYYY:::::YYYY  a:::::aaaa::::::a      tt::::::::::::::t u:::::::::::::::ul::::::li::::::i n::::n    n::::n
-    Y:::::::::::Y   a::::::::::aa:::a       tt:::::::::::tt  uu::::::::uu:::ul::::::li::::::i n::::n    n::::n
-    YYYYYYYYYYYYY    aaaaaaaaaa  aaaa         ttttttttttt      uuuuuuuu  uuuulllllllliiiiiiii nnnnnn    nnnnnn
+___________                     _____.___.       __        .____    .__        
+\__    ___/___ _____    _____   \__  |   |____ _/  |_ __ __|    |   |__| ____  
+  |    |_/ __ \\__  \  /     \   /   |   \__  \\   __\  |  \    |   |  |/    \ 
+  |    |\  ___/ / __ \|  Y Y  \  \____   |/ __ \|  | |  |  /    |___|  |   |  \
+  |____| \___  >____  /__|_|  /  / ______(____  /__| |____/|_______ \__|___|  /
+             \/     \/      \/   \/           \/                   \/       \/ 
 ```
-
-Research suggests that there is a strong correlation between size of a team name and amazingness of said team's
-final submission.
 
 Project Name: Wrecking Ball<br />
 (This is to distinguish it from Dennis's project from term one of Intro – Wreckerball.)<br />
@@ -115,3 +102,7 @@ Dennis then gave bricks velocities in the x and y directions as well, so that th
 Dennis then gave bricks angular velocities, so that they could rotate in place or, in the case of spheres, roll along the ground.<br />
 Dennis then redid all the constructors for each type of brick to make them more elegant and efficient, and he also cleaned up the ball-bouncing code.<br />
 Finally, Dennis made the design of new levels much simpler.
+
+6/10/15<br />
+Dennis redid the brick-falling mechanism to make it more physically accurate and to allow for anti-gravity.<br />
+Dennis then worked on a way for multiple bricks to be put directly on top of a given brick and for one brick to be put on top of several bricks.
