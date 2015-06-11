@@ -25,14 +25,22 @@ public class Prism implements Brick {
   private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
 
-  private Brick above, below;
+  private Container<Brick> above, below;
   // bricks directly above and below this one
+
+  private Brick highestBrickBelow;
+  // the brick in the below container with the
+  // greatest value of getElevation() + getHeight()
 
   private float[] velocity;
   // velocity of the prism
 
-  private float maxDist, currentDist;
-  // how far the prism can go and how far it has gone
+  private float maxDist, currentDist, distIncrement;
+  // how far the prism can go, how far it has gone,
+  // and how far it goes each frame
+
+  private float lastDampenedV;
+  // velocity of the prism last time it bounced up
 
   public Prism(
     float[][] vertices,
@@ -54,6 +62,8 @@ public class Prism implements Brick {
       if (v[i][1] < minY)
         minY = v[i][1];
     }
+    above = new Container<Brick>();
+    below = new Container<Brick>();
   }
 
   public Prism(
@@ -94,6 +104,9 @@ public class Prism implements Brick {
     velocity[0] = prismVelocity[0];
     velocity[1] = prismVelocity[1];
     maxDist = oscillationDistance;
+    distIncrement =
+      sqrt(sq(velocity[0] / frameRate) +
+        sq(velocity[1] / frameRate));
   }
 
   public Prism(
@@ -107,6 +120,9 @@ public class Prism implements Brick {
     velocity[0] = prismVelocity[0];
     velocity[1] = prismVelocity[1];
     maxDist = oscillationDistance;
+    distIncrement =
+      sqrt(sq(velocity[0] / frameRate) +
+        sq(velocity[1] / frameRate));
   }
 
   public float getHeight() {
@@ -117,17 +133,49 @@ public class Prism implements Brick {
     return d;
   }
 
-  public void setAbove(Brick b) {
-    above = b;
+  public void addAbove(Brick b) {
+    above.add(b);
   }
 
-  public void setBelow(Brick b) {
-    below = b;
+  public void addBelow(Brick b) {
+    below.add(b);
+    if (highestBrickBelow == null)
+      highestBrickBelow = b;
+    else if (
+      b.getElevation() +
+      b.getHeight() >
+      highestBrickBelow.getElevation() +
+      highestBrickBelow.getHeight()
+      )
+      highestBrickBelow = b;
+  }
+
+  public void removeAbove(Brick b) {
+    above.remove(b);
+  }
+
+  public void removeBelow(Brick b) {
+    below.remove(b);
+    highestBrickBelow = null;
+    if (below.size() > 0)
+      highestBrickBelow = below.get(0);
+    for (int i = 1; i < below.size(); i++)
+      if (
+        b.getElevation() +
+        b.getHeight() >
+        highestBrickBelow.getElevation() +
+        highestBrickBelow.getHeight()
+        )
+        highestBrickBelow = below.get(i);
+  }
+
+  public boolean overlaps(Brick b) {
+    return true; // damn this will be hard to implement
   }
 
   public void stack(Brick b) {
-    below = b;
-    b.setAbove(this);
+    addBelow(b);
+    b.addAbove(this);
   }
 
   public void setColor(color rgb) {
@@ -296,8 +344,19 @@ public class Prism implements Brick {
 
   private void die() {
     bricks.remove(this);
-    if (above != null)
-      above.setBelow(below);
+    int i, j;
+    for (i = 0; i < above.size(); i++) {
+      above.get(i).removeBelow(this);
+      for (j = 0; j < below.size(); j++)
+       if (above.get(i).overlaps(below.get(j)))
+        above.get(i).addBelow(below.get(j));
+    }
+    for (i = 0; i < below.size(); i++) {
+      below.get(i).removeAbove(this);
+      for (j = 0; j < above.size(); j++)
+       if (below.get(i).overlaps(above.get(j)))
+        below.get(i).addBelow(above.get(j));
+    }
   }
 
   public void draw() {
@@ -314,43 +373,43 @@ public class Prism implements Brick {
       v[i][0] += velocity[0] / frameRate;
       v[i][1] += velocity[1] / frameRate;
     }
-    currentDist += sqrt(sq(velocity[0] / frameRate) + sq(velocity[1] / frameRate));
+    currentDist += distIncrement;
     if (currentDist > maxDist) {
       velocity[0] *= -1;
       velocity[1] *= -1;
       currentDist = 0;
     }
-    if (below == null) {
-      if (d > 0)
-        // v(t) = v_0 + a * t
-        velocity[2] += g / frameRate;
-      else {
-        // bounce back up with dampened motion
-        velocity[2] /= -3;
-        d = velocity[2] / frameRate;
-      }
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        // if motion has been dampened enough, stop
-        velocity[2] = 0;
-        d = 0;
-      }
-    }
-    else {
-      if (d > below.getElevation() + below.getHeight())
-        // v(t) = v_0 + a * t
-        velocity[2] += g / frameRate;
-      else {
-        // bounce back up with dampened motion
-        velocity[2] /= -3;
-        d = below.getElevation() + below.getHeight() + velocity[2] / frameRate;
-      }
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        // if motion has been dampened enough, stop
-        velocity[2] = 0;
-        d = below.getElevation() + below.getHeight();
-      }
-    }
+    // x(t) = x_0 + v * t
     d += velocity[2] / frameRate;
+    if (gravity > 0)
+      // always float if there is anti-gravity
+      // v(t) = v_0 + a * t
+      velocity[2] += gravity / frameRate;
+    float highestPointBelow;
+    if (highestBrickBelow == null)
+      highestPointBelow = 0;
+    else
+      highestPointBelow =
+        highestBrickBelow.getElevation() +
+        highestBrickBelow.getHeight();
+    if (d > highestPointBelow)
+      // if the brick is too high, it should fall down
+      velocity[2] += gravity / frameRate;
+    else if (d < highestPointBelow) {
+      // if the brick is too low, it should
+      // bounce up with dampened motion
+      velocity[2] *= -bounciness;
+      if (
+        (int) (velocity[2] * 10000) ==
+        (int) (lastDampenedV * 10000)
+        )
+        // motion will eventually become constant by this
+        // algorithm, but there may be floating-point error
+        velocity[2] = 0;
+      else
+        lastDampenedV = velocity[2];
+      d = highestPointBelow;
+    }
   }
 
   private void drawWithoutTexture() {
@@ -424,80 +483,5 @@ public class Prism implements Brick {
     vertex(v[0][0], v[0][1], 0, textureX[v.length], h);
     endShape(CLOSE);
     popMatrix();
-  }
-
-  // COULD BE USEFUL?
-  private void drawNormals() {
-    // draws normals to each of the vertical faces of the prism
-    float[] normal;
-    stroke(#FFFFFF);
-    strokeWeight(6);
-    for (int i = 0; i < v.length - 1; i++) {
-      normal = M.scale(M.norm(v[i], v[i + 1]), 100);
-      line(
-        v[i][0],
-        v[i][1],
-        M.sum(normal, v[i])[0],
-        M.sum(normal, v[i])[1]
-        );
-    }
-    normal = M.scale(M.norm(v[v.length - 1], v[0]), 100);
-    line(
-      v[v.length - 1][0],
-      v[v.length - 1][1],
-      M.sum(normal, v[v.length - 1])[0],
-      M.sum(normal, v[v.length - 1])[1]
-      );
-    strokeWeight(1);
-    stroke(#000000);
-  }
-
-  // COULD BE USEFUL?
-  private void drawCornerMidlines() {
-    // draws lines that are equidistant from the faces that
-    // meet at each vertex
-    stroke(#FFFFFF);
-    strokeWeight(6);
-    float[] midline;
-    midline = M.sum(
-      v[0],
-      M.scale(
-        M.dif(v[0], v[1]),
-        100 / M.mag(M.dif(v[0], v[1]))
-        ),
-      M.scale(
-        M.dif(v[0], v[v.length - 1]),
-        100 / M.mag(M.dif(v[0], v[v.length - 1]))
-        )
-      );
-    line(v[0][0], v[0][1], midline[0], midline[1]);
-    for (int i = 1; i < v.length - 1; i++) {
-      midline = M.sum(
-        v[i],
-        M.scale(
-          M.dif(v[i], v[i + 1]),
-          100 / M.mag(M.dif(v[i], v[i + 1]))
-          ),
-        M.scale(
-          M.dif(v[i], v[i - 1]),
-          100 / M.mag(M.dif(v[i], v[i - 1]))
-          )
-        );
-      line(v[i][0], v[i][1], midline[0], midline[1]);
-    }
-    midline = M.sum(
-      v[v.length - 1],
-      M.scale(
-        M.dif(v[v.length - 1], v[0]),
-        100 / M.mag(M.dif(v[v.length - 1], v[0]))
-        ),
-      M.scale(
-        M.dif(v[v.length - 1], v[v.length - 2]),
-        100 / M.mag(M.dif(v[v.length - 1], v[v.length - 2]))
-        )
-      );
-    line(v[v.length - 1][0], v[v.length - 1][1], midline[0], midline[1]);
-    strokeWeight(1);
-    stroke(#000000);
   }
 }

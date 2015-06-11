@@ -1,22 +1,26 @@
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE;
-int frameRate = 60;
-float g = -98;  // acceleration due to gravity
 
+int frameRate = 60;
+// number of frames per second
+float gravity = -300;
+// acceleration due to gravity
+float bounciness = 0.4;
+// bounciness of surfaces (must be less than 1)
+
+int level = 1;
 Board board;
-// The level determines how the board is set up;
-int level;
-// The board's size is 1000 * 1000;
+// The board's size is 1000 * 1000.
 final int boardLength = 1000;
-// The default camera position is adjusted for a window
-// whose sides are 3/4 the boardLength.
-final float defaultCameraZ = boardLength / 2.0 / tan(PI / 6);
 // The board operates on several different Containers.
 Container<Brick> bricks;
 Container<Ball> balls;
 Container<Paddle> paddles;
 // Container<Powerup> powerups;
 
+// The default camera position is adjusted for a window
+// whose sides are 3/4 the boardLength.
+final float defaultCameraZ = boardLength / 2.0 / tan(PI / 6);
 // The default view angle about the x-axis is PI / 3.
 float viewAngleX = PI / 3;
 // The default view angle about the y-axis is 0.
@@ -39,7 +43,7 @@ void setup() {
   if (frame != null)
     frame.setResizable(true);
   menu = new Menu();
-  board = new Board(1);
+  board = new Board(level);
   mode = MENU;
 }
 
@@ -261,5 +265,7 @@ void keyPressed(KeyEvent ke) {
       zoomFactor = 0;
       cameraZ = defaultCameraZ;
     }
+    if (ke.getKeyCode() == 'A')
+      gravity *= -1;
   }
 }

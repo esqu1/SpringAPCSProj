@@ -5,11 +5,20 @@ public interface Brick {
   // returns the elevation of the brick
   public float getElevation();
 
-  // sets the brick directly above this one
-  public void setAbove(Brick b);
+  // adds a brick directly above this one
+  public void addAbove(Brick b);
 
-  // sets the brick directly below this one
-  public void setBelow(Brick b);
+  // adds a brick directly below this one
+  public void addBelow(Brick b);
+
+  // removes a brick directly above this one
+  public void removeAbove(Brick b);
+
+  // removes a brick directly below this one
+  public void removeBelow(Brick b);
+
+  // determines whether this brick overlaps another
+  public boolean overlaps(Brick b);
 
   // puts this brick on top of another one
   public void stack(Brick b);

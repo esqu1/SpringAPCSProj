@@ -35,14 +35,22 @@ public class Sphere implements Brick {
   private float[] reflectionNormal;
   // normal to the point on the sphere that the ball bounces off of
 
-  private Brick above, below;
+  private Container<Brick> above, below;
   // bricks directly above and below this one
+
+  private Brick highestBrickBelow;
+  // the brick in the below container with the
+  // greatest value of getElevation() + getHeight()
 
   private float[] velocity;
   // velocity of the sphere
 
-  private float maxDist, currentDist;
-  // how far the sphere can go and how far it has gone
+  private float maxDist, currentDist, distIncrement;
+  // how far the prism can go, how far it has gone,
+  // and how far it goes each frame
+
+  private float lastDampenedV;
+  // velocity of the prism last time it bounced up
 
   public Sphere(
     float[] centre,
@@ -82,6 +90,8 @@ public class Sphere implements Brick {
             unitSphereXYZ[i][j],
             unitSphereXYZ[i][j + 1]
             );
+    above = new Container<Brick>();
+    below = new Container<Brick>();
   }
 
   public Sphere(
@@ -150,6 +160,9 @@ public class Sphere implements Brick {
     velocity[0] = sphereVelocity[0];
     velocity[1] = sphereVelocity[1];
     maxDist = oscillationDistance;
+    distIncrement =
+      sqrt(sq(velocity[0] / frameRate) +
+        sq(velocity[1] / frameRate));
   }
 
   public Sphere(
@@ -165,6 +178,9 @@ public class Sphere implements Brick {
     velocity[0] = sphereVelocity[0];
     velocity[1] = sphereVelocity[1];
     maxDist = oscillationDistance;
+    distIncrement =
+      sqrt(sq(velocity[0] / frameRate) +
+        sq(velocity[1] / frameRate));
   }
 
   public float getHeight() {
@@ -175,17 +191,49 @@ public class Sphere implements Brick {
     return d;
   }
 
-  public void setAbove(Brick b) {
-    above = b;
+  public void addAbove(Brick b) {
+    above.add(b);
   }
 
-  public void setBelow(Brick b) {
-    below = b;
+  public void addBelow(Brick b) {
+    below.add(b);
+    if (highestBrickBelow == null)
+      highestBrickBelow = b;
+    else if (
+      b.getElevation() +
+      b.getHeight() >
+      highestBrickBelow.getElevation() +
+      highestBrickBelow.getHeight()
+      )
+      highestBrickBelow = b;
+  }
+
+  public void removeAbove(Brick b) {
+    above.remove(b);
+  }
+
+  public void removeBelow(Brick b) {
+    below.remove(b);
+    highestBrickBelow = null;
+    if (below.size() > 0)
+      highestBrickBelow = below.get(0);
+    for (int i = 1; i < below.size(); i++)
+      if (
+        b.getElevation() +
+        b.getHeight() >
+        highestBrickBelow.getElevation() +
+        highestBrickBelow.getHeight()
+        )
+        highestBrickBelow = below.get(i);
+  }
+
+  public boolean overlaps(Brick b) {
+    return true; // damn this will be hard to implement
   }
 
   public void stack(Brick b) {
-    below = b;
-    b.setAbove(this);
+    addBelow(b);
+    b.addAbove(this);
   }
 
   public void setColor(color rgb) {
@@ -243,8 +291,19 @@ public class Sphere implements Brick {
 
   private void die() {
     bricks.remove(this);
-    if (above != null)
-      above.setBelow(below);
+    int i, j;
+    for (i = 0; i < above.size(); i++) {
+      above.get(i).removeBelow(this);
+      for (j = 0; j < below.size(); j++)
+       if (above.get(i).overlaps(below.get(j)))
+        above.get(i).addBelow(below.get(j));
+    }
+    for (i = 0; i < below.size(); i++) {
+      below.get(i).removeAbove(this);
+      for (j = 0; j < above.size(); j++)
+       if (below.get(i).overlaps(above.get(j)))
+        below.get(i).addBelow(above.get(j));
+    }
   }
 
   public void draw() {
@@ -259,43 +318,43 @@ public class Sphere implements Brick {
     // x(t) = x_0 + v * t
     center[0] += velocity[0] / frameRate;
     center[1] += velocity[1] / frameRate;
-    currentDist += sqrt(sq(velocity[0] / frameRate) + sq(velocity[1] / frameRate));
+    currentDist += distIncrement;
     if (currentDist > maxDist) {
       velocity[0] *= -1;
       velocity[1] *= -1;
       currentDist = 0;
     }
-    if (below == null) {
-      if (d > 0)
-        // v(t) = v_0 + a * t
-        velocity[2] += g / frameRate;
-      else {
-        // bounce back up with dampened motion
-        velocity[2] /= -3;
-        d = velocity[2] / frameRate;
-      }
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        // if motion has been dampened enough, stop
-        velocity[2] = 0;
-        d = 0;
-      }
-    }
-    else {
-      if (d > below.getElevation() + below.getHeight())
-        // v(t) = v_0 + a * t
-        velocity[2] += g / frameRate;
-      else {
-        // bounce back up with dampened motion
-        velocity[2] /= -3;
-        d = below.getElevation() + below.getHeight() + velocity[2] / frameRate;
-      }
-      if (velocity[2] < 0.01 && velocity[2] > -0.01) {
-        // if motion has been dampened enough, stop
-        velocity[2] = 0;
-        d = below.getElevation() + below.getHeight();
-      }
-    }
+    // x(t) = x_0 + v * t
     d += velocity[2] / frameRate;
+    if (gravity > 0)
+      // always float if there is anti-gravity
+      // v(t) = v_0 + a * t
+      velocity[2] += gravity / frameRate;
+    float highestPointBelow;
+    if (highestBrickBelow == null)
+      highestPointBelow = 0;
+    else
+      highestPointBelow =
+        highestBrickBelow.getElevation() +
+        highestBrickBelow.getHeight();
+    if (d > highestPointBelow)
+      // if the brick is too high, it should fall down
+      velocity[2] += gravity / frameRate;
+    else if (d < highestPointBelow) {
+      // if the brick is too low, it should
+      // bounce up with dampened motion
+      velocity[2] *= -bounciness;
+      if (
+        (int) (velocity[2] * 10000) ==
+        (int) (lastDampenedV * 10000)
+        )
+        // motion will eventually become constant by this
+        // algorithm, but there may be floating-point error
+        velocity[2] = 0;
+      else
+        lastDampenedV = velocity[2];
+      d = highestPointBelow;
+    }
     // theta(t) = theta_0 + omega * t
     // omega = v / r
     angleOfRolling += sqrt(sq(velocity[0]) + sq(velocity[1])) / r / frameRate;
