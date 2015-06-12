@@ -3,7 +3,7 @@ import ddf.minim.*;
 final int TITLE = 0, MENU = 1, PLAYING = 2, DEAD = 3, OPTIONS = 4;
 int mode = TITLE;
 Minim minim;
-AudioPlayer intro, hit;
+AudioPlayer intro, hit, metal;
 
 int frameRate = 60;
 // number of frames per second
@@ -52,8 +52,9 @@ void setup() {
   minim = new Minim(this);
   intro = minim.loadFile("Q.mp3");
   hit = minim.loadFile("hammering.mp3");
+  metal = minim.loadFile("metal.mp3");
   //hit.setVolume(1);
-  //intro.trigger();
+  intro.play(0);
 }
 
 void draw() {
