@@ -14,6 +14,9 @@ public class Prism implements Brick {
 
   private PImage t;
   // texture of prism
+  
+  private String texture = "";
+  // texture name for use in sound effects
 
   private float[] textureX;
   // x-coordinates of points on the texture image used in
@@ -82,6 +85,7 @@ public class Prism implements Brick {
     ) {
     this(vertices, prismHeight);
     t = loadImage(texture);
+    this.texture = texture;
     textureX = new float[v.length + 1];
     textureX[0] = 0;
     for (int i = 1; i < v.length; i++)
@@ -339,6 +343,11 @@ public class Prism implements Brick {
           )
         )
       );
+    if(texture.equals("gray_brick.jpg")){
+      metal.play(0);
+    }else{
+      hit.play(0);
+    }
     reflectionNormal = null;
   }
 

@@ -54,7 +54,7 @@ void setup() {
   hit = minim.loadFile("hammering.mp3");
   metal = minim.loadFile("metal.mp3");
   //hit.setVolume(1);
-  intro.play(0);
+  //intro.play(0);
 }
 
 void draw() {
