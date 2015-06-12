@@ -57,10 +57,14 @@ public class Ball {
   	else if (M.mag(v) < defaultv)
   		v = M.scale(v, 1.01);
     // out of bounds handling
-    if (mode == PLAYING && p[0] <= r || p[0] >= boardLength - r)
+    if (mode == PLAYING && p[0] <= r || p[0] >= boardLength - r){
       v[0] *= -1;
-    if (mode == PLAYING && p[1] <= r)
+      hit.play(0);
+    }
+    if (mode == PLAYING && p[1] <= r){
       v[1] *= -1;
+      hit.play(0);
+    }
     // x(t) = x_0 + v_0 * t + 1/2 * a * t^2
     p[0] += v[0] / 60 + a[0] / 7200;
     p[1] += v[1] / 60 + a[1] / 7200;
