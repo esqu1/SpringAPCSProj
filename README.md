@@ -106,3 +106,6 @@ Finally, Dennis made the design of new levels much simpler.
 6/10/15<br />
 Dennis redid the brick-falling mechanism to make it more physically accurate and to allow for anti-gravity.<br />
 Dennis then worked on a way for multiple bricks to be put directly on top of a given brick and for one brick to be put on top of several bricks.
+
+6/11/15<br />
+Brandon was able to implement music into the game, but needs to work on using a tag editor to get rid of warnings.
