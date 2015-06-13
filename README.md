@@ -109,3 +109,4 @@ Dennis then worked on a way for multiple bricks to be put directly on top of a g
 
 6/11/15<br />
 Brandon was able to implement music into the game, but needs to work on using a tag editor to get rid of warnings.
+Brandon put in collision sound effects for the edges of the board as well as prisms. Metal bricks now have a special sound effect.
