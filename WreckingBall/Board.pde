@@ -15,6 +15,16 @@ public class Board {
   public void draw() {
     int i,j;
     fill(c);
+    if(lives == 0){
+      textSize(64);
+      text("YOU LOSE!!!!",500,500,0); //temporary
+      return;
+    }
+    if(balls.get(0).dead()){
+      lives--;
+      balls.remove(0);
+      balls.add(new Ball(30,#FFFFFF));
+    }
     translate(500, 500, -10);
     box(1000, 1000, 20);
     translate(-500, -500, 10);
@@ -27,16 +37,22 @@ public class Board {
     fill(0);
     textSize(32);
     text("Level " + level,100,950,50);
+    text("Lives: " + lives,850,950,50);
     fill(c);
   }
-
-  private void level1() {
+  
+  private void load(){
     c = #63F702;
     balls = new Container<Ball>();
     balls.add(new Ball(30, #FFFFFF));
     paddles = new Container<Paddle>();
     paddles.add(new Paddle(100.0, "colors.jpg"));
     bricks = new Container<Brick>(15);
+  } 
+   
+
+  private void level1() {
+    load();
     // stack of three trapezoids in top left
     bricks.add(
       new Prism(
@@ -194,6 +210,11 @@ public class Board {
   }
   
   public void level2(){
-     
+    c = #63F702;
+    balls = new Container<Ball>();
+    balls.add(new Ball(30, #FFFFFF));
+    paddles = new Container<Paddle>();
+    paddles.add(new Paddle(100.0, "colors.jpg"));
+    bricks = new Container<Brick>(15);
   }
 }
