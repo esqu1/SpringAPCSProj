@@ -77,12 +77,14 @@ public class Ball {
   }
 
   public void beActedUpon() {
+    if(mode == PLAYING){
     int i;
     for (i = 0; i < bricks.size(); i++)
       bricks.get(i).actOnBall(this);
     for (i = 0; i < paddles.size(); i++)
       if (paddles.get(i).ballColliding(this))
         paddles.get(i).reflectBall(this);
+    }
   }
 
   public float getRadius() {
