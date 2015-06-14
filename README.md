@@ -11,6 +11,11 @@ Project Name: Wrecking Ball<br />
 (This is to distinguish it from Dennis's project from term one of Intro – Wreckerball.)<br />
 (Coincidentally, this team name also has its roots in term one of Intro...)<br />
 
+How to run:
+Make sure you are in the "WreckingBall" directory, and with the processing command, type 
+` processing WreckingBall.pde
+
+to run the program.
 
 DEVELOPMENT LOG:<br />
 
@@ -110,3 +115,6 @@ Dennis then worked on a way for multiple bricks to be put directly on top of a g
 6/11/15<br />
 Brandon was able to implement music into the game, but needs to work on using a tag editor to get rid of warnings.
 Brandon put in collision sound effects for the edges of the board as well as prisms. Metal bricks now have a special sound effect.
+
+6/13/15<br />
+Ignore the commit made by "XWilliamY", that was a commit made while working on William Yang's laptop.
