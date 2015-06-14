@@ -14,7 +14,7 @@ public class Prism implements Brick {
 
   private PImage t;
   // texture of prism
-  
+
   private String texture = "";
   // texture name for use in sound effects
 
@@ -22,8 +22,9 @@ public class Prism implements Brick {
   // x-coordinates of points on the texture image used in
   // mapping the image to the lateral faces of the prism
 
-  private float minX, minY;
-  // smallest x- and y-coordinates of the vertices of the prism
+  private float minX, minY, maxX, maxY;
+  // smallest and largest x- and y-coordinates of the vertices
+  // of the prism
 
   private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
@@ -45,6 +46,9 @@ public class Prism implements Brick {
   private float lastDampenedV;
   // velocity of the prism last time it bounced up
 
+  private Powerup powerup;
+  // powerup in this brick
+
   public Prism(
     float[][] vertices,
     float prismHeight
@@ -59,11 +63,17 @@ public class Prism implements Brick {
     normals[v.length - 1] = M.norm(v[v.length - 1], v[0]);
     minX = v[0][0];
     minY = v[0][1];
+    maxX = v[0][0];
+    maxY = v[0][1];
     for (i = 1; i < v.length; i++) {
       if (v[i][0] < minX)
         minX = v[i][0];
       if (v[i][1] < minY)
         minY = v[i][1];
+      if (v[i][0] > maxX)
+        maxX = v[i][0];
+      if (v[i][1] > maxY)
+        maxY = v[i][1];
     }
     above = new Container<Brick>();
     below = new Container<Brick>();
@@ -87,13 +97,13 @@ public class Prism implements Brick {
     t = loadImage(texture);
     this.texture = texture;
     textureX = new float[v.length + 1];
-    textureX[0] = 0;
+    textureX[0] = t.width;
     for (int i = 1; i < v.length; i++)
       textureX[i] =
-        textureX[i - 1] +
+        textureX[i - 1] -
         M.dist(v[i - 1], v[i]);
     textureX[v.length] =
-      textureX[v.length - 1] +
+      textureX[v.length - 1] -
       M.dist(v[v.length - 1], v[0]);
   }
 
@@ -137,6 +147,26 @@ public class Prism implements Brick {
     return d;
   }
 
+  public float[][] getVertices() {
+    return v;
+  }
+
+  public float getMinX() {
+    return minX;
+  }
+
+  public float getMinY() {
+    return minY;
+  }
+
+  public float getMaxX() {
+    return maxX;
+  }
+
+  public float getMaxY() {
+    return maxY;
+  }
+
   public void addAbove(Brick b) {
     above.add(b);
   }
@@ -174,7 +204,110 @@ public class Prism implements Brick {
   }
 
   public boolean overlaps(Brick b) {
-    return true; // damn this will be hard to implement
+    if (
+      minX > b.getMaxX() ||
+      minY > b.getMaxY() ||
+      maxX < b.getMinX() ||
+      maxY < b.getMinY()
+      )
+      // if the bounding boxes do not overlap
+      return false;
+    // Check if there are at least two intersection points.
+    int intersectionCount = 0;
+    int i, j;
+    for (i = 0; i < v.length - 1; i++) {
+      for (j = 0; j < b.getVertices().length - 1; j++) {
+        if (
+          M.linesIntersect(
+            v[i],
+            v[i + 1],
+            b.getVertices()[j],
+            b.getVertices()[j + 1]
+            )
+          ) {
+          intersectionCount++;
+          if (intersectionCount > 1)
+            return true;
+        }
+      }
+      if (
+        M.linesIntersect(
+          v[i],
+          v[i + 1],
+          b.getVertices()[j],
+          b.getVertices()[0]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (
+        M.linesIntersect(
+          v[i],
+          v[0],
+          b.getVertices()[j],
+          b.getVertices()[j + 1]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    if (
+      M.linesIntersect(
+        v[i],
+        v[0],
+        b.getVertices()[j],
+        b.getVertices()[0]
+        )
+      ) {
+      intersectionCount++;
+      if (intersectionCount > 1)
+        return true;
+    }
+    // Check if b is entirely contained within this brick.
+    boolean contained = true;
+    for (i = 0; i < v.length - 1; i++) {
+      if (!contained)
+        break;
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[i + 1], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[0], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    // Check if this brick is entirely contained within b.
+    contained = true;
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (!contained)
+        break;
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[j + 1], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[0], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    return false;
   }
 
   public void stack(Brick b) {
@@ -191,13 +324,13 @@ public class Prism implements Brick {
     t = loadImage(texture);
     if (textureX == null) {
       textureX = new float[v.length + 1];
-      textureX[0] = 0;
+      textureX[0] = t.width;
       for (int i = 1; i < v.length; i++)
         textureX[i] =
-          textureX[i - 1] +
+          textureX[i - 1] -
           M.dist(v[i - 1], v[i]);
       textureX[v.length] =
-        textureX[v.length - 1] +
+        textureX[v.length - 1] -
         M.dist(v[v.length - 1], v[0]);
     }
   }
@@ -329,6 +462,17 @@ public class Prism implements Brick {
         reflectionNormal = M.norm(v[v.length - 2], v[v.length - 1]);
       return true;
     }
+    // Check if the ball is inside the prism (will only happen if
+    // the prism falls right on top of the ball).
+    if (d < 2 * b.getRadius()) {
+      for (i = 0; i < v.length - 1; i++)
+        if (M.sideOf(v[i], v[i + 1], b.getPosition()) > 0)
+          return false;
+      if (M.sideOf(v[i], v[0], b.getPosition()) > 0)
+        return false;
+      reflectionNormal = M.normalize2D(b.getVelocity());
+      return true;
+    }
     return false;
   }
 
@@ -364,8 +508,12 @@ public class Prism implements Brick {
       below.get(i).removeAbove(this);
       for (j = 0; j < above.size(); j++)
        if (below.get(i).overlaps(above.get(j)))
-        below.get(i).addBelow(above.get(j));
+        below.get(i).addAbove(above.get(j));
     }
+  }
+
+  public void addPowerup(Powerup p) {
+    powerup = p;
   }
 
   public void draw() {

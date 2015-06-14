@@ -40,7 +40,9 @@ public class M {
       };
   }
 
-  public static float[] sum(float[] vector1, float[] vector2, float[] vector3) {
+  public static float[] sum(
+    float[] vector1, float[] vector2, float[] vector3
+    ) {
     // returns the sum of vector1, vector2, and vector3
     return
       new float[] {
@@ -73,7 +75,9 @@ public class M {
       };
   }
 
-  public static float sideOf(float[] point1, float[] point2, float[] point3) {
+  public static float sideOf(
+    float[] point1, float[] point2, float[] point3
+    ) {
     // returns a positive value if point3 is to the right of the line
     // from point1 to point2
     // returns a negative value if point3 is to the left of the line
@@ -88,9 +92,66 @@ public class M {
     // remember that Processing uses a left-hand coordinate system.
   }
 
+  public static boolean linesIntersect(
+    float[] point1, float[] point2, float[] point3, float[] point4
+    ) {
+    // returns whether the line segment between point1 and point2
+    // intersects the line segment between point3 and point4
+    float determinant =
+      (point4[0] - point3[0]) * (point2[1] - point1[1]) -
+      (point2[0] - point1[0]) * (point4[1] - point3[1]);
+    if (determinant == 0) {
+      // if the lines are parallel
+      if (
+        (point3[0] - point1[0]) / (point2[0] - point1[0]) !=
+        (point3[1] - point1[1]) / (point2[1] - point1[1])
+        )
+        // if point1, point2, and point3 aren't collinear
+        return false;
+      // parametrize the line on which all four points lie
+      // using the vector equation of a line:
+      // v(t) = point1 + t(point2 - point1)
+      // Let v(t) = point3 when t = a and v(t) = point4 when t = b.
+      float a = (point3[0] - point1[0]) / (point2[0] - point1[0]);
+      if (0 < a && a < 1)
+        // if point3 is between point1 and point2
+        return true;
+      float b = (point4[0] - point1[0]) / (point2[0] - point1[0]);
+      if (0 < b && b < 1)
+        // if point4 is between point1 and point2
+        return true;
+      if (a <= 0 && b >= 1)
+        // if the line segment between point1 and point2 is a subset
+        // of the line segment between point3 and point4
+        return true;
+      return false;
+    }
+    float s =
+      (
+        (point4[0] - point3[0]) * (point3[1] - point1[1]) -
+        (point4[1] - point3[1]) * (point3[0] - point1[0])
+        ) / determinant;
+    float t =
+      (
+        (point2[0] - point1[0]) * (point3[1] - point1[1]) -
+        (point2[1] - point1[1]) * (point3[0] - point1[0])
+        ) / determinant;
+    return s > 0 && s < 1 && t > 0 && t < 1;
+  }
+  
+  public static float[] normalize2D(float[] vector1) {
+    // returns vector1 scaled so that it has a magnitude of 1
+    float mag = sqrt(sq(vector1[0]) + sq(vector1[1]));
+    return
+      new float[] {
+        vector1[0] / mag,
+        vector1[1] / mag
+      };
+  }
+
   // 3D THINGS
 
-  public static float[] normalize(float[] vector1) {
+  public static float[] normalize3D(float[] vector1) {
     // returns vector1 scaled so that it has a magnitude of 1
     float mag = sqrt(sq(vector1[0]) + sq(vector1[1]) + sq(vector1[2]));
     return
@@ -111,10 +172,12 @@ public class M {
       };
   }
 
-  public static float[] norm(float[] point1, float[] point2, float[] point3) {
+  public static float[] norm(
+    float[] point1, float[] point2, float[] point3
+    ) {
     // returns the normal to the surface defined by the three points
     return
-      normalize(
+      normalize3D(
         cross(
           new float[] {
             point1[0] - point2[0],
@@ -128,7 +191,7 @@ public class M {
           }
         )
       );
-    // If the points are seen as being in a clockwise order, the normal
+    // If the points are seen as being in clockwise order, the normal
     // is in the same direction as the observer's line of sight.
   }
 }

@@ -29,6 +29,7 @@ public class Ball {
 
   public void draw() {
     move();
+    beActedUpon();
     if (t != null)
       drawWithTexture();
     else
@@ -51,11 +52,11 @@ public class Ball {
   }
 
   private void move() {
-  	// bring velocity back to default
-  	if (M.mag(v) > defaultv)
-  		v = M.scale(v, 0.99);
-  	else if (M.mag(v) < defaultv)
-  		v = M.scale(v, 1.01);
+    // bring velocity back to default
+    if (M.mag(v) > defaultv)
+      v = M.scale(v, 0.99);
+    else if (M.mag(v) < defaultv)
+      v = M.scale(v, 1.01);
     // out of bounds handling
     if (mode == PLAYING && p[0] <= r || p[0] >= boardLength - r){
       v[0] *= -1;
@@ -73,6 +74,15 @@ public class Ball {
       p[0] = mouseX * 4 / 3.;
       p[1] = mouseY * 4 / 3.;
     }
+  }
+
+  public void beActedUpon() {
+    int i;
+    for (i = 0; i < bricks.size(); i++)
+      bricks.get(i).actOnBall(this);
+    for (i = 0; i < paddles.size(); i++)
+      if (paddles.get(i).ballColliding(this))
+        paddles.get(i).reflectBall(this);
   }
 
   public float getRadius() {

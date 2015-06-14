@@ -31,6 +31,10 @@ public class Cylinder implements Brick {
   // The point (textureX[i], y) will map to (unitCircleXY[i][0],
   // unitCircleXY[i][1], y) on the unit cylinder (r = 1, d = 0).
 
+  private float minX, minY, maxX, maxY;
+  // smallest and largest x- and y-coordinates of the vertices of
+  // the equatorial plane of the sphere
+
   private float[] reflectionNormal;
   // unit normal to the face that the ball bounces off of
 
@@ -51,6 +55,9 @@ public class Cylinder implements Brick {
   private float lastDampenedV;
   // velocity of the prism last time it bounced up
 
+  private Powerup powerup;
+  // powerup in this brick
+
   public Cylinder(
     float[] cylCenter,
     float radius,
@@ -62,6 +69,10 @@ public class Cylinder implements Brick {
     h = cylHeight;
     detail = d;
     velocity = new float[3];
+    minX = cylCenter[0] - r;
+    minY = cylCenter[1] - r;
+    maxX = cylCenter[0] + r;
+    maxY = cylCenter[1] + r;
     int i;
     unitCircleXY = new float[detail + 1][2];
     for (i = 0; i <= detail; i++) {
@@ -97,7 +108,7 @@ public class Cylinder implements Brick {
     t = loadImage(texture);
     textureX = new float[detail + 1];
     for (int i = 0; i <= detail; i++)
-      textureX[i] = i * sqrt(2 - 2 * cos(TWO_PI / detail));
+      textureX[i] = (detail - i) * sqrt(2 - 2 * cos(TWO_PI / detail));
   }
 
   public Cylinder(
@@ -168,6 +179,29 @@ public class Cylinder implements Brick {
     return d;
   }
 
+  public float[][] getVertices() {
+    float[][] result = new float[detail][2];
+    for (int i = 0; i < detail; i++)
+      result[i] = M.sum(center, M.scale(unitCircleXY[i], r));
+    return result;
+  }
+
+  public float getMinX() {
+    return minX;
+  }
+
+  public float getMinY() {
+    return minY;
+  }
+
+  public float getMaxX() {
+    return maxX;
+  }
+
+  public float getMaxY() {
+    return maxY;
+  }
+
   public void addAbove(Brick b) {
     above.add(b);
   }
@@ -205,7 +239,111 @@ public class Cylinder implements Brick {
   }
 
   public boolean overlaps(Brick b) {
-    return true; // damn this will be hard to implement
+    if (
+      minX > b.getMaxX() ||
+      minY > b.getMaxY() ||
+      maxX < b.getMinX() ||
+      maxY < b.getMinY()
+      )
+      // if the bounding boxes do not overlap
+      return false;
+    // Check if there are at least two intersection points.
+    int intersectionCount = 0;
+    int i, j;
+    float[][] v = getVertices();
+    for (i = 0; i < v.length - 1; i++) {
+      for (j = 0; j < b.getVertices().length - 1; j++) {
+        if (
+          M.linesIntersect(
+            v[i],
+            v[i + 1],
+            b.getVertices()[j],
+            b.getVertices()[j + 1]
+            )
+          ) {
+          intersectionCount++;
+          if (intersectionCount > 1)
+            return true;
+        }
+      }
+      if (
+        M.linesIntersect(
+          v[i],
+          v[i + 1],
+          b.getVertices()[j],
+          b.getVertices()[0]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (
+        M.linesIntersect(
+          v[i],
+          v[0],
+          b.getVertices()[j],
+          b.getVertices()[j + 1]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    if (
+      M.linesIntersect(
+        v[i],
+        v[0],
+        b.getVertices()[j],
+        b.getVertices()[0]
+        )
+      ) {
+      intersectionCount++;
+      if (intersectionCount > 1)
+        return true;
+    }
+    // Check if b is entirely contained within this brick.
+    boolean contained = true;
+    for (i = 0; i < v.length - 1; i++) {
+      if (!contained)
+        break;
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[i + 1], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[0], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    // Check if this brick is entirely contained within b.
+    contained = true;
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (!contained)
+        break;
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[j + 1], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[0], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    return false;
   }
 
   public void stack(Brick b) {
@@ -223,7 +361,7 @@ public class Cylinder implements Brick {
     if (textureX == null) {
       textureX = new float[detail + 1];
       for (int i = 0; i <= detail; i++)
-        textureX[i] = i * sqrt(2 - 2 * cos(TWO_PI / detail));
+        textureX[i] = (detail - i) * sqrt(2 - 2 * cos(TWO_PI / detail));
     }
   }
 
@@ -286,8 +424,12 @@ public class Cylinder implements Brick {
       below.get(i).removeAbove(this);
       for (j = 0; j < above.size(); j++)
        if (below.get(i).overlaps(above.get(j)))
-        below.get(i).addBelow(above.get(j));
+        below.get(i).addAbove(above.get(j));
     }
+  }
+
+  public void addPowerup(Powerup p) {
+    powerup = p;
   }
 
   public void draw() {

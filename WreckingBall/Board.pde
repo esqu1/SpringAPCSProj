@@ -20,20 +20,14 @@ public class Board {
       bricks.get(i).draw();
     for (i = 0; i < paddles.size(); i++)
       paddles.get(i).draw();
-    for (i = 0; i < balls.size(); i++) {
+    for (i = 0; i < balls.size(); i++)
       balls.get(i).draw();
-      for (j = 0; j < bricks.size(); j++)
-        bricks.get(j).actOnBall(balls.get(i));
-      for (j = 0; j < paddles.size(); j++)
-        if (paddles.get(j).ballColliding(balls.get(i)))
-      	  paddles.get(j).reflectBall(balls.get(i));
-    }
   }
 
   private void level1() {
     c = #63F702;
     balls = new Container<Ball>();
-    balls.add(new Ball(20, #FFFFFF));
+    balls.add(new Ball(90, #FFFFFF));
     paddles = new Container<Paddle>();
     paddles.add(new Paddle(100.0, "colors.jpg"));
     bricks = new Container<Brick>(13);
@@ -125,6 +119,13 @@ public class Board {
     // pentagon in the center moving up and down,
     // each cycle lasting 20 seconds
     bricks.add(
+      new Sphere(
+        new float[] {500, 150},
+        30, 60, 60, "pluto.jpg",
+        new float[] {0, 50}, 100
+      )
+    );
+    bricks.add(
       new Prism(
         new float[][] {
           {450, 200},
@@ -137,13 +138,7 @@ public class Board {
         new float[] {0, 50}, 100
         )
       );
-    bricks.add(
-      new Sphere(
-        new float[] {500, 150},
-        30, 60, 60, "pluto.jpg",
-        new float[] {0, 50}, 100
-      )
-    );
+    bricks.get(9).stack(bricks.get(8));
     // two spinning tops rotating at 2 rev/sec
     bricks.add(
       new Sphere(
@@ -164,5 +159,31 @@ public class Board {
         100, 120, 60, "world.jpg", 0.1 * TWO_PI
         )
       );
+    bricks.add(
+    	new Prism(
+    		new float[][] {
+    			{50, 150},
+    			{50, 200},
+    			{950, 200},
+    			{950, 150}
+    		},
+        100, "gray_brick.jpg"
+        )
+    	);
+    bricks.get(13).stack(bricks.get(0));
+    bricks.get(13).stack(bricks.get(3));
+    bricks.get(13).stack(bricks.get(9));
+    bricks.add(
+    	new Prism(
+    		new float[][] {
+    			{450, 150},
+    			{450, 200},
+    			{550, 200},
+    			{550, 150}
+    		},
+        100, "gray_brick.jpg"
+        )
+    	);
+    bricks.get(14).stack(bricks.get(13));
   }
 }

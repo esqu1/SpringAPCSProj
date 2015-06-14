@@ -16,6 +16,7 @@ public class Sphere implements Brick {
   // radius and elevation of sphere
 
   private float rotationVelocity, anlgeOfRotation, angleOfRolling;
+  private float[] axisOfRolling;
   // angular kinematics for the sphere
 
   private color c;
@@ -31,6 +32,10 @@ public class Sphere implements Brick {
   // The point (textureX[i], textureY[j]) on the texture image will
   // map to the point (unitSphereXYZ[i][j][0], unitSphereXYZ[i][j][1],
   // unitSphereXYZ[i][j][2]) on the unit sphere (r = 1, d = 0).
+
+  private float minX, minY, maxX, maxY;
+  // smallest and largest x- and y-coordinates of the vertices of
+  // the equatorial plane of the sphere
 
   private float[] reflectionNormal;
   // normal to the point on the sphere that the ball bounces off of
@@ -52,6 +57,9 @@ public class Sphere implements Brick {
   private float lastDampenedV;
   // velocity of the prism last time it bounced up
 
+  private Powerup powerup;
+  // powerup in this brick
+
   public Sphere(
     float[] centre,
     float radius,
@@ -63,6 +71,11 @@ public class Sphere implements Brick {
     detailX = dx;
     detailY = dy;
     velocity = new float[3];
+    axisOfRolling = new float[2];
+    minX = centre[0] - r;
+    minY = centre[1] - r;
+    maxX = centre[0] + r;
+    maxY = centre[1] + r;
     int i, j;
     unitSphereXYZ = new float[detailX + 1][detailY + 1][3];
     for (i = 0; i <= detailX; i++)
@@ -117,10 +130,10 @@ public class Sphere implements Brick {
     int i;
     textureX = new float[detailX + 1];
     for (i = 0; i <= detailX; i++)
-      textureX[i] = 1.0 * t.width * i / detailX;
+      textureX[i] = 1.0 * t.width * (detailX - i) / detailX;
     textureY = new float[detailY + 1];
     for (i = 0; i <= detailY; i++)
-      textureY[i] = 1.0 * t.height * i / detailY;
+      textureY[i] = 1.0 * t.height * (detailY - i) / detailY;
   }
 
   public Sphere(
@@ -159,6 +172,8 @@ public class Sphere implements Brick {
     this(centre, radius, dx, dy, rgb);
     velocity[0] = sphereVelocity[0];
     velocity[1] = sphereVelocity[1];
+    axisOfRolling[0] = sphereVelocity[0];
+    axisOfRolling[1] = sphereVelocity[1];
     maxDist = oscillationDistance;
     distIncrement =
       sqrt(sq(velocity[0] / frameRate) +
@@ -177,6 +192,8 @@ public class Sphere implements Brick {
     this(centre, radius, dx, dy, texture);
     velocity[0] = sphereVelocity[0];
     velocity[1] = sphereVelocity[1];
+    axisOfRolling[0] = sphereVelocity[0];
+    axisOfRolling[1] = sphereVelocity[1];
     maxDist = oscillationDistance;
     distIncrement =
       sqrt(sq(velocity[0] / frameRate) +
@@ -189,6 +206,34 @@ public class Sphere implements Brick {
 
   public float getElevation() {
     return d;
+  }
+
+  public float[][] getVertices() {
+    float[][] result = new float[detailX][2];
+    for (int i = 0; i < detailX; i++) {
+      result[i] =
+        M.sum(
+          center,
+          M.scale(unitSphereXYZ[detailY / 2][i], r)
+          );
+    }
+    return result;
+  }
+
+  public float getMinX() {
+    return minX;
+  }
+
+  public float getMinY() {
+    return minY;
+  }
+
+  public float getMaxX() {
+    return maxX;
+  }
+
+  public float getMaxY() {
+    return maxY;
   }
 
   public void addAbove(Brick b) {
@@ -228,7 +273,111 @@ public class Sphere implements Brick {
   }
 
   public boolean overlaps(Brick b) {
-    return true; // damn this will be hard to implement
+    if (
+      minX > b.getMaxX() ||
+      minY > b.getMaxY() ||
+      maxX < b.getMinX() ||
+      maxY < b.getMinY()
+      )
+      // if the bounding boxes do not overlap
+      return false;
+    // Check if there are at least two intersection points.
+    int intersectionCount = 0;
+    int i, j;
+    float[][] v = getVertices();
+    for (i = 0; i < v.length - 1; i++) {
+      for (j = 0; j < b.getVertices().length - 1; j++) {
+        if (
+          M.linesIntersect(
+            v[i],
+            v[i + 1],
+            b.getVertices()[j],
+            b.getVertices()[j + 1]
+            )
+          ) {
+          intersectionCount++;
+          if (intersectionCount > 1)
+            return true;
+        }
+      }
+      if (
+        M.linesIntersect(
+          v[i],
+          v[i + 1],
+          b.getVertices()[j],
+          b.getVertices()[0]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (
+        M.linesIntersect(
+          v[i],
+          v[0],
+          b.getVertices()[j],
+          b.getVertices()[j + 1]
+          )
+        ) {
+        intersectionCount++;
+        if (intersectionCount > 1)
+          return true;
+      }
+    }
+    if (
+      M.linesIntersect(
+        v[i],
+        v[0],
+        b.getVertices()[j],
+        b.getVertices()[0]
+        )
+      ) {
+      intersectionCount++;
+      if (intersectionCount > 1)
+        return true;
+    }
+    // Check if b is entirely contained within this brick.
+    boolean contained = true;
+    for (i = 0; i < v.length - 1; i++) {
+      if (!contained)
+        break;
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[i + 1], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (j = 0; j < b.getVertices().length; j++)
+        if (M.sideOf(v[i], v[0], b.getVertices()[j]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    // Check if this brick is entirely contained within b.
+    contained = true;
+    for (j = 0; j < b.getVertices().length - 1; j++) {
+      if (!contained)
+        break;
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[j + 1], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    }
+    if (contained)
+      for (i = 0; i < v.length; i++)
+        if (M.sideOf(b.getVertices()[j], b.getVertices()[0], v[i]) > 0) {
+          contained = false;
+          break;
+        }
+    if (contained)
+      return true;
+    return false;
   }
 
   public void stack(Brick b) {
@@ -246,10 +395,10 @@ public class Sphere implements Brick {
     int i;
     textureX = new float[detailX + 1];
     for (i = 0; i <= detailX; i++)
-      textureX[i] = 1.0 * t.width * i / detailX;
+      textureX[i] = 1.0 * t.width * (detailX - i) / detailX;
     textureY = new float[detailY + 1];
     for (i = 0; i <= detailY; i++)
-      textureY[i] = 1.0 * t.height * i / detailY;
+      textureY[i] = 1.0 * t.height * (detailY - i) / detailY;
   }
 
   public void actOnBall(Ball b) {
@@ -302,8 +451,12 @@ public class Sphere implements Brick {
       below.get(i).removeAbove(this);
       for (j = 0; j < above.size(); j++)
        if (below.get(i).overlaps(above.get(j)))
-        below.get(i).addBelow(above.get(j));
+        below.get(i).addAbove(above.get(j));
     }
+  }
+
+  public void addPowerup(Powerup p) {
+    powerup = p;
   }
 
   public void draw() {
@@ -357,7 +510,14 @@ public class Sphere implements Brick {
     }
     // theta(t) = theta_0 + omega * t
     // omega = v / r
-    angleOfRolling += sqrt(sq(velocity[0]) + sq(velocity[1])) / r / frameRate;
+    if (velocity[0] != 0)
+      angleOfRolling +=
+        sqrt(sq(velocity[0]) + sq(velocity[1])) / r / frameRate *
+        velocity[0]/axisOfRolling[0];
+    else if (velocity[1] != 0)
+      angleOfRolling +=
+        sqrt(sq(velocity[0]) + sq(velocity[1])) / r / frameRate *
+        velocity[1]/axisOfRolling[1];
     anlgeOfRotation += rotationVelocity / frameRate;
   }
 
@@ -367,7 +527,7 @@ public class Sphere implements Brick {
     pushMatrix();
     translate(center[0], center[1], r + d);
     // Rotate the ball by the angle of rolling.
-    rotate(angleOfRolling, -velocity[1], velocity[0], 0);
+    rotate(angleOfRolling, -axisOfRolling[1], axisOfRolling[0], 0);
     // Rotate the ball by the angle of rotation.
     rotateZ(anlgeOfRotation);
     int i, j;
@@ -412,9 +572,9 @@ public class Sphere implements Brick {
     pushMatrix();
     translate(center[0], center[1], r + d);
     // Flip the ball upside down so it's drawn correctly. // TEMP FIX
-    rotateX(PI);
+    //rotateX(PI);
     // Rotate the ball by the angle of rolling.
-    rotate(angleOfRolling, -velocity[1], velocity[0], 0);
+    rotate(angleOfRolling, -axisOfRolling[1], axisOfRolling[0], 0);
     // Rotate the ball by the angle of rotation.
     rotateZ(anlgeOfRotation);
     int i, j;

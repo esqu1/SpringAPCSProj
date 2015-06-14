@@ -5,6 +5,22 @@ public interface Brick {
   // returns the elevation of the brick
   public float getElevation();
 
+  // return the vertices of this brick
+  // (or the vertices that approximate this brick)
+  public float[][] getVertices();
+
+  // returns the minimum x-coordinate of this brick
+  public float getMinX();
+
+  // returns the minimum y-coordinate of this brick
+  public float getMinY();
+
+  // returns the minimum x-coordinate of this brick
+  public float getMaxX();
+
+  // returns the minimum y-coordinate of this brick
+  public float getMaxY();
+
   // adds a brick directly above this one
   public void addAbove(Brick b);
 
@@ -33,6 +49,9 @@ public interface Brick {
   // destroys the brick if necessary,
   // and releases a powerup if necessary
   public void actOnBall(Ball b);
+
+  // adds a powerup to this brick
+  public void addPowerup(Powerup p);
 
   // draws the brick
   public void draw();
