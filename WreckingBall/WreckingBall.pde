@@ -20,7 +20,7 @@ final int boardLength = 1000;
 Container<Brick> bricks;
 Container<Ball> balls;
 Container<Paddle> paddles;
-// Container<Powerup> powerups;
+Container<Powerup> powerups;
 
 // The default camera position is adjusted for a window
 // whose sides are 3/4 the boardLength.

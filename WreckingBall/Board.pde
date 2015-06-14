@@ -27,10 +27,10 @@ public class Board {
   private void level1() {
     c = #63F702;
     balls = new Container<Ball>();
-    balls.add(new Ball(90, #FFFFFF));
+    balls.add(new Ball(30, #FFFFFF));
     paddles = new Container<Paddle>();
     paddles.add(new Paddle(100.0, "colors.jpg"));
-    bricks = new Container<Brick>(13);
+    bricks = new Container<Brick>(15);
     // stack of three trapezoids in top left
     bricks.add(
       new Prism(

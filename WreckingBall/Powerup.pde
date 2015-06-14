@@ -1,21 +1,21 @@
 public class Powerup {
-	private String name;
-	// name of this powerup
+  private String name;
+  // name of this powerup
 
-	private float[] position;
-	// position of this powerup
+  private float[] position;
+  // position of this powerup
 
-	private float radius;
-	// radius of this powerup
+  private float r;
+  // radius of this powerup
 
-	private int releaseFrame;
-	// when this powerup was released
+  private int releaseFrame, duration;
+  // when this powerup was released, and how long its effect lasts
 
-	private boolean isActive;
-	// is this powerup doing something
+  private boolean isActive;
+  // is this powerup doing something
 
-	private int timeLeft;
-	// how much longer this powerup will be active
+  private int timeLeft;
+  // how much longer this powerup will be active
 
   private float[][][] unitSphereXYZ;
   // coordinates of evenly-spaced points on a unit sphere
@@ -27,14 +27,10 @@ public class Powerup {
   private PImage t;
   // texture of sphere
 
-	public Powerup(float[] pos) {
-		name = n;
-		position = pos;
-		switch (name) {
-			case "growBall":
-				duration = 30 * frameRate;
-				break;
-		}
+  public Powerup(float[] pos) {
+    position = pos;
+    duration = 30 * frameRate;
+    r = 20;
     int i, j;
     unitSphereXYZ = new float[61][31][3];
     for (i = 0; i <= 60; i++)
@@ -53,73 +49,73 @@ public class Powerup {
         unitSphereXYZ[i][j][2] =
           cos(PI - j * PI / 30);
       }
-	}
+  }
 
-	public void draw() {
-		if (isActive) {
-			move();
-    	noStroke();
-			pushMatrix();
-			translate(position[0], position[1], position[2]);
-    	int i, j;
-    	for (j = 0; j < detailY; j++) {
-    	  beginShape(QUAD_STRIP);
-    	  texture(t);
-    	  for (i = 0; i <= detailX; i++) {
-    	    normal(
-    	      unitSphereXYZ[i][j + 1][0],
-    	      unitSphereXYZ[i][j + 1][1],
-    	      unitSphereXYZ[i][j + 1][2],
-    	      );
-    	    vertex(
-    	      r * unitSphereXYZ[i][j + 1][0],
-    	      r * unitSphereXYZ[i][j + 1][1],
-    	      r * unitSphereXYZ[i][j + 1][2],
-    	      textureX[i],
-    	      textureY[j + 1]
-    	      );
-    	    normal(
-    	      unitSphereXYZ[i][j][0],
-    	      unitSphereXYZ[i][j][1],
-    	      unitSphereXYZ[i][j][2],
-    	      );
-    	    vertex(
-    	      r * unitSphereXYZ[i][j][0],
-    	      r * unitSphereXYZ[i][j][1],
-    	      r * unitSphereXYZ[i][j][2],
-    	      textureX[i],
-    	      textureY[j]
-    	      );
-    	  }
-    	  endShape(CLOSE);
-    	}
-    	popMatrix();
+  public void draw() {
+    if (isActive) {
+      move();
+      noStroke();
+      pushMatrix();
+      translate(position[0], position[1], position[2]);
+      int i, j;
+      for (j = 0; j < 30; j++) {
+        beginShape(QUAD_STRIP);
+        texture(t);
+        for (i = 0; i <= 60; i++) {
+          normal(
+            unitSphereXYZ[i][j + 1][0],
+            unitSphereXYZ[i][j + 1][1],
+            unitSphereXYZ[i][j + 1][2]
+            );
+          vertex(
+            r * unitSphereXYZ[i][j + 1][0],
+            r * unitSphereXYZ[i][j + 1][1],
+            r * unitSphereXYZ[i][j + 1][2],
+            textureX[i],
+            textureY[j + 1]
+            );
+          normal(
+            unitSphereXYZ[i][j][0],
+            unitSphereXYZ[i][j][1],
+            unitSphereXYZ[i][j][2]
+            );
+          vertex(
+            r * unitSphereXYZ[i][j][0],
+            r * unitSphereXYZ[i][j][1],
+            r * unitSphereXYZ[i][j][2],
+            textureX[i],
+            textureY[j]
+            );
+        }
+        endShape(CLOSE);
+      }
+      popMatrix();
     }
     else
-    	doStuff();
-	}
+      doStuff();
+  }
 
-	private void move() {
-		position[2] = (position[2] - radius) * 0.99 + radius;
-		position[1] += 0.001;
-		position[0] += cos((frameCount - releaseFrame) / 1000.0);
-		if (position[2] > boardLength)
-			powerups.remove(this);
-	}
+  private void move() {
+    position[2] = (position[2] - r) * 0.99 + r;
+    position[1] += 0.001;
+    position[0] += cos((frameCount - releaseFrame) / 1000.0);
+    if (position[2] > boardLength)
+      powerups.remove(this);
+  }
 
-	protected void doStuff() {
-		duration--;
-	}
+  protected void doStuff() {
+    duration--;
+  }
 
-	public void activate() {
-		isActive = true;
-	}
+  public void activate() {
+    isActive = true;
+  }
 
-	public boolean isActive() {
-		return isActive;
-	}
+  public boolean isActive() {
+    return isActive;
+  }
 
-	public void setDuration(int d) {
-		duration = d;
-	}
+  public void setDuration(int d) {
+    duration = d;
+  }
 }
