@@ -1,6 +1,8 @@
 public class Board {
   private color c;
   private PImage t;
+  private int level = 1;
+  private int lives = 3;
 
   public Board(int level) {
     switch (level) {
@@ -22,6 +24,10 @@ public class Board {
       paddles.get(i).draw();
     for (i = 0; i < balls.size(); i++)
       balls.get(i).draw();
+    fill(0);
+    textSize(32);
+    text("Level " + level,100,950,50);
+    fill(c);
   }
 
   private void level1() {
@@ -185,5 +191,9 @@ public class Board {
         )
     	);
     bricks.get(14).stack(bricks.get(13));
+  }
+  
+  public void level2(){
+     
   }
 }

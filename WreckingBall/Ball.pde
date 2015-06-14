@@ -11,10 +11,10 @@ public class Ball {
     a = new float[2];
     r = radius;
     c = rgb;
-    defaultv = 120;
+    defaultv = 240;
     // FOR DEBUGGING
     v[0] = 0;
-    v[1] = -120;
+    v[1] = -240;
     p[0] = 500;
     p[1] = 800;
   }
@@ -53,6 +53,7 @@ public class Ball {
 
   private void move() {
     // bring velocity back to default
+    println(dead());
     if (M.mag(v) > defaultv)
       v = M.scale(v, 0.99);
     else if (M.mag(v) < defaultv)
@@ -85,6 +86,10 @@ public class Ball {
       if (paddles.get(i).ballColliding(this))
         paddles.get(i).reflectBall(this);
     }
+  }
+  
+  public boolean dead(){
+    return p[1] > boardLength + r; 
   }
 
   public float getRadius() {
