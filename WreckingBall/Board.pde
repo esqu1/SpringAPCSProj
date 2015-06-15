@@ -13,7 +13,7 @@ public class Board {
     if(setup){
       switch (level) {
         case 1:
-          level1(); setup = false;
+          level3(); setup = false;
           break;
         case 2:
           level2(); setup = false;
@@ -252,7 +252,7 @@ public class Board {
     for(int i = 0; i < 12; i++){
       bricks.get(i+4).stack(bricks.get(i));
     }
-    bricks.add(new Cylinder(new float[] {500,500}, 40, 100, 60, "mr_k.jpg", 0.2 * PI));
+    bricks.add(new Cylinder(new float[] {500,500}, 40, 300, 60, "mr_k.jpg", 0.2 * PI));
     for(int i = 12; i < 16; i++){
       bricks.get(16).stack(bricks.get(i));
     }
@@ -260,6 +260,22 @@ public class Board {
   
   public void level3(){
     load();
+    for(int j = 100; j < 600; j += 200){
+      for(int i = 100; i < 1000; i+= 200){
+        bricks.add(new Cylinder(new float[] {i,j}, 40, 300, 60, "mr_k.jpg", 0.5 * PI));
+      }
+    }
+    for(int i = 0; i < 3; i++){
+      bricks.add(new Prism(new float[][]{ {50,50 + i * 200},{950,50 + i * 200},{950,150 + i * 200},{50,150 + i * 200}},61, "gray_brick.jpg"));
+    }
+    for(int i = 0; i < 15; i++){
+      bricks.get(15 + (i / 5)).stack(bricks.get(i)); 
+    }
+    
+    for(int i = 650; i <= 800; i+= 75){
+      bricks.add(new Prism(new float[][] { {100,i}, {200,i}, {250,i+50},{100,i+50}},50, "colors.jpg",new float[] {50,0},200));
+      bricks.add(new Prism(new float[][] { {900,i}, {750,i}, {800,i+50},{900,i+50}},50, "colors.jpg",new float[] {-50,0},200));
+    }
   }
     
 }
