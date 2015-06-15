@@ -53,7 +53,6 @@ public class Ball {
 
   private void move() {
     // bring velocity back to default
-    println(dead());
     if (M.mag(v) > defaultv)
       v = M.scale(v, 0.99);
     else if (M.mag(v) < defaultv)

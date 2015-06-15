@@ -493,9 +493,11 @@ public class Prism implements Brick {
       );
     if(texture.equals("gray_brick.jpg")){
       metal.play(0);
+    }else if(texture.equals("mr_k.jpg")){
+      heylisten.play(0);
     }else{
       hit.play(0);
-    }
+    } 
     reflectionNormal = null;
   }
 

@@ -21,6 +21,9 @@ public class Board {
         case 3:
           level3(); setup = false;
           break;
+        case 4:
+          level4(); setup = false;
+          break;
       }
     } 
   }
@@ -279,6 +282,53 @@ public class Board {
       bricks.add(new Prism(new float[][] { {100,i}, {200,i}, {250,i+50},{100,i+50}},50, "colors.jpg",new float[] {50,0},200));
       bricks.add(new Prism(new float[][] { {900,i}, {750,i}, {800,i+50},{900,i+50}},50, "colors.jpg",new float[] {-50,0},200));
     }
+  }
+  
+  public void level4(){
+    load();
+    bricks.add(new Sphere(new float[] {500,700}, 75, 15, 60, #FF0000, 0.5 * PI)); // 1,1
+    
+    bricks.add(new Sphere(new float[] {425,600}, 75, 15, 60, #FF8000, 0.5 * PI)); // 2,1
+    bricks.add(new Sphere(new float[] {575,600}, 75, 15, 60, #FF8000, 0.5 * PI)); 
+    bricks.add(new Sphere(new float[] {500,600}, 75, 15, 60, #FF8000, 0.5 * PI)); // 2,2
+    bricks.get(3).stack(bricks.get(1));
+    bricks.get(3).stack(bricks.get(2));
+    
+    bricks.add(new Sphere(new float[] {350,500}, 75, 15, 60, #FAFF00, 0.5 * PI)); // 3,1
+    bricks.add(new Sphere(new float[] {500,500}, 75, 15, 60, #FAFF00, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {650,500}, 75, 15, 60, #FAFF00, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {425,500}, 75, 15, 60, #FAFF00, 0.5 * PI)); // 3,2
+    bricks.add(new Sphere(new float[] {575,500}, 75, 15, 60, #FAFF00, 0.5 * PI)); 
+    bricks.add(new Sphere(new float[] {500,500}, 75, 15, 60, #FAFF00, 0.5 * PI)); // 3,3
+    bricks.get(7).stack(bricks.get(4));
+    bricks.get(7).stack(bricks.get(5));
+    bricks.get(8).stack(bricks.get(5));
+    bricks.get(8).stack(bricks.get(6));
+    bricks.get(9).stack(bricks.get(7));
+    bricks.get(9).stack(bricks.get(8));
+    
+    bricks.add(new Sphere(new float[] {275,400}, 75, 15, 60, #00FF4A, 0.5 * PI)); // 4,1
+    bricks.add(new Sphere(new float[] {425,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {575,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {725,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {350,400}, 75, 15, 60, #00FF4A, 0.5 * PI)); // 4,2
+    bricks.add(new Sphere(new float[] {500,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {650,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {425,400}, 75, 15, 60, #00FF4A, 0.5 * PI)); // 4,3
+    bricks.add(new Sphere(new float[] {575,400}, 75, 15, 60, #00FF4A, 0.5 * PI));
+    bricks.add(new Sphere(new float[] {500,400}, 75, 15, 60, #00FF4A, 0.5 * PI)); // 4,4
+    bricks.get(14).stack(bricks.get(10));
+    bricks.get(14).stack(bricks.get(11));
+    bricks.get(15).stack(bricks.get(11));
+    bricks.get(15).stack(bricks.get(12));
+    bricks.get(16).stack(bricks.get(12));
+    bricks.get(16).stack(bricks.get(13));
+    bricks.get(17).stack(bricks.get(14));
+    bricks.get(17).stack(bricks.get(15));
+    bricks.get(18).stack(bricks.get(15));
+    bricks.get(18).stack(bricks.get(16));
+    bricks.get(19).stack(bricks.get(17));
+    bricks.get(19).stack(bricks.get(18));
   }
     
 }

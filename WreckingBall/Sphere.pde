@@ -28,6 +28,9 @@ public class Sphere implements Brick {
   private float[] textureX, textureY;
   // coordinates of points on each axis of the texture image that
   // divide it into a detailX by detailY grid
+  
+  private String texture = "";
+  // texture name for use in sound effects
 
   // The point (textureX[i], textureY[j]) on the texture image will
   // map to the point (unitSphereXYZ[i][j][0], unitSphereXYZ[i][j][1],
@@ -127,6 +130,7 @@ public class Sphere implements Brick {
     ) {
     this(centre, radius, dx, dy);
     t = loadImage(texture);
+    this.texture = texture;
     int i;
     textureX = new float[detailX + 1];
     for (i = 0; i <= detailX; i++)
@@ -439,6 +443,13 @@ public class Sphere implements Brick {
           )
         )
       );
+    if(texture.equals("gray_brick.jpg")){
+      metal.play(0);
+    }else if(texture.equals("mr_k.jpg")){
+      heylisten.play(0);
+    }else{
+      hit.play(0);
+    } 
     reflectionNormal = null;
   }
 

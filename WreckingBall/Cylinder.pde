@@ -28,6 +28,9 @@ public class Cylinder implements Brick {
   // x-coordinates of points on the texture image that divide
   // it into detail sections
 
+  private String texture = "";
+  // texture name for use in sound effects
+
   // The point (textureX[i], y) will map to (unitCircleXY[i][0],
   // unitCircleXY[i][1], y) on the unit cylinder (r = 1, d = 0).
 
@@ -106,6 +109,7 @@ public class Cylinder implements Brick {
     ) {
     this(cylCenter, radius, cylHeight, d);
     t = loadImage(texture);
+    this.texture = texture;
     textureX = new float[detail + 1];
     for (int i = 0; i <= detail; i++)
       textureX[i] = (detail - i) * sqrt(2 - 2 * cos(TWO_PI / detail));
@@ -412,6 +416,13 @@ public class Cylinder implements Brick {
           )
         )
       );
+    if(texture.equals("gray_brick.jpg")){
+      metal.play(0);
+    }else if(texture.equals("mr_k.jpg")){
+      heylisten.play(0);
+    }else{
+      hit.play(0);
+    } 
     reflectionNormal = null;
   }
 
