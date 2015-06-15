@@ -13,10 +13,13 @@ public class Board {
     if(setup){
       switch (level) {
         case 1:
-          level3(); setup = false;
+          level1(); setup = false;
           break;
         case 2:
           level2(); setup = false;
+          break;
+        case 3:
+          level3(); setup = false;
           break;
       }
     } 
