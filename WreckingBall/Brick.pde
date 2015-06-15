@@ -23,6 +23,9 @@ public interface Brick {
 
   // adds a brick directly above this one
   public void addAbove(Brick b);
+  
+  // get the Container of bricks directly above this one
+  public Container<Brick> getAbove();
 
   // adds a brick directly below this one
   public void addBelow(Brick b);

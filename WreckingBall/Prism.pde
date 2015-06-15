@@ -171,6 +171,10 @@ public class Prism implements Brick {
     above.add(b);
   }
 
+  public Container<Brick> getAbove() {
+    return above;
+  }
+
   public void addBelow(Brick b) {
     below.add(b);
     if (highestBrickBelow == null)
@@ -509,6 +513,17 @@ public class Prism implements Brick {
       for (j = 0; j < above.size(); j++)
        if (below.get(i).overlaps(above.get(j)))
         below.get(i).addAbove(above.get(j));
+    }
+    for (i = 0; i < above.size(); i++) {
+      recursiveResetAbove(above.get(i));
+    }
+  }
+  
+  private void recursiveResetAbove(Brick b) {
+    for (int i = 0; i < b.getAbove().size(); i++) {
+      b.getAbove().get(i).removeBelow(b);
+      b.getAbove().get(i).addBelow(b);
+      recursiveResetAbove(b.getAbove().get(i));
     }
   }
 
