@@ -260,6 +260,6 @@ public class Board {
   
   public void level3(){
     load();
-    
+  }
     
 }
