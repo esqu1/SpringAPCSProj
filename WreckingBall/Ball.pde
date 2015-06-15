@@ -11,10 +11,10 @@ public class Ball {
     a = new float[2];
     r = radius;
     c = rgb;
-    defaultv = 240;
+    defaultv = 360;
     // FOR DEBUGGING
     v[0] = 0;
-    v[1] = -240;
+    v[1] = -360;
     p[0] = 500;
     p[1] = 800;
   }
