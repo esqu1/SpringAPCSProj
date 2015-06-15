@@ -252,9 +252,14 @@ public class Board {
     for(int i = 0; i < 12; i++){
       bricks.get(i+4).stack(bricks.get(i));
     }
-    bricks.add(new Cylinder(new float[] {500,500}, 40, 100, 60, "mr_k.jpg"));
+    bricks.add(new Cylinder(new float[] {500,500}, 40, 100, 60, "mr_k.jpg", 0.2 * PI));
     for(int i = 12; i < 16; i++){
       bricks.get(16).stack(bricks.get(i));
     }
   }
+  
+  public void level3(){
+    load();
+    
+    
 }
