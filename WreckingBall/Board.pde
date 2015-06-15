@@ -3,17 +3,28 @@ public class Board {
   private PImage t;
   private int level = 1;
   private int lives = 3;
+  private boolean setup = true;
 
   public Board(int level) {
-    switch (level) {
-    	case 1:
-    		level1();
-    		break;
-    }
+    
+  }
+  
+  public void setting(){
+    if(setup){
+      switch (level) {
+        case 1:
+          level2(); setup = false;
+          break;
+        case 2:
+          level1(); setup = false;
+          break;
+      }
+    } 
   }
 
   public void draw() {
     int i,j;
+    setting();
     fill(c);
     if(lives == 0){
       textSize(64);
@@ -24,6 +35,14 @@ public class Board {
       lives--;
       balls.remove(0);
       balls.add(new Ball(30,#FFFFFF));
+      return;
+    }
+    if(bricks.size() == 0){
+      level++;
+      balls.remove(0);
+      balls.add(new Ball(30,#FFFFFF));
+      setup = true;
+      return;
     }
     translate(500, 500, -10);
     box(1000, 1000, 20);
@@ -210,11 +229,17 @@ public class Board {
   }
   
   public void level2(){
-    c = #63F702;
-    balls = new Container<Ball>();
-    balls.add(new Ball(30, #FFFFFF));
-    paddles = new Container<Paddle>();
-    paddles.add(new Paddle(100.0, "colors.jpg"));
-    bricks = new Container<Brick>(15);
+    load();
+    bricks.add(new Prism(new float[][]{ {250,250},{250,350},{350,350},{350,250}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {750,750},{750,650},{650,650},{650,750}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {250,750},{250,650},{350,650},{350,750}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {750,250},{750,350},{650,350},{650,250}},61, "gray_brick.jpg")); //top right
+    bricks.add(new Prism(new float[][]{ {300,300},{300,400},{400,400},{400,300}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {700,700},{700,600},{600,600},{600,700}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {300,700},{300,600},{400,600},{400,700}},61, "gray_brick.jpg"));
+    bricks.add(new Prism(new float[][]{ {700,300},{700,400},{600,400},{600,300}},61, "gray_brick.jpg"));
+    for(int i = 0; i < 4; i++){
+      bricks.get(i+4).stack(bricks.get(i));
+    }
   }
 }
