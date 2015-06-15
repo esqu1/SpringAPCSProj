@@ -120,3 +120,4 @@ Brandon put in collision sound effects for the edges of the board as well as pri
 Ignore the commit made by "XWilliamY", that was a commit made while working on William Yang's laptop.<br />
 Brandon added 5 levels to the game, as well as a life counter to the board.<br />
 Brandon also added more sound effects to the game, including a "Hey! Listen!" sound to Mr. K bricks. <br />
+Dennis added levels 6-9.
