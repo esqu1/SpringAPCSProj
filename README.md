@@ -117,6 +117,6 @@ Brandon was able to implement music into the game, but needs to work on using a 
 Brandon put in collision sound effects for the edges of the board as well as prisms. Metal bricks now have a special sound effect.
 
 6/13/15<br />
-Ignore the commit made by "XWilliamY", that was a commit made while working on William Yang's laptop.
-Brandon added 5 levels to the game, as well as a life counter to the board.
-Brandon also added more sound effects to the game, including a "Hey! Listen!" sound to Mr. K bricks.
+Ignore the commit made by "XWilliamY", that was a commit made while working on William Yang's laptop.<br />
+Brandon added 5 levels to the game, as well as a life counter to the board.<br />
+Brandon also added more sound effects to the game, including a "Hey! Listen!" sound to Mr. K bricks. <br />
