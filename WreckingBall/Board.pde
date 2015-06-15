@@ -13,7 +13,7 @@ public class Board {
     if(setup){
       switch (level) {
         case 1:
-          level1(); setup = false;
+          level5(); setup = false;
           break;
         case 2:
           level2(); setup = false;
@@ -329,6 +329,68 @@ public class Board {
     bricks.get(18).stack(bricks.get(16));
     bricks.get(19).stack(bricks.get(17));
     bricks.get(19).stack(bricks.get(18));
+  }
+  
+  public void level5(){
+    load();
+    bricks.add(new Prism(new float[][]{ {50,50},{50,150},{150,150},{150,50}},61, "colors.jpg"));
+    for(int i = 0; i < 7; i++){
+      bricks.add(new Prism(new float[][]{ {50,50},{50,150},{150,150},{150,50}},61, "colors.jpg"));
+      bricks.get(i+1).stack(bricks.get(i));
+    } // 7
+    
+    bricks.add(new Prism(new float[][]{ {200,50},{200,150},{300,150},{300,50}},61, "colors.jpg")); // 8
+    for(int i = 0; i < 7; i++){
+      bricks.add(new Prism(new float[][]{ {200,50},{200,150},{300,150},{300,50}},61, "colors.jpg"));
+      bricks.get(i+9).stack(bricks.get(i+8));
+    } // 15
+    bricks.add(new Prism(new float[][]{ {300,50},{300,150},{350,150},{350,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {350,50},{350,150},{400,150},{400,50}},61, "colors.jpg")); // 17
+    bricks.add(new Prism(new float[][]{ {500,50},{500,150},{600,150},{600,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {425,50},{425,150},{525,150},{525,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {575,50},{575,150},{675,150},{675,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {400,50},{400,150},{500,150},{500,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {600,50},{600,150},{700,150},{700,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {400,50},{400,150},{500,150},{500,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {600,50},{600,150},{700,150},{700,50}},61, "colors.jpg")); // 24
+    bricks.get(19).stack(bricks.get(18));
+    bricks.get(20).stack(bricks.get(18));
+    bricks.get(21).stack(bricks.get(19));
+    bricks.get(22).stack(bricks.get(20));
+    bricks.get(23).stack(bricks.get(21));
+    bricks.get(24).stack(bricks.get(22));
+      
+    bricks.add(new Prism(new float[][]{ {800,50},{800,150},{900,150},{900,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {750,50},{750,150},{825,150},{825,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {875,50},{875,150},{950,150},{950,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {700,50},{700,150},{775,150},{775,50}},61, "colors.jpg"));
+    bricks.add(new Prism(new float[][]{ {925,50},{925,150},{1000,150},{1000,50}},61, "colors.jpg")); // 29
+    bricks.get(26).stack(bricks.get(25));
+    bricks.get(27).stack(bricks.get(25));
+    bricks.get(28).stack(bricks.get(26));
+    bricks.get(29).stack(bricks.get(27));
+    
+    bricks.add(new Prism(new float[][]{ {100,450},{100,550},{500,550},{450,450}},61, "colors.jpg"));
+    for(int i = 0; i < 7; i++){
+      bricks.add(new Prism(new float[][]{ {100,450},{100,550},{200,550},{200,450}},61, "colors.jpg"));
+      bricks.get(i+31).stack(bricks.get(i+30));
+    }
+    bricks.add(new Prism(new float[][]{ {100,450},{100,550},{500,550},{450,450}},61, "colors.jpg"));
+    bricks.get(38).stack(bricks.get(37));
+    
+    bricks.add(new Prism(new float[][]{ {500,450},{500,550},{900,550},{900,450}},61, "colors.jpg")); // 39
+    for(int i = 0; i < 3; i++){
+      bricks.add(new Prism(new float[][]{ {800,450},{800,550},{900,550},{900,450}},61, "colors.jpg"));
+      bricks.get(i+40).stack(bricks.get(i+39));
+    }
+    bricks.add(new Prism(new float[][]{ {500,450},{500,550},{900,550},{900,450}},61, "colors.jpg"));
+    bricks.get(43).stack(bricks.get(42));
+    for(int i = 0; i < 3; i++){
+      bricks.add(new Prism(new float[][]{ {500,450},{500,550},{600,550},{600,450}},61, "colors.jpg"));
+      bricks.get(i+44).stack(bricks.get(i+43));
+    }
+    bricks.add(new Prism(new float[][]{ {500,450},{500,550},{900,550},{900,450}},61, "colors.jpg"));
+    bricks.get(47).stack(bricks.get(46));
   }
     
 }
