@@ -2,7 +2,6 @@ public class Ball {
   private float[] p, v, a;
   private float r;
   private color c;
-  private PImage t;
   private float defaultv;
 
   public Ball(float radius, color rgb) {
@@ -11,29 +10,17 @@ public class Ball {
     a = new float[2];
     r = radius;
     c = rgb;
-    defaultv = 360;
-    // FOR DEBUGGING
+    defaultv = 450;
     v[0] = 0;
-    v[1] = -360;
+    v[1] = -450;
     p[0] = 500;
     p[1] = 800;
-  }
-
-  public Ball(float radius, String texture) {
-    p = new float[2];
-    v = new float[2];
-    a = new float[2];
-    r = radius;
-    t = loadImage(texture);
   }
 
   public void draw() {
     move();
     beActedUpon();
-    if (t != null)
-      drawWithTexture();
-    else
-      drawWithoutTexture();
+    drawWithoutTexture();
   }
 
   private void drawWithoutTexture() {
@@ -45,10 +32,6 @@ public class Ball {
     sphere(r);
     popMatrix();
     move();
-  }
-
-  private void drawWithTexture() {
-
   }
 
   private void move() {
@@ -69,11 +52,6 @@ public class Ball {
     // x(t) = x_0 + v_0 * t + 1/2 * a * t^2
     p[0] += v[0] / 60 + a[0] / 7200;
     p[1] += v[1] / 60 + a[1] / 7200;
-    // FOR DEBUGGING
-    if (mode == PLAYING && mousePressed && mouseButton == LEFT) {
-      p[0] = mouseX * 4 / 3.;
-      p[1] = mouseY * 4 / 3.;
-    }
   }
 
   public void beActedUpon() {

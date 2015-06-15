@@ -58,9 +58,6 @@ public class Cylinder implements Brick {
   private float lastDampenedV;
   // velocity of the prism last time it bounced up
 
-  private Powerup powerup;
-  // powerup in this brick
-
   public Cylinder(
     float[] cylCenter,
     float radius,
@@ -452,10 +449,6 @@ public class Cylinder implements Brick {
       b.getAbove().get(i).addBelow(b);
       recursiveResetAbove(b.getAbove().get(i));
     }
-  }
-
-  public void addPowerup(Powerup p) {
-    powerup = p;
   }
 
   public void draw() {

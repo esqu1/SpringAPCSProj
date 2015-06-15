@@ -12,7 +12,6 @@ float gravity = -300;
 float bounciness = 0.4;
 // bounciness of surfaces (must be less than 1)
 
-int level = 1;
 Board board;
 // The board's size is 1000 * 1000.
 final int boardLength = 1000;
@@ -20,7 +19,6 @@ final int boardLength = 1000;
 Container<Brick> bricks;
 Container<Ball> balls;
 Container<Paddle> paddles;
-Container<Powerup> powerups;
 
 // The default camera position is adjusted for a window
 // whose sides are 3/4 the boardLength.
@@ -46,15 +44,11 @@ void setup() {
   // resizable.
   if (frame != null)
     frame.setResizable(true);
-  menu = new Menu();
-  board = new Board(level);
-  mode = MENU;
   minim = new Minim(this);
   intro = minim.loadFile("Q.mp3");
   hit = minim.loadFile("hammering.mp3");
   metal = minim.loadFile("metal.mp3");
   heylisten = minim.loadFile("heylisten.mp3");
-  //hit.setVolume(1);
   intro.loop();
 }
 
@@ -69,8 +63,6 @@ void draw() {
       break;
     case PLAYING:
       playing();
-      //Menu menu = new Menu(this);
-      //menu.draw();
       break;
     case DEAD:
       dead();
@@ -82,7 +74,17 @@ void draw() {
 }
 
 void title() {
-  // title stuff goes here...
+  menu = new Menu();
+  board = new Board();
+  gravity = -300;
+  bounciness = 0.4;
+  viewAngleX = PI / 3;
+  viewAngleY = 0;
+  zoomFactor = 0;
+  cameraZ = defaultCameraZ;
+  camera(width/2.0, height/2.0, (height/2.0) / tan(PI*30.0 / 180.0), width/2.0, height/2.0, 0, 0, 1, 0);
+  float cZ = (height/2.0) / tan(viewAngleX/2.0);
+  perspective(viewAngleX, float(width)/float(height), cZ/10.0, cZ*10.0);
   mode = MENU;
 }
 
@@ -277,7 +279,5 @@ void keyPressed(KeyEvent ke) {
       zoomFactor = 0;
       cameraZ = defaultCameraZ;
     }
-    if (ke.getKeyCode() == 'A')
-      gravity *= -1;
   }
 }

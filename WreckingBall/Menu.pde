@@ -66,7 +66,7 @@ public class Menu {
     pushMatrix();
     translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
     textFont(font,20);
-    text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
+    text("Team YatuLin\nDennis Yatunin and Brandon Lin",-50,50);
     popMatrix();
     fill(0);
   }
@@ -150,7 +150,7 @@ public class Menu {
     pushMatrix(); // For drawing the team name
     translate(width / 2.0 - 270, height / 2.0 + 190, 50);  
     textFont(font,20);
-    text("Team YatuLin\nBrandon Lin and Dennis Yatunin",-50,50);
+    text("Team YatuLin\nDennis Yatunin and Brandon Lin",-50,50);
     popMatrix();
     
     fill(0);

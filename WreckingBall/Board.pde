@@ -4,10 +4,6 @@ public class Board {
   private int level = 1;
   private int lives = 3;
   private boolean setup = true;
-
-  public Board(int level) {
-    
-  }
   
   public void setting(){
     if(setup){
@@ -27,6 +23,18 @@ public class Board {
         case 5:
           level5(); setup = false;
           break;
+        case 6:
+          level6(); setup = false;
+          break;
+        case 7:
+          level7(); setup = false;
+          break;
+        case 8:
+          level8(); setup = false;
+          break;
+        case 9:
+          level9(); setup = false;
+          break;
       }
     } 
   }
@@ -36,14 +44,25 @@ public class Board {
     setting();
     fill(c);
     if(lives == 0){
-      textSize(64);
-      text("YOU LOSE!!!!",500,500,0); //temporary
+      mode = TITLE;
+      return;
+    }
+    if (level > 9) {
+      fill(#FFFFFF);
+      translate(500, 500, -10);
+      box(1000, 1000, 20);
+      translate(-500, -500, 10);
+      fill(0);
+      textSize(200);
+      text("YOU WIN!", 50, 500, 50);
       return;
     }
     if(balls.get(0).dead()){
       lives--;
       balls.remove(0);
       balls.add(new Ball(30,#FFFFFF));
+      if (level == 9)
+        balls.get(0).defaultv *= 5;
       return;
     }
     if(bricks.size() == 0){
@@ -157,13 +176,13 @@ public class Board {
     bricks.add(
     	new Cylinder(
     		new float[] {100, 600},
-    		75, 300, 60, "mr_k.jpg", 0.25 * TWO_PI
+    		40, 300, 60, "mr_k.jpg", 0.25 * TWO_PI
     		)
     	);
     bricks.add(
     	new Cylinder(
     		new float[] {900, 600},
-    		75, 300, 60, "mr_k.jpg", -0.25 * TWO_PI
+    		40, 300, 60, "mr_k.jpg", -0.25 * TWO_PI
     		)
     	);
     // pentagon in the center moving up and down,
@@ -394,6 +413,55 @@ public class Board {
     }
     bricks.add(new Prism(new float[][]{ {500,450},{500,550},{900,550},{900,450}},61, "colors.jpg"));
     bricks.get(47).stack(bricks.get(46));
+  }
+  
+  public void level6() {
+    load();
+    int x, y, i;
+    for (x = 100; x < 1000; x += 100)
+      for (y = 100; y < 600; y += 100)
+        if (random(2) < 1) {
+          bricks.add(new Sphere(new float[] {x, y}, 50, 4, 3, "dennis's thing.jpg", 0.1 * TWO_PI));
+          for (i = 0; i < bricks.size() - 1; i++)
+            if (bricks.get(bricks.size() - 1).overlaps(bricks.get(i)))
+              bricks.get(bricks.size() - 1).stack(bricks.get(i));
+        }
+  }
+  
+  public void level7() {
+    load();
+    int theta = 0;
+    while (theta < 360) {
+      bricks.add(new Cylinder(new float[] {400 + 40 * sin(radians(theta)), 400 + 40 * cos(radians(theta))}, 20, 10, 30, #000000, new float[] {500, 0}, 200));
+      if (bricks.size() > 1)
+        bricks.get(bricks.size() - 1).stack(bricks.get(bricks.size() - 2));
+      theta += 5;
+    }
+  }
+  
+  public void level8() {
+    load();
+    bounciness = 0.95;
+    gravity = -10;
+    int i, x, y;
+    for (x = 100; x < 1000; x += 100)
+      for (y = 100; y < 500; y += 100)
+        bricks.add(new Sphere(new float[] {x, y}, 40, 3, 60, #FF0000, new float[] {1000, 0}, 5));
+    for (i = 0; i < 4; i++)
+      for (x = 100; x < 1000; x += 100)
+        for (y = 100; y < 500; y += 100) {
+          bricks.add(new Sphere(new float[] {x, y}, 40, 3, 60, #FFFFFF, new float[] {1000, 0}, 5));
+          bricks.get(bricks.size() - 1).stack(bricks.get(bricks.size() - 37));
+        }
+  }
+  
+  public void level9() {
+    load();
+    bounciness = 0.4;
+    gravity = -300;
+    bricks.add(new Sphere(new float[] {100, 100}, 100, 60, 30, "moon.jpg", 0.1 * TWO_PI));
+    bricks.add(new Sphere(new float[] {900, 100}, 100, 60, 30, "moon.jpg", 0.1 * TWO_PI));
+    balls.get(0).defaultv *= 5;
   }
     
 }

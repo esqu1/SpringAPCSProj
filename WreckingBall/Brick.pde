@@ -53,9 +53,6 @@ public interface Brick {
   // and releases a powerup if necessary
   public void actOnBall(Ball b);
 
-  // adds a powerup to this brick
-  public void addPowerup(Powerup p);
-
   // draws the brick
   public void draw();
 }

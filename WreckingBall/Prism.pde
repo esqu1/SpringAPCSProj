@@ -46,9 +46,6 @@ public class Prism implements Brick {
   private float lastDampenedV;
   // velocity of the prism last time it bounced up
 
-  private Powerup powerup;
-  // powerup in this brick
-
   public Prism(
     float[][] vertices,
     float prismHeight
@@ -527,10 +524,6 @@ public class Prism implements Brick {
       b.getAbove().get(i).addBelow(b);
       recursiveResetAbove(b.getAbove().get(i));
     }
-  }
-
-  public void addPowerup(Powerup p) {
-    powerup = p;
   }
 
   public void draw() {
